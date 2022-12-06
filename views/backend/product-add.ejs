@@ -1,0 +1,210 @@
+<section class="container dashboard-page">
+
+    <p>
+		<% if (message) { %>
+			<%= message.info %>
+			<%= message.error %>
+		<% } %>
+	</p>
+
+    <div class="card">
+        <div class="card-header">
+            <p>Add - Product</p>
+        </div>
+        <div class="card-body">
+
+            <form action="/home/add-product" method="POST">
+
+                <div class="form-control">
+                    <label class="label caption" for="txtName">Name: </label>
+                    <input class="textbox field" type="text" name="name" id="txtName">
+                </div>
+
+                <div class="form-control">
+                    <label class="label caption" for="txtSlug">slug: </label>
+                    <input class="textbox field" type="text" name="slug" id="txtSlug">
+                </div>
+
+                <div class="form-control">
+                    <label class="label caption" for="chkShowcased">Showcased: </label>
+                    <div><input class="field" type="checkbox" name="showcased" id="chkShowcased"></div>
+                </div>
+
+                <div class="form-control">
+                    <label class="label caption" for="chkrecommended">recommended: </label>
+                    <div><input class="field" type="checkbox" name="recommended" id="chkrecommended"></div>
+                </div>
+
+                <div class="form-control">
+                    <label class="label caption" for="chkactive">active: </label>
+                    <div><input class="field" type="checkbox" name="active" id="chkactive"></div>
+                </div>
+
+                <div class="form-control">
+                    <label class="label caption" for="price">price: </label>
+                    <input class="textbox field" type="text" name="price" id="price">
+                </div>
+
+                <div class="form-control">
+                    <label class="label caption" for="pagetitle">pagetitle: </label>
+                    <input class="textbox field" type="text" name="pagetitle" id="pagetitle">
+                </div>
+
+                <div class="form-control">
+                    <label class="label caption" for="shortDescription">shortDescription: </label>
+                    <input class="textbox field" type="text" name="shortDescription" id="shortDescription">
+                </div>
+
+                <div class="form-control">
+                    <label class="label caption" for="txtLongDescription">Long Description: </label>
+                    <textarea name="LongDescription" class="textarea field" id="" cols="30" rows="10"></textarea>
+                </div>
+
+                <div class="form-control">
+                    <label class="label caption" for="specifications">specifications: </label>
+                    <textarea name="specifications" class="textarea field" id="" cols="30" rows="10"></textarea>
+                </div>
+
+                <div class="form-control">
+                    <label class="label caption" for="features">features: </label>
+                    <textarea name="features" class="textarea field" id="" cols="30" rows="10"></textarea>
+                </div>
+
+                <div class="form-control">
+                    <label class="label caption" for="care">care: </label>
+                    <textarea name="care" class="textarea field" id="" cols="30" rows="10"></textarea>
+                </div>
+
+                <div class="form-control">
+                    <label class="label caption" for="sltCategory">Main Category</label>
+                    <select class="select field" name="category" id="sltCategory">
+                        <option value="">Please select a category</option>
+                        <% for( let c in categories ) { %>
+                            <option value="<%= categories[c].id %>">
+                                <%= categories[c].name %>
+                            </option>
+                            <% } %>
+                    </select>
+                </div>
+
+                <div class="form-control">
+                    <label class="label caption" for="sltSubCategory">Sub Category</label>
+                    <select class="select field" name="subCategory" id="sltSubCategory"></select>
+                </div>
+
+                <div class="form-control">
+                    <label class="label caption" for="image_id">Images: </label>
+                    <div id="selected-images">
+
+                    </div>
+
+                    <div id="product-image-array">
+
+                    </div>
+                    <button id="btn-model-images" class="quote-button">Select Images</button>
+                </div>
+
+                <div class="form-control">
+                    <label class="label caption" for="size_id">Sizes: </label>
+                    <div class="field">
+                        <% for( let i in sizes ) { %>
+                            <span>
+                                <input type="checkbox" name="size" id="<%= sizes[i].identifier %>" value="<%= sizes[i].identifier %>">
+                                <label for="<%= sizes[i].identifier %>"><%= sizes[i].size %></label>
+                            </span>
+                            <% } %>
+                    </div>
+                </div>
+
+                <div class="form-control">
+                    <label class="label caption" for="tag_id">Tags: </label>
+                    <div class="field">
+                        <% for( let i in tags ) { %>
+                            <span>
+                                <input type="checkbox" name="tag" id="<%= tags[i].identifier %>" value="<%= tags[i].identifier %>">
+                                <label for="<%= tags[i].identifier %>">
+                                    <%= tags[i].name %>
+                                </label>
+                            </span>
+                            <% } %>
+                    </div>
+                </div>
+
+
+
+                <div class="form-control">
+                    <div class="caption"></div>
+                    <div class="field">
+                        <a class="btn btn-normal btn-gray" href="/home/product">Cancel</a>
+                        <input class="btn btn-normal btn-blue" type="submit" name="Submit" value="Create">
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+</section>
+
+<script>
+    const form = document.querySelector('form');
+    const sltCategory = document.querySelector('#sltCategory');
+    const sltSubCategory = document.querySelector('#sltSubCategory');
+
+    
+    sltCategory.addEventListener('change', async (e) => {
+        e.preventDefault();
+        
+        if (sltCategory.value === ''){
+            AddOption('No subcategory available')
+            return
+        } 
+               
+        
+        try {
+            const res = await fetch(`/home/add-product/getsubcategories/${sltCategory.value}`, 
+                // {
+                //     method: 'post',
+                //     body: JSON.stringify({ id: sltCategory.value }),
+                //     headers: { 'Content-Type': 'application/json' }
+                // }
+            );
+            const data = await res.json();
+
+            if (!data.subcategories.length) {
+                AddOption('No subcategory available')
+                return
+            }
+            
+            sltSubCategory.innerHTML = '';
+            AddOption('Please select a subcategory')
+            data.subcategories.forEach(e => {
+                
+                const option = document.createElement("option");
+                option.text = e.name;
+                option.value = e.id
+                sltSubCategory.add(option);
+
+            });
+
+            // if (data.errors) {
+            //     emailError.textContent = data.errors.email;
+            //     passwordError.textContent = data.errors.password;
+            // }
+            // if (data.user) {
+            //     location.assign('/');
+            // }
+
+        }
+        catch (err) {
+            console.log(err);
+        }
+
+        function AddOption(text) {
+            sltSubCategory.innerHTML = '';
+            const option = document.createElement("option");
+            option.text = text;
+            sltSubCategory.add(option);
+        }
+    });
+</script>

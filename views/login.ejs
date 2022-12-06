@@ -1,0 +1,65 @@
+{% extends 'public/main.html' %}
+{% block content %}
+{% load static %}
+
+        <section class="container login-page">
+            <h1>Account Login</h1>
+            <form action="" method="POST">
+            {% csrf_token %}
+                <div class="form-control">
+                    <label class="label" for="txtEmail">Email</label>
+                    <input class="textbox input-full" type="text" name="email" id="txtEmail" {% if form.email.value %} value="{{form.email.value}}" {% endif %} required>
+                    <span class="msg-error">{{error}}</span>
+                    <span class="msg-error">{{ form.password.errors }}</span>
+                    <span class="msg-error">{{ form.non_field_errors }}</span>
+                </div>
+                <div class="form-control">
+                    <label class="label" for="txtPassword">Password</label>
+                    <input  class="textbox input-full"  type="password" name="password" id="txtPassword" required>
+                    {% comment %} <span class="msg-warning">{{ form.password.errors }}</span> {% endcomment %}
+                    <span class="msg-error">{{ form.password.error }}</span>
+                    
+                </div>
+                <input class="btn btn-solid-primary btn-full" type="submit" value="Login">
+            </form>
+            <p class="forgot-password"><a href="{% url 'password_reset' %}">Forgot your password?</a></p>
+            <p class="signup">Create an account? <a href="{% url 'signup' %}">Sign up</a></p>
+
+            {% if form.non_field_errors %}
+                {% for field in form %}
+
+                    {% for error in field.errors %}
+                           <p> {{field.label}}: {{ error|escape }}</p>
+                    {% endfor %}
+
+                {% endfor %}
+            {% endif %}
+
+            {% if form.errors %}
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <p> {{ error }} </p>
+                    {% endfor %}
+                {% endfor %}
+            {% endif %}
+
+            {% if registration_form.non_field_errors %}
+                <p>registration_form.non_field_errors </p>
+                {%endif%}
+
+            <div class="social-logins">
+                <p>- or login with -</p>
+
+                <ul class="social-icons-list">
+                    <li><a href="https://www.google.com/"><i class="fab fa-google"></i></a></li>                    
+                    <li><a href="https://www.facebook.com/reematec"><i class="fab fa-facebook-f"></i></a></li>                    
+                    <li><a href="https://www.linkedin.com/company/reema-technologies/"> <i class="fab fa-linkedin-in"></i></a></li>
+                </ul>
+
+            </div>
+        </section>
+
+{% include 'public/components/_footer.html' %}
+
+{% endblock %}
+

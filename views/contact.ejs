@@ -1,0 +1,71 @@
+
+<section class="container contact-page">
+    <h1 class="contact-page-title">Hello<span class="dot">!</span> <span class="subtitle">Let's work together to create fantastic products that will take your brand to peek.</span></h1>
+
+    <div class="availability-section">
+        <h4>OPENING TIMES:</h4>
+        <p class="timing">Monday, Tuesday, Wednesday, Thursday, Friday, Saturday 9am - 5pm</p>                
+        <p class="alter">If we're not currently available, please use the form below to get in contact with our team. Alternatively visit our <a class="btn" href="#">Help page..</a></p>
+
+
+    </div>
+
+    <div class="contact-section">
+        <div class="contact-form">
+            <p>Fill in the fields below and we will contact you shortly</p>
+            <form class="frmContact" action="">
+                <div class="form-control">
+                    <label class="label" for="txtName">Name</label>
+                    <input class="textbox input-full"  type="text" name="name" id="txtName">
+                    <span class="msg-error">That email address is too short, please use a longer one.</span>
+                </div>
+                <div class="form-control">
+                    <label class="label" for="dplCountry">Country</label>
+                    <select class="select input-full" name="country" id="dplCountry" placeholder="testing">
+                        <option>Please select a country</option>
+                        <option value="UK">UK</option>
+                        <option value="USA">USA</option>
+                        
+                    </select>
+                    <span class="msg-error">That email address is too short, please use a longer one.</span>
+                </div>
+                <div class="form-control">
+                    <label class="label"  for="txtEmail">Email</label>
+                    <input class="textbox input-full" type="email" name="email" id="txtEmail">
+                    <span class="msg-error">That email address is too short, please use a longer one.</span>
+                </div>
+                
+                <div class="form-control">
+                    <label class="label" for="txtMessage">Message</label>
+                    <textarea class="textarea input-full" placeholder="Please provide a detailed description about your inquiry" type="email" name="message" id="txtMessage"></textarea>
+                    <span class="msg-error">That email address is too short, please use a longer one.</span>
+                </div>
+                <input class="btn btn-full btn-solid-primary" type="submit" value="Send">
+            </form>
+        </div>
+        
+        <div class="company-info">
+
+            <h3>CONTACT</h3>
+            <ul>
+                <li><i class="fas fa-at"></i> reemasons@reemagroup.com</li>
+                <li><i class="fas fa-phone-alt"></i>  +92 (52) 354 12 47</li>
+                <li><i class="fas fa-phone-alt"></i>  +92 (52) 354 12 49</li>
+                <li><i class="fas fa-mobile-alt"></i>   +92 (300) 96 12 686</li>
+                <li><i class="fab fa-whatsapp"></i>   +92 (300) 96 12 686</li>
+            </ul>
+
+            <h3>ADDRESS</h3>
+            <p>Neka Pura, Zafarwal Road,<br>
+                Sialkot - 51310,<br>
+                Punjab, Pakistan</p>
+
+
+
+
+        </div>
+    </div>
+
+</section>
+
+<%- include('./components/_footer') %>

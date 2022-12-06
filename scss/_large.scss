@@ -1,0 +1,173 @@
+@media (min-width:992px){
+    .container{
+        max-width: 960px;
+    }
+
+    .navbar {
+        & .container{
+            @include container-padding;
+            flex-direction: row;
+        }
+        &__brand{
+            padding-left: 0;
+            padding-right: 0;
+            
+            &__hamburger{                
+                display: none;
+            }
+        }
+        &__links-list{
+            display: flex;
+            align-items: center;
+            
+
+            &__items{
+                margin: 0 1rem;
+                height: auto;
+                overflow: visible;
+                & a{                    
+                    background-color: #fff;                
+                    color: #4a4a4a;
+                    padding: 0;
+                }
+            }
+        }
+        &__links-list.navbar__collapsed .navbar__links-list__items{
+            height: auto;
+            border: 0;
+        }
+
+        .expand-border{
+            background-size:0 1px;
+        }
+        
+        .expand-border:hover{
+            background-size:100% 1px; 
+        }
+    }
+
+    .hero{
+        & .container{
+            flex-direction: row;
+            height: calc(100vh - 134px);
+        }
+        &__image{
+            flex-basis: 125%;
+            // & a{
+
+            //     & img{
+            //     }
+            // }
+        }
+        &__text {
+            flex-basis: 75%;
+        }
+    }
+
+    .about{
+        &__title{
+            &::after{
+                @include section-sub-underline(10vw);
+            }
+        }
+    
+        &__para{            
+            max-width: 60%;
+        }
+    }
+
+    .product-collection{
+        &__flex{
+            &__card{
+                flex-basis: 22%;
+                // margin: 1rem;
+                
+            }
+        }
+    }
+
+    .features{
+        &__section{
+            flex-basis: 20%;
+        }
+        
+    }
+
+    /* *********************************************************
+
+                        PRODUCTS PAGES
+
+    ********************************************************* */
+    .showcase{
+        flex-direction: row;
+    
+    }
+
+    .products{
+        
+        &__description{
+            margin: 0 0 2rem  2rem;        
+        }
+        &__toolbar{                    
+            margin: 0 0 2rem  2rem;            
+        }
+    }
+
+    .product-page-collection__flex{
+        margin-left: 2rem;
+    }
+
+    /* *********************************************************
+
+                    ABOUT PAGE
+
+********************************************************* */
+.about-page-heading{    
+    font-size: 3.6rem;
+}
+
+.about__flex{
+    display: flex;
+    flex-direction: row;
+
+    
+}
+/* *********************************************************
+
+                    CONTACT PAGE
+
+********************************************************* */
+.contact-section{
+    display: flex;
+    flex-direction: row;
+    & .contact-form, .company-info{
+        flex-basis: 50%;
+        @include mx(3rem);
+        // background: gray;
+    }
+
+    
+}
+    /* *********************************************************
+
+                    Blogs PAGE
+
+    ********************************************************* */
+
+
+    .blogs{    
+        & .blog-card{
+            flex-basis: 32.61%;            
+        }
+        & .blog-card:nth-child(even){
+            margin-right: 1rem;
+        }
+        & .blog-card:nth-child(3n+3){
+            margin-right: 0;
+        }
+        
+    }
+    
+
+}
+

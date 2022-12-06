@@ -1,0 +1,84 @@
+{% extends 'public/main.html' %}
+{% block content %}
+{% load static %}
+
+        <section class="container signup-page">
+            <h1>Account Sign up</h1>
+            <form action="" method="post">
+                {% csrf_token %}
+                <div class="personal-fields">
+                    <div class="form-control">
+                        <label class="label" for="txtFirstName">First Name</label>
+                        <input class="textbox input-full" type="text" name="first_name" id="txtFirstName" {% if form.first_name.value %} value="{{form.first_name.value}}" {% endif %} >
+                        <span class="msg-error">{{ form.first_name.errors }}</span>
+                    </div>
+                    <div class="form-control">
+                        <label class="label" for="txtLastName">Last Name</label>
+                        <input  class="textbox input-full"  type="text" name="last_name" id="txtLastName" {% if form.last_name.value %} value="{{form.last_name.value}}" {% endif %} required>
+                        <span class="msg-error">{{ form.last_name.errors }}</span>
+                    </div>
+                    
+                </div>
+                
+                {% comment %} <div class="form-control">
+                    <label class="label" for="txtBYear">Year of Birth</label>
+                    <input class="textbox input-full b-year" type="text" name="txtBYear" id="txtBYear" required placeholder="YYYY" maxlength="4">
+                    <span class="msg-error">That email address is too short, please use a longer one.</span>
+                </div> {% endcomment %}
+                
+                {% comment %} <div class="form-control">
+                    <label class="label" for="txtUsername">Username</label>
+                    <input class="textbox input-full" type="text" name="username" id="txtUsername" {% if form.username.value %} value="{{form.username.value}}" {% endif %} >
+                    <span class="msg-error">{{ form.username.errors }}</span>
+                </div> {% endcomment %}
+
+                <div class="form-control">
+                    <label class="label" for="txtEmail">Email</label>
+                    <input class="textbox input-full" type="email" name="email" id="txtEmail" {% if form.email.value %} value="{{form.email.value}}" {% endif %} required>
+                    <span class="msg-error">{{ form.email.errors }}</span>
+                </div>
+                
+                <div class="password-fields">
+                    <div class="form-control">
+                        <label class="label" for="txtPassword">Password</label>
+                        <input  class="textbox input-full"  type="password" name="password1" id="txtPassword" required>
+                        <span class="msg-error">{{ form.password1.errors }}</span>
+                    </div>
+                    <div class="form-control">
+                        <label class="label" for="txtConfirm">Confirm Password</label>
+                        <input  class="textbox input-full"  type="password" name="password2" id="txtConfirm" required>
+                        <span class="msg-error">{{ form.password2.errors }}</span>
+                    </div>
+
+                </div>
+                <input class="btn btn-solid-primary btn-full" type="submit" value="Sign Up">
+            </form>
+            <p class="forgot-password"><a href="#">Forgot your password?</a></p>
+            <p class="signup">Already have an account! <a href="{% url 'login' %}">Login</a></p>
+
+
+            {% comment %} {% for message in messages %}
+
+                <p>{{message}}</p>
+
+            {% endfor%} {% endcomment %}
+
+
+
+            <div class="social-logins">
+                <p>Want to login with your social media account!</p>
+
+                <ul class="social-icons-list">
+                    <li><a href="https://www.google.com/"><i class="fab fa-google"></i></a></li>                    
+                    <li><a href="https://www.facebook.com/reematec"><i class="fab fa-facebook-f"></i></a></li>                    
+                    <li><a href="https://www.linkedin.com/company/reema-technologies/"> <i class="fab fa-linkedin-in"></i></a></li>
+                </ul>
+
+            </div>
+        </section>
+
+{% include 'public/components/_footer.html' %}
+
+{% endblock %}
+        
+                

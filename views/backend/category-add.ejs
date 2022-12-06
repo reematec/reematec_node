@@ -1,0 +1,71 @@
+<section class="container dashboard-page">
+
+    <% if (message.success) { %>
+		<% message.success.forEach(s => { %>
+			<p style="color:green; font-weight: 700"><%= s.msg %></p>
+		<% }) %>
+    <% } %>
+    
+    <% if (message.errors) { %>
+        <% for( let i = 0; i < message.errors.length; i++ ) { %>
+            <p><%= message.errors[i].msg %></p>
+        <% } %>
+    <% } %>
+    
+    
+    
+    <div class="card">
+        <div  class="card-header">
+            <p>Add - Category</p>
+        </div>
+        
+        <div class="card-body">            
+            
+            <form method="POST">
+                
+                <div class="form-control">
+                    <label class="label caption" for="txtCategoryName">Category Name: </label>
+                    <input class="textbox field" type="text" name="name" id="txtCategoryName" value="<%- message.category ? message.category[0].name : '' %>" >
+                </div>
+                
+                <div class="form-control">
+                    <label class="label caption" for="txtSlug">Slug: </label>
+                    <input  class="textbox field" type="text" name="slug" id="txtSlug" value="<%- message.category ? message.category[0].slug : '' %>">
+                </div>
+                
+                <div class="form-control">
+                    <label class="label caption" for="txtPageTitle">Page Title: </label>
+                    <input  class="textbox field" type="text" name="pagetitle" id="txtPageTitle" value="<%- message.category ? message.category[0].pagetitle : '' %>">
+                </div>
+                
+                <div class="form-control">
+                    <label class="label caption" for="txtDescription">Description: </label>
+                    <textarea  class="textbox field" type="text" name="description" id="txtDescription"><%- message.category ? message.category[0].description : '' %></textarea>
+                </div>
+                
+                <div class="form-control">
+                    <label class="label caption" for="chkShowSubMenu">Show Submenu: </label>
+                    <div>
+                        <input class="field"  type="checkbox" name="showSubMenu" id="chkShowSubMenu" <% if (message.category && message.category[0].showSubMenu) { %> <%= 'checked' %>  <% } %> >
+                    </div>
+                </div>
+                
+                <div class="form-control">
+                    <label class="label caption" for="chkActive">Active: </label>
+                    <div>
+                        <input class="field" type="checkbox" name="active" id="chkActive" <% if (message.category && message.category[0].active) { %> <%= 'checked' %>  <% } %>>
+                    </div>
+                </div>
+
+                <div class="form-control">
+                    <div class="caption">&nbsp;</div>
+                    <div class="field">
+                        <a class="btn btn-normal btn-gray" href="/home/category">Cancel</a>
+                        <input class="btn btn-normal btn-blue" type="submit" name="Submit" value="Submit">
+                    </div>
+                </div>               
+                
+            </form>
+        </div>
+    </div>
+</section>

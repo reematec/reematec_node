@@ -1,0 +1,200 @@
+@media (min-width:768px){
+    .container{
+        max-width: 720px;
+        // max-width: 100%;
+    }
+
+    .full-max-width{
+        max-width: 100%;
+    }
+
+    .topbar{
+        .container{
+            @include container-padding;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+        }
+
+        &__slider{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            flex-grow: 1;            
+        }
+    }
+
+    .hero{
+        & .container{
+            flex-direction: row;
+            height: calc(100vh - 134px);
+        }
+        &__image{
+            padding: 3rem;
+            flex-basis: 50%;
+            height: 100%;
+
+            & a{
+                position: relative;
+                display: block;
+                height: 100%;
+                width: 100%;
+                & img{
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    max-height: 100%;
+                }
+            }
+        }
+        &__text {            
+            flex-basis: 50%;
+            h1{
+                font-size: 7vmin;
+            }
+        }
+    }
+    
+    .about{
+        &__title{
+            font-size: 6rem;
+            &::after{
+                @include section-sub-underline(20vw);
+            }
+        }
+    
+        &__para{
+            max-width: 90%;
+        }
+    }    
+
+    .product-collection{  
+        &__flex{  
+            &__card{
+                flex-basis: 45%;
+            }
+        }
+    }
+
+    .features {
+        &__section{
+            flex-basis: 43%;
+        }
+        
+    }
+    /* *********************************************************
+
+                    PRODUCTS PAGES
+
+    ********************************************************* */
+
+    .product-page-collection__flex{
+     
+        &__card{
+            flex-basis: 48.41%;
+        }
+    }
+    /* *********************************************************
+
+                    PRODUCTS DETAILS PAGES
+
+    ********************************************************* */
+
+    .product-essential{
+        display: flex;
+        flex-direction: row;
+    
+        & .preview{
+            flex-basis: 60%;
+        }
+        & .details {
+            flex-basis: 40%;        
+        }
+        & .preview{
+            .product-views{
+                margin: 0 1.5rem 1.5rem 0rem;
+            }
+    
+            .more-views{
+                @include no-list-style;
+                order: 1;
+                display: flex;
+                flex-wrap: wrap;
+
+                & li{
+                    flex-basis: 22%;
+                    
+                }
+            }
+            
+        }
+    
+        .details{
+            h1{
+                // font-weight: 300;
+                text-transform: uppercase;
+                span{
+                    font-size: 1.8rem;
+                    display: block;
+                }
+            }
+    
+            
+    
+            // button{
+            //     border: 1px solid $orange-color;
+            //     border-radius: .7rem;    
+            //     background: $orange-color;
+            //     color: #fff;
+            //     display: block;
+            //     width: 100%;
+            //     padding-top: 1.15rem;
+            //     padding-bottom: 1.15rem;
+            //     margin-top: 1rem;
+            //     margin-bottom: 1rem;
+            //     cursor: pointer;
+            //     transition: all .5s;
+            //     outline: 0;
+            // }
+            // button:hover{
+            //     border: 1px solid $orange-color;
+            //     border-radius: 0rem;    
+            //     background: transparent;
+            //     color: $orange-color;
+                
+            // }
+        }
+    }
+
+    /* *********************************************************
+
+                    Blogs PAGE
+
+    ********************************************************* */
+
+    .blogs{    
+        & .blog-card{
+            flex-basis: 49.2%;
+        }
+
+        & .blog-card:nth-child(even){
+            margin-right: 0;
+        }
+        
+    }
+
+    /* *********************************************************
+
+                    Modals PAGE
+
+    ********************************************************* */
+
+    .modal-content{
+        width: 50%
+    }
+
+    #modal-images .modal-content{
+        width: 90%
+    }
+}

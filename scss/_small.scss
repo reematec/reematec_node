@@ -1,0 +1,63 @@
+@media (min-width: 576px){
+    .container{
+        margin-left: auto;
+        margin-right: auto;
+        // margin: 0 auto;
+        max-width: 540px;        
+    }
+
+    .full-max-width{
+        max-width: 100%;
+    }
+    
+    .hero{        
+        &__image{
+            flex-basis: 125%;
+            // padding-top: 2rem ;
+            & a{
+                & img{
+                    margin: 0 auto;
+                }
+            }
+        }
+    }
+    
+    .product-collection{
+        @include section-top-bottom-padding;
+    
+        &__title{        
+            text-align: center;
+            font-size: 5rem;
+            font-weight: 700;
+    
+            &__sub{
+                @include section-subtitle;
+            }
+        }
+    }
+    /* *********************************************************
+
+                    PRODUCTS PAGES
+
+    ********************************************************* */
+    
+
+    .product-page-collection__flex{
+                
+        &__card{
+            flex-basis: 47.96%;
+        }
+    }
+    /* *********************************************************
+
+                    ABOUT PAGE
+
+    ********************************************************* */
+    .about-page-heading{        
+        font-size: 3rem;
+    }
+
+
+
+    
+}

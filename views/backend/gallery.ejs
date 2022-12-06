@@ -1,0 +1,30 @@
+<section class="container dashboard-page">
+    <div class="card">
+        <div  class="card-header">
+            <p>Gallery</p>
+        </div>
+        <div class="card-body">
+            <h1><a href="/home/images/add">Add Images</a></h1>
+           
+
+
+        <table>
+            
+            <% for (let i in images) {%>
+                
+                <tr>
+                    <td><img height="50" src="/images/assets/<%= images[i].src %>"/></td>
+                    <td>
+                        <a class="btn btn-link link-blue" href="/home/update-image/<%= images[i].identifier %>">Edit</a> | 
+                        <a class="btn btn-link link-red" href="/home/delete-image/<%= images[i].identifier %>">Delete</a></td>
+                </tr>
+                
+            <% } %>
+        </table>
+
+                
+
+
+        </div>
+    </div>
+</section>

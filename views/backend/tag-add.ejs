@@ -1,0 +1,45 @@
+<section class="container dashboard-page">
+
+    <% if (message.success) { %>
+		<% message.success.forEach(s => { %>
+			<p style="color:green; font-weight: 700"><%= s.msg %></p>
+		<% }) %>
+    <% } %>
+	
+	<% if (message.errors) { %>
+		<% message.errors.forEach(error => { %>
+			<p style="color:red; font-weight: 700"><%= error.msg %></p>
+		<% }) %>
+    <% } %>
+
+    <div class="card">
+        <div  class="card-header">
+            <p>Add - Tag</p>
+        </div>
+        <div class="card-body">
+            
+            <form action="/home/add-tag" method="POST">
+                <div class="form-control">
+                    <label class="label caption" for="txtName">Name: </label>
+                    <input class="textbox field" type="text" name="name" id="txtName" >
+                </div>
+
+                <div class="form-control">
+                    <label class="label caption" for="txtSlug">slug: </label>
+                    <input class="textbox field" type="text" name="slug" id="txtSlug" >
+                </div>
+
+                <div class="form-control">
+                    <label class="label caption" for="chkActive">Active: </label>
+                    <div>
+                        <input class="field" type="checkbox" name="active" id="chkActive">                        
+                    </div>
+                </div>
+
+                <input type="submit" name="Submit" value="Submit">
+                <a  class="btn btn-normal btn-gray" href="/home/tags">Cancel</a>
+            </form> 
+
+        </div>
+    </div>
+</section>

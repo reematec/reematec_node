@@ -1,0 +1,66 @@
+{% extends 'public/app.html' %}
+{% block content %}
+
+{% load static %}
+
+<section class="container dashboard-page">
+    <h1>Category Summary</h1>
+
+      
+    <table >
+    <thead>
+        <tr>
+            <th>id</th>
+            <th>Image</th>
+            <th>Alternate Text</th>
+            <th>Title</th>
+            <th>Caption</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for image in images %}
+        <tr>
+            <td>{{ image.id }}</td>
+            <td>{{ image.image }}</td>
+            <td>{{ image.alternativeText }}</td>
+            <td>{{ image.title }}</td>
+            <td>{{ image.caption }}</td>
+            <td>{{ image.description }}</td>
+            
+        </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+
+    {% if images.has_other_pages %}
+
+        <ul class="pagination">
+            {% if images.has_previous %}
+                <li><a href="?page={{ images.previous_page_number }}">&laquo;</a></li>
+            {% else %}
+                <li class="disabled"><span>&laquo;</span></li>
+            {% endif %}
+
+            {% for i in images.paginator.page_range %}
+                {% if images.number == i %}
+                    <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                {% else %}
+                    <li><a href="?page={{ i }}">{{ i }}</a></li>
+                {% endif %}
+            {% endfor %}
+
+            {% if images.has_next %}
+                <li><a href="?page={{ images.next_page_number }}">&raquo;</a></li>
+            {% else %}
+                <li class="disabled"><span>&raquo;</span></li>
+            {% endif %}
+
+        </ul>
+    {% endif %}
+</section>
+
+
+
+{% endblock %}
+        

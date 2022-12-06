@@ -1,0 +1,175 @@
+
+
+<div class="breadcrumb container">
+    <a class="breadcrumb__link btn" href="#">Home</a> 
+    <span class="breadcrumb__separator">/</span> 
+    <span class="breadcurmb__page">Soccer & Footballs</span>
+</div>
+
+<article class="showcase container">
+    <aside  class="sidebar">
+        <ul class="sidebar__list">
+            
+            <% categories.forEach(c => { %>
+                <% if (c.showSubMenu) { %>
+                
+                    <li id="<%= c.slug %>">
+                        <label class="sidebar__list__header" for="<%= c.name %>">
+                            <p><%= c.name %></p>
+                            <span><i class="fas fa-caret-down"></i></span>
+                        </label>
+                        <input type="checkbox" id="<%= c.name %>">
+                        <ul  class="sidebar__list__items__sub">
+                            <% c.subCategories.forEach(s => { %>
+                                <li><a class="btn" href="/subcategory/<%= s.slug %>"><%= s.name %></a></li>
+                            <% }) %>
+                            
+                        </ul>
+                    </li>                
+                <% } else { %>                 
+                    <li class="sidebar__list__items"><a class="btn"  href="/category/<%= c.slug %>"><%= c.slug %></a></li>
+                <% } %>
+            <% }) %>
+            
+        </ul>
+    </aside>
+    
+    <section class="products">
+        <div class="products__description">
+
+            <h1>Soccer & Footballs</h1>
+            <p>Reematec not only hand and machine Swen football but also produce Hybrid and Thermo Bonded footballs using technology. We not only provide the products according to customer demand but also provide excellent services to customers. We manufacture Such footballs in our factory, Whose design does not only impress the customers, but they can also use for a long time.</p>
+
+        </div>
+
+        <div class="products__toolbar">
+            <p>Total: <span>75</span> Models</p>
+            <div class="sort-by">
+                <label for="">SORT BY: </label>
+                <select name="" id="">
+                    <option value="Position">Position</option>
+                    <option value="Position">Newest</option>
+                    <option value="Position">Oldest</option>
+                    <option value="Position">Usage</option>
+                </select>
+            </div>
+        </div>
+        
+        
+        <div class="product-page-collection__flex">
+            
+            
+            <div class="product-page-collection__flex__card">
+                <a class="btn card__wrapper" href="#">
+                    <img class="image-responsive" src="/images/Arena Star.jpeg" alt="">
+                    <div class="card__caption">
+                        
+                        <div class="card__caption__basic">
+                            <p class="card__caption__basic__name">Arena Star</p>
+                            <div class="card__caption__basic__info">
+                                <p>Fusion Tec</p>
+                                <p>Top Competition</p>
+                            </div>
+                        </div>
+
+                        <div class="card__caption__attribute">
+                            <p class="card__caption__attribute__size">Size Availability</p>
+                            <p class="card__caption__attribute__sizes">
+                                <span class="">1</span>                                    
+                                <span class="">2</span>                                    
+                                <span class="">3</span>                                    
+                                <span class="">4</span>                                    
+                                <span class="availble">5</span>                                    
+                            </p>
+                        </div> 
+
+                    </div>
+                </a>
+            </div>
+
+            <div class="product-page-collection__flex__card">
+                <a class="btn card__wrapper" href="#">
+                    <img class="image-responsive" src="/images/Aston.jpg" alt="">
+                    <div class="card__caption">
+                        
+                        <div class="card__caption__basic">
+                            <p class="card__caption__basic__name">Aston</p>
+                            <div class="card__caption__basic__info">
+                                <p>Thermo Bonded</p>
+                                <p>Match</p>
+                            </div>
+
+                        </div>
+                        
+                        <div class="card__caption__attribute">
+                            <p class="card__caption__attribute__size">Size Availability</p>
+                            <p class="card__caption__attribute__sizes">
+                                <span class="">1</span>                                    
+                                <span class="">2</span>                                    
+                                <span class="">3</span>                                    
+                                <span class="availble">4</span>                                    
+                                <span class="availble">5</span>                                    
+                            </p>
+                        </div>
+                        
+                    </div>
+                </a>
+            </div>
+            
+            <div class="product-page-collection__flex__card">
+                <a class="btn card__wrapper" href="#">
+                    <img class="image-responsive" src="/images/Long Life.jpeg" alt="">
+                    <div class="card__caption">
+                        
+                        <div class="card__caption__basic">
+                            <p class="card__caption__basic__name">Long Life</p>
+                            <div class="card__caption__basic__info">
+                                <p>Hand Stitched</p>
+                                <p>Training</p>
+                            </div>
+                        </div>
+
+                        <div class="card__caption__attribute">
+                            <p class="card__caption__attribute__size">Size Availability</p>
+                            <p class="card__caption__attribute__sizes">
+                                <span class="availble">1</span>                                    
+                                <span class="availble">2</span>                                    
+                                <span class="availble">3</span>                                    
+                                <span class="availble">4</span>                                    
+                                <span class="availble">5</span>                                    
+                            </p>
+                        </div>
+
+                    </div>
+                </a>
+            </div>
+            
+            <div class="product-page-collection__flex__card">
+                <a class="btn card__wrapper" href="#">
+                    <img class="image-responsive" src="/images/Phantom.jpeg" alt="">
+                    <div class="card__caption">
+                        <div class="card__caption__basic">
+                            <p class="card__caption__basic__name">Phantom</p>
+                            <div class="card__caption__basic__info">
+                                <p>Hand Stitched</p>
+                                <p>Match</p>
+                            </div>
+                        </div>
+
+                        <div class="card__caption__attribute">
+                            <p class="card__caption__attribute__size">Size Availability</p>
+                            <p class="card__caption__attribute__sizes">
+                                <span class="availble">1</span>                                    
+                                <span class="availble">2</span>                                    
+                                <span class="availble">3</span>                                                                        
+                            </p>
+                        </div>
+
+                    </div> 
+                </a>
+            </div>
+            
+            
+        </div>            
+    </section>
+</article>

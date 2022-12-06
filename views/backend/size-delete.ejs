@@ -1,0 +1,24 @@
+<section class="container dashboard-page">
+    <div class="card">                
+
+        <div class="card-header">
+            <p>Delete Size - Confirmation</p>
+        </div>
+
+        <div class="card-body">
+            <p>Are you sure you want to delete <strong>"<%= size.size %>"</strong>?</p>
+            <p>This action is permanent.</p>
+            
+            <form action="/home/delete-size/<%= size.identifier %>" method="POST">                
+                
+                <div>
+                    <a class="btn btn-normal btn-gray" href="/home/sizes">Cancel</a>
+                    <input class="btn btn-normal btn-red" type="submit" name="btnDelete" value="Delete">
+                </div>
+            </form>
+
+
+        </div>
+    </div>
+    
+</section>

@@ -1,0 +1,27 @@
+<section class="container dashboard-page">
+    <div class="card">
+        <div  class="card-header">
+            <p>Add - Size</p>
+        </div>
+        <div class="card-body">
+            
+            <form action="/home/add-size" method="POST" >
+                <div class="form-control">
+                    <label class="label caption" for="txtSize">Name: </label>
+                    <input class="textbox field" type="text" name="size" id="txtSize" >
+                </div>                
+
+                <div class="form-control">
+                    <label class="label caption" for="chkActive">Active: </label>
+                    <div>
+                        <input class="field" type="checkbox" name="active" id="chkActive">                        
+                    </div>
+                </div>
+
+                <input type="submit" name="Submit" value="Submit">
+                <a  class="btn btn-normal btn-gray" href="/home/sizes">Cancel</a>
+            </form> 
+
+        </div>
+    </div>
+</section>

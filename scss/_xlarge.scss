@@ -1,0 +1,121 @@
+@media (min-width:1200px){
+    .container{
+        max-width: 1140px;
+    }
+
+    .product-collection{
+        
+        &__flex{      
+            &__card{
+                flex-basis: 23%;
+                // margin: 1rem;
+                
+            }
+        }
+    }
+
+    /* *********************************************************
+
+                        PRODUCTS PAGES
+
+    ********************************************************* */
+    .showcase{
+        flex-direction: row;
+    
+    }
+    
+    .product-page-collection__flex{
+        
+        &__card{
+            flex-basis: 31.5%;
+        }
+    
+        &__card:nth-child(3n+3){
+            margin-right: 0;
+        }
+        // The rules is entered to nulify the effect of large size css rule.
+        &__card:nth-child(even){
+            margin-right: 2rem;
+        }
+    }
+    /* *********************************************************
+
+                    PRODUCTS DETAILS PAGES
+
+    ********************************************************* */
+
+
+
+    .product-essential{
+        display: flex;
+        flex-direction: row;
+    
+        & .preview{
+            flex-basis: 60%;
+        }
+        & .details {
+            flex-basis: 40%;        
+        }
+        & .preview{
+            display: flex;
+            flex-direction: row;
+    
+            .product-views{
+                margin-bottom: 1rem;
+            }
+    
+            .more-views{
+                @include no-list-style;
+                order: 0;
+                
+                display: flex;
+                flex-direction: column;
+                
+                // flex-wrap:nowrap;
+                flex-basis: 20%;
+                & li{
+                    flex-basis: 0;
+                    
+                    
+                }
+            }
+            
+        }
+    
+        .details{
+            h1{
+                // font-weight: 300;
+                text-transform: uppercase;
+                span{
+                    font-size: 1.8rem;
+                    display: block;
+                }
+            }
+    
+            
+    
+            // button{
+            //     border: 1px solid $orange-color;
+            //     border-radius: .7rem;    
+            //     background: $orange-color;
+            //     color: #fff;
+            //     display: block;
+            //     width: 100%;
+            //     padding-top: 1.15rem;
+            //     padding-bottom: 1.15rem;
+            //     margin-top: 1rem;
+            //     margin-bottom: 1rem;
+            //     cursor: pointer;
+            //     transition: all .5s;
+            //     outline: 0;
+            // }
+            // button:hover{
+            //     border: 1px solid $orange-color;
+            //     border-radius: 0rem;    
+            //     background: transparent;
+            //     color: $orange-color;
+                
+            // }
+        }
+    }
+}

@@ -1,0 +1,51 @@
+<section class="container dashboard-page">
+
+    <% if (message.success) { %>
+		<% message.success.forEach(s => { %>
+			<p style="color:green; font-weight: 700"><%= s.msg %></p>
+		<% }) %>
+    <% } %>
+	
+	<% if (message.errors) { %>
+		<% message.errors.forEach(error => { %>
+			<p style="color:red; font-weight: 700"><%= error.msg %></p>
+		<% }) %>
+    <% } %>
+
+
+    <div class="card">
+        <div  class="card-header">
+            <p>Update - Tag</p>
+        </div>
+        <div class="card-body">
+            
+            <form action="/home/update-tag/<%= tag.slug %>" method="POST">
+                
+                <input type="hidden" name="identifier" value="<%= tag.identifier %>">
+
+                <div class="form-control">
+                    <label class="label caption" for="txtName">Name: </label>
+                    <input class="textbox field" type="text" name="name" id="txtName" value="<%= tag.name %>">
+                </div>
+
+                <div class="form-control">
+                    <label class="label caption" for="txtSlug">slug: </label>
+                    <input class="textbox field" type="text" name="slug" id="txtSlug" value="<%= tag.slug %>" >
+                </div>
+
+                <div class="form-control">
+                    <label class="label caption" for="chkActive">Active: </label>
+                    <div>
+                        <input class="field" type="checkbox" name="active" id="chkActive" <% if (tag.active) { %> <%= 'checked' %> <% } else { %> <%= '' %>  <% } %>>
+                    </div>
+                </div>
+
+
+
+                <input class="btn btn-normal btn-blue" type="submit" name="Submit" value="Submit">
+                <a  class="btn btn-normal btn-gray" href="/home/tags">Cancel</a>
+            </form> 
+
+        </div>
+    </div>
+</section>

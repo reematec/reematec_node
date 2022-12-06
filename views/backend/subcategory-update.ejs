@@ -1,0 +1,73 @@
+<section class="container dashboard-page">
+
+
+    <% if (message.success) { %>
+		<% message.success.forEach(s => { %>
+			<p style="color:green; font-weight: 700"><%= s.msg %></p>
+		<% }) %>
+    <% } %>
+	
+	<% if (message.errors) { %>
+		<% message.errors.forEach(error => { %>
+			<p style="color:red; font-weight: 700"><%= error.msg %></p>
+		<% }) %>
+    <% } %>
+
+    <div class="card">
+        <div  class="card-header">
+            <p>Update - Subcategory</p>
+        </div>
+        <div class="card-body">
+
+            <form method="POST">
+                
+                <div class="form-control">
+                    <label class="label caption" for="sltCategory">Main Category</label>
+                    <select class="select field" name="category" id="sltCategory">
+                        <option value="">Please select a category</option>
+                        <% for( let i = 0; i < categories.length; i++ ) { %>
+                            <option value="<%= categories[i].id %>" <% if (categories[i].id === subcategory.categoryId) { %><%= 'selected' %> <% } %> ><%= categories[i].name %></option>
+                        <% } %>
+                    </select>
+                </div>                
+                
+                <div class="form-control">
+                    <label class="label caption" for="txtsubCategoryName">Sub Category Name: </label>
+                    <input class="textbox field" type="text" name="name" id="txtsubCategoryName" value="<%- subcategory.name %>">
+                </div>                
+
+                <div class="form-control">
+                    <label class="label caption" for="txtSlug">Slug: </label>
+                    <input  class="textbox field" type="text" name="slug" id="txtSlug" value="<%- subcategory.slug %>"> 
+                </div>
+                
+                <div class="form-control">
+                    <label class="label caption" for="txtpagetitle">pagetitle: </label>
+                    <input  class="textbox field" type="text" name="pagetitle" id="txtpagetitle" value="<%- subcategory.pagetitle %>">
+                </div>
+                
+                <div class="form-control">
+                    <label class="label caption" for="txtDescription">Description: </label>
+                    <textarea  class="textarea field" type="text" name="description" id="txtDescription"><%- subcategory.description %></textarea>
+                </div>
+                
+                <div class="form-control">
+                    <label class="label caption" for="chkActive">Active: </label>
+                    <div>
+                        <input class="field" type="checkbox" name="active" id="chkActive" <% if (subcategory.active) { %> <%= 'checked' %> <% } else { %> <%= '' %>  <% } %> >
+                    </div>
+                </div>
+                
+                <div class="form-control">
+                    <div class="caption"></div>
+                    <div class="field">
+                        <a class="btn btn-normal btn-gray" href="/home/subcategory">Cancel</a>
+                        <input class="btn btn-normal btn-blue" type="submit" name="Submit" value="Update">
+                    </div>
+                </div>                        
+            </form>
+        </div>
+    </div>
+
+    
+</section>

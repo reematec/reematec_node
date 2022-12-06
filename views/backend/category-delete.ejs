@@ -1,0 +1,21 @@
+<section class="container dashboard-page">
+    <div class="card">                
+
+        <div class="card-header">
+            <p>Delete Category - Confirmation</p>
+        </div>
+
+        <div class="card-body">
+            <p>Are you sure you want to delete <strong>"<%= category.name %>"</strong>?</p>
+            <p>This action is permanent.</p>
+
+            <form action="/home/delete-category" method="POST">                
+                <input type="hidden" name="identifier" value="<%= category.identifier %>">
+                <div>
+                    <a class="btn btn-normal btn-gray" href="/home/category">Cancel</a>
+                    <input class="btn btn-normal btn-red" type="submit" value="Delete">
+                </div>
+            </form>
+        </div>
+    </div>
+</section>

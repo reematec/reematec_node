@@ -1,0 +1,46 @@
+<section class="container dashboard-page">
+	<h1>Tags Summary</h1>
+
+	<% if (message.success) { %>
+		<% message.success.forEach(s => { %>
+			<p style="color:green; font-weight: 700"><%= s.msg %></p>
+		<% }) %>
+    <% } %>
+	
+	<% if (message.errors) { %>
+		<% message.errors.forEach(error => { %>
+			<p style="color:red; font-weight: 700"><%= error.msg %></p>
+		<% }) %>
+    <% } %>
+	
+
+	<a class="btn btn-standard btn-solid-primary" href="/home/add-tag">Add Tag</a>
+
+	<table>
+		<tr>
+			<th>Tag</th>
+			<th>slug</th>
+			<th>Active</th>
+			<th>Action</th>
+		</tr>
+
+
+		<% for( let i=0; i < tags.length; i++ ) { %>
+			<tr>
+				<td>
+					<%= tags[i].name %>
+				</td>
+				<td>
+					<%= tags[i].slug %>
+				</td>
+				<td>
+					<%= tags[i].active %>
+				</td>
+				<td>
+					<a class="btn btn-link link-blue" href="/home/update-tag/<%= tags[i].slug %> ">Edit</a> |
+					<a class="btn btn-link link-red" href="/home/delete-tag/<%= tags[i].slug %> ">Delete</a>
+				</td>
+			</tr>
+			<% } %>
+	</table>
+</section>

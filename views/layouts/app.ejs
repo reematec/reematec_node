@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Reema</title>
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" /> -->
+    
+
+    <link rel="shortcut icon" href="/images/reema-swoosh-logo.png" type="image/x-icon">
+    <script src='https://cdn.tiny.cloud/1/s0cnzprcue4nhc00ccxgavyx4jmlfbhkddk9ee3arqb7e7ot/tinymce/5/tinymce.min.js' referrerpolicy="origin"> </script> 
+    <script>
+    tinymce.init({
+        selector: 'textarea',
+        
+        menubar: "",
+        plugins: "advlist autolink lists link image charmap print preview anchor searchreplace visualblocks code fullscreen insertdatetime media table paste code help wordcount",
+        toolbar: "undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist checklist | forecolor backcolor casechange permanentpen formatpainter removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media pageembed template link anchor codesample | a11ycheck ltr rtl | showcomments addcomment code",
+        custom_undo_redo_levels: 10,
+      
+    });
+  </script>
+    
+    <link rel="stylesheet" href="/css/main.css">
+
+</head>
+<body>
+    <header>
+        <div class="topbar">
+            <div class="container full-max-width">
+                <div class="topbar__slider flex-center">
+                    <button class="topbar__slider__nav" ><i class="fas fa-chevron-left"></i></button>
+                    <ul class="topbar__slider__list"  id="contact-list-slider" >
+                        <li class="topbar__slider__list__items">+92 300 96 12 686</li>
+                        <li class="topbar__slider__list__items">+92 52 3541247</li>
+                        <li class="topbar__slider__list__items">+92 31 000 000 000</li>
+                    </ul>
+                    <button class="topbar__slider__nav" ><i class="fas fa-chevron-right"></i></button>
+                </div>
+                <div class="topbar__links">
+                    <ul class="topbar__links__list flex-right">
+                        <li  class="topbar__links__list__items"><button id="btnSearch" class="btn btn-icon" href="#"><i class="fas fa-search"></i></button></li>
+                        <li  class="topbar__links__list__items"><a class="btn btn-icon" href="#"><i class="fas fa-quote-right"></i></a></li>
+                        <% if (user) { %>
+                            <li  class="topbar__links__list__items"><a class="btn btn-icon" href="/dashboard">Dashboard</a></li>
+                            <li  class="topbar__links__list__items"><a class="btn btn-icon" href="/logout">Logout</a></li>
+                        <% } else { %>
+                            <li  class="topbar__links__list__items"><a class="btn btn-icon" href="/login">Login</a></li>
+                        <% } %>
+                        <!-- <li  class="topbar__links__list__items"><a class="btn-icon" href="#"><i class="fas fa-sign-in-alt"></i></a></li> -->
+                    </ul>                
+                </div>
+            </div>
+        </div>
+        <nav class="navbar">
+            <div class="container full-max-width">
+                <div class="navbar__brand">
+                    <a href="/"><img class="image-responsive" src="/images/reema-logo.jpeg" alt="" srcset=""></a>
+                    <div class="navbar__brand__hamburger">
+                        <span class="navbar__brand__hamburger__line"></span>
+                        <span class="navbar__brand__hamburger__line"></span>
+                        <span class="navbar__brand__hamburger__line"></span>
+                    </div>
+                </div>
+                
+                
+                <%- include('../components/_navbar-admin') %>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <%- body %>
+        
+    </main>
+
+    <%- include('../components/_modalSearch') %>
+    <%- include('../components/_modalImage') %>
+
+</body>
+
+<!-- <script src="/js/script.js"></script> -->
+<script type="module" src="/dist/js/main.bundle.js"></script>
+<script>
+    
+</script>
+</html>

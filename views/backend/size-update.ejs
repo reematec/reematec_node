@@ -1,0 +1,28 @@
+<section class="container dashboard-page">
+    <div class="card">
+        <div  class="card-header">
+            <p>Update - Size</p>
+        </div>
+        <div class="card-body">
+            
+            <form method="POST" action="/home/update-size/<%= size.identifier %>">
+
+                <div class="form-control">
+                    <label class="label caption" for="txtSize">Size: </label>
+                    <input class="textbox field" type="text" name="size" id="txtSize" value="<%= size.size %>">
+                </div>                
+
+                <div class="form-control">
+                    <label class="label caption" for="chkActive">Active: </label>
+                    <div>
+                        <input class="field" type="checkbox" name="active" id="chkActive" <% if (size.active) { %> <%= 'checked' %> <% } else { %> <%= '' %>  <% } %>>                        
+                    </div>
+                </div>
+
+                <input class="btn btn-normal btn-blue" type="submit" name="Submit" value="Submit">
+                <a  class="btn btn-normal btn-gray" href="/home/sizes">Cancel</a>
+            </form> 
+
+        </div>
+    </div>
+</section>
