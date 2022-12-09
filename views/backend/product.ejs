@@ -14,12 +14,14 @@
 
 	<table>
 		<tr>
+			<th></th>
 			<th>Name</th>
 			<th>Slug</th>
 			<th>Showcased</th>
 			<th>Recommended</th>
 			<th>Active</th>
 			<th>Price</th>
+			<th>Usage</th>
 			<th>Category</th>
 			<th>Subcategory</th>
 			
@@ -31,14 +33,17 @@
 		<% for (let p = 0; p < products.length; p++) {%>
 		
 		<tr>
+			<td><img src="/images/assets/100/<%= products[p].images[0].src %>" alt=""> </td>
 			<td><%= products[p].name %> </td>
 			<td><%= products[p].slug %></td>
-			<td><%= products[p].showcased %></td>
-			<td><%= products[p].recommended %></td>
-			<td><%= products[p].active %></td>
+			<td><%= products[p].showcased ? '✓' : '❌' %></td>
+			<td><%= products[p].recommended ? '✓' : '❌' %></td>
+			<td><%= products[p].active ? '✓' : '❌' %></td>
 			<td><%= products[p].price %></td>
+			<td><%= products[p].usage %></td>
 			<td><%= products[p].categoryId ? products[p].category.name : '' %></td>
 			<td><%= products[p].subCategoryId ? products[p].subCategory.name : '' %></td>
+			
 			
 			
 			<td>

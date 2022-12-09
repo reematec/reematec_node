@@ -19,10 +19,10 @@ router.get('/',  publicController.home);
 router.get('/about', publicController.about );
 router.get('/contact', publicController.contact);
 router.get('/products', publicController.products);
-router.get('/category/<slug:slug>', publicController.categoryProducts);
-router.get('/subcategory/<slug:slug>', publicController.subCategoryProducts);
+router.get('/category/:slug', publicController.categoryProducts);
+router.get('/subcategory/:slug', publicController.subCategoryProducts);
 
-router.get('/product/<slug:slug>', publicController.product);
+router.get('/product/:slug', publicController.product);
 router.get('/blogs', publicController.blog);
 router.get('/faqs', publicController.faq);
 router.get('/terms', publicController.terms);

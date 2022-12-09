@@ -67,6 +67,10 @@ const Product = sequelize.define('product', {
         type: Sequelize.DataTypes.STRING,
         allowNull: true,        
     },    
+    usage:{
+        type: Sequelize.DataTypes.STRING,
+        allowNull: true,
+    },    
     // categoryId: {
 	// 	type: Sequelize.DataTypes.INTEGER,
 	// 	allowNull: false,

@@ -18,8 +18,8 @@
     
     <table>
         <tr>
-            <th>Category Name</th>
             <th>Subcategory Name</th>
+            <th>Category Name</th>
             <th>Slug</th>                
             <th>Active</th>
             <th>Action</th>
@@ -29,8 +29,8 @@
         <% for( let i = 0; i < subCategories.length; i++ ) { %>
             
             <tr>
-                <td><%= subCategories[i].category.name %></td>
                 <td><%= subCategories[i].name %></td>
+                <td><%= subCategories[i].category.name %></td>
                 <td><%= subCategories[i].slug %></td>
                 <td><%= subCategories[i].active %></td>
                 

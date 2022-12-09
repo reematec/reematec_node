@@ -27,7 +27,7 @@
                         </ul>
                     </li>                
                 <% } else { %>                 
-                    <li class="sidebar__list__items"><a class="btn"  href="/category/<%= c.slug %>"><%= c.slug %></a></li>
+                    <li class="sidebar__list__items"><a class="btn"  href="/category/<%= c.slug %>"><%= c.name %></a></li>
                 <% } %>
             <% }) %>
             
@@ -58,93 +58,26 @@
         
         <div class="product-page-collection__flex">
             
-            
+            <% for (let p = 0; p < products.length; p++) {%>
             <div class="product-page-collection__flex__card">
-                <a class="btn card__wrapper" href="#">
-                    <img class="image-responsive" src="/images/Arena Star.jpeg" alt="">
+                <a class="btn card__wrapper" href="/product/<%= products[p].slug %>">
+                    <img src="/images/assets/300/<%= products[p].images[0].src %>" alt="">
                     <div class="card__caption">
                         
                         <div class="card__caption__basic">
-                            <p class="card__caption__basic__name">Arena Star</p>
+                            <p class="card__caption__basic__name"><%= products[p].name %></p>
                             <div class="card__caption__basic__info">
-                                <p>Fusion Tec</p>
-                                <p>Top Competition</p>
+                                <p><%= products[p].categoryId ? products[p].category.name : '' %></p>
+                                <p><%= products[p].usage %></p>
                             </div>
                         </div>
-
-                        <div class="card__caption__attribute">
-                            <p class="card__caption__attribute__size">Size Availability</p>
-                            <p class="card__caption__attribute__sizes">
-                                <span class="">1</span>                                    
-                                <span class="">2</span>                                    
-                                <span class="">3</span>                                    
-                                <span class="">4</span>                                    
-                                <span class="availble">5</span>                                    
-                            </p>
-                        </div> 
-
                     </div>
                 </a>
             </div>
 
-            <div class="product-page-collection__flex__card">
-                <a class="btn card__wrapper" href="#">
-                    <img class="image-responsive" src="/images/Aston.jpg" alt="">
-                    <div class="card__caption">
-                        
-                        <div class="card__caption__basic">
-                            <p class="card__caption__basic__name">Aston</p>
-                            <div class="card__caption__basic__info">
-                                <p>Thermo Bonded</p>
-                                <p>Match</p>
-                            </div>
-
-                        </div>
-                        
-                        <div class="card__caption__attribute">
-                            <p class="card__caption__attribute__size">Size Availability</p>
-                            <p class="card__caption__attribute__sizes">
-                                <span class="">1</span>                                    
-                                <span class="">2</span>                                    
-                                <span class="">3</span>                                    
-                                <span class="availble">4</span>                                    
-                                <span class="availble">5</span>                                    
-                            </p>
-                        </div>
-                        
-                    </div>
-                </a>
-            </div>
+            <% } %> 
             
-            <div class="product-page-collection__flex__card">
-                <a class="btn card__wrapper" href="#">
-                    <img class="image-responsive" src="/images/Long Life.jpeg" alt="">
-                    <div class="card__caption">
-                        
-                        <div class="card__caption__basic">
-                            <p class="card__caption__basic__name">Long Life</p>
-                            <div class="card__caption__basic__info">
-                                <p>Hand Stitched</p>
-                                <p>Training</p>
-                            </div>
-                        </div>
-
-                        <div class="card__caption__attribute">
-                            <p class="card__caption__attribute__size">Size Availability</p>
-                            <p class="card__caption__attribute__sizes">
-                                <span class="availble">1</span>                                    
-                                <span class="availble">2</span>                                    
-                                <span class="availble">3</span>                                    
-                                <span class="availble">4</span>                                    
-                                <span class="availble">5</span>                                    
-                            </p>
-                        </div>
-
-                    </div>
-                </a>
-            </div>
-            
-            <div class="product-page-collection__flex__card">
+            <!-- <div class="product-page-collection__flex__card">
                 <a class="btn card__wrapper" href="#">
                     <img class="image-responsive" src="/images/Phantom.jpeg" alt="">
                     <div class="card__caption">
@@ -167,7 +100,7 @@
 
                     </div> 
                 </a>
-            </div>
+            </div> -->
             
             
         </div>            

@@ -321,7 +321,9 @@ module.exports.addImages_post = async (req, res) => {
                 if (err) {
                     reject(err);
                 }else{
-                    imageResize(imagePath, image.name)
+                    imageResize(imagePath, image.name, 100) // Product detail page Icon
+                    imageResize(imagePath, image.name, 300) // Product card thumb
+                    imageResize(imagePath, image.name, 500) // Product detail page large image
                     resolve(image.name)
                     const img = { identifier: randomstring.generate(), src: image.name, }
                     imageObjects.push(img)
@@ -554,12 +556,8 @@ module.exports.deleteSize_post = async (req, res) => {
 module.exports.productPosting = async (req, res) => {
         
     const products = await Product.findAll({
-        include: [
-            { model: Category, required :true }, 
-            { model: SubCategory, required :true }
-        ]
+        include: [ { model: Category}, { model: SubCategory}, { model: Image } ]
     })
-    
     res.render('backend/product', { layout: 'layouts/app.ejs', products })
 }
 module.exports.addProduct_get = async (req, res) => {
@@ -570,7 +568,7 @@ module.exports.addProduct_get = async (req, res) => {
 }
 module.exports.addProduct_post = async (req, res) => {
 
-    const {name, slug, showcased, recommended, active, price, pagetitle, shortDescription, LongDescription,specifications, features, care, category, subCategory} = req.body
+    const {name, slug, showcased, recommended, active, usage, price, pagetitle, shortDescription, LongDescription,specifications, features, care, category, subCategory} = req.body
     
     const t = await sequelize.transaction();
 
@@ -582,6 +580,7 @@ module.exports.addProduct_post = async (req, res) => {
             showcased: showcased ? true : false,
             recommended: recommended ? true : false,
             active: active ? true : false,
+            usage: usage,
             price: price,
             pagetitle: pagetitle,
             shortDescription: shortDescription,
@@ -674,7 +673,7 @@ module.exports.updateProduct_post = async (req, res) => {
         where: {slug: slugParam}
     })
 
-    const {name, slug, showcased, recommended, active, price, pagetitle, shortDescription, LongDescription,specifications, features, care, category, subCategory, image, size, tag} = req.body
+    const {name, slug, showcased, recommended, active, usage, price, pagetitle, shortDescription, LongDescription,specifications, features, care, category, subCategory, image, size, tag} = req.body
 
     const t = await sequelize.transaction();
 
@@ -685,6 +684,7 @@ module.exports.updateProduct_post = async (req, res) => {
         product.showcased= showcased ? true : false;
         product.recommended= recommended ? true : false;
         product.active= active ? true : false;
+        product.usage = usage;
         product.price= price;
         product.pagetitle= pagetitle;
         product.shortDescription= shortDescription;
@@ -820,31 +820,32 @@ module.exports.deleteProduct_post = async (req, res) => {
 //     res.render('password-reset-done', { layout: 'layouts/public_layout.ejs' })
 // }
 
-function imageResize(file, name) {
+function imageResize(file, name, width) {
     // http://jsfiddle.net/sp3c7jeq/
 
     var canvas = createCanvas(),
     ctx = canvas.getContext("2d");
     
     loadImage(file).then((img) => {
-        canvas.width = 200;
+        canvas.width = width;
         canvas.height = canvas.width * (img.height / img.width);
         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
-        SaveImage(canvas.toDataURL(), name)
+        SaveImage(canvas.toDataURL(), name, width)
     })
 }
 
-function SaveImage(base64Image, name) { // SaveImage function takes base64 image and save it to folder. Name of the image is returned with correct extension
+function SaveImage(base64Image, name, width) { // SaveImage function takes base64 image and save it to folder. Name of the image is returned with correct extension
     
+    var dir = `./public/images/assets/${width}`;
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+
     const imageType = base64Image.substring(base64Image.indexOf(":")+1, base64Image.indexOf(";"))
     const ext = imageType.replace('image/', '');
    
     const data = base64Image.replace(`data:${imageType};base64,`, "");
   
-    fs.writeFile(`./public/images/assets/200/${name}`, data, 'base64', (err) => {
-        if (err) console.log(err);            
-    })
+    fs.writeFile(`${dir}/${name}`, data, 'base64', (err) => { if (err) console.log(err); })
   
     return `${name}`
 }

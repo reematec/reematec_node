@@ -40,6 +40,11 @@
                 </div>
 
                 <div class="form-control">
+                    <label class="label caption" for="txtUsage">Usage: </label>
+                    <input class="textbox field" type="text" name="usage" id="txtUsage" <% if (product.usage) { %> value="<%= product.usage %>" <% } %> >
+                </div>
+
+                <div class="form-control">
                     <label class="label caption" for="price">price: </label>
                     <input class="textbox field" type="text" name="price" id="price" <% if (product.price) { %> value="<%= product.price %>" <% } %> >
                 </div>

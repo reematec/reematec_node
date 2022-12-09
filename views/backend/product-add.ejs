@@ -41,6 +41,11 @@
                 </div>
 
                 <div class="form-control">
+                    <label class="label caption" for="txtUsage">Usage: </label>
+                    <input class="textbox field" type="text" name="usage" id="txtUsage">
+                </div>
+
+                <div class="form-control">
                     <label class="label caption" for="price">price: </label>
                     <input class="textbox field" type="text" name="price" id="price">
                 </div>
@@ -83,7 +88,7 @@
                             <option value="<%= categories[c].id %>">
                                 <%= categories[c].name %>
                             </option>
-                            <% } %>
+                        <% } %>
                     </select>
                 </div>
 
@@ -94,13 +99,9 @@
 
                 <div class="form-control">
                     <label class="label caption" for="image_id">Images: </label>
-                    <div id="selected-images">
+                    <div id="selected-images"></div>
 
-                    </div>
-
-                    <div id="product-image-array">
-
-                    </div>
+                    <div id="product-image-array"></div>
                     <button id="btn-model-images" class="quote-button">Select Images</button>
                 </div>
 
@@ -141,6 +142,11 @@
                 </div>
 
             </form>
+
+            &nbsp;
+            &nbsp;
+            &nbsp;
+
         </div>
     </div>
 

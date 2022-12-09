@@ -122,13 +122,13 @@ app.use('*', function(req, res){
 //     res.send('404 Not Found');
 // });
 
-app.use(function (err, req, res, next) {
-    console.log(err.stack);
-    res.status(500);
-    // res.type('text/plain');
-    // res.send('this 500 Server Error');
-	res.render('500', {layout: 'layouts/main.ejs'})
-});
+// app.use(function (err, req, res, next) {
+//     console.log(err.stack);
+//     res.status(500);
+//     // res.type('text/plain');
+//     // res.send('this 500 Server Error');
+// 	res.render('500', {layout: 'layouts/main.ejs'})
+// });
 
 HOST =  '192.168.10.101';
 HOST =  'localhost';

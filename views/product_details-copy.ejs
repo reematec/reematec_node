@@ -27,16 +27,15 @@
     <div class="details">
         <h1 class="details__heading"><%= product.name %> <span><%= product.subCategory.name %> | <%= product.category.name %></span></h1>
 
-        <p class="details__description"><%= product.shortDescription %></p>
-        <P class="details__usage">Usage: <span><%= product.usage %></span></P>
+        <p class="details__description">Durable futsal ball with controlled rebounce, laminated with EVA and lining.
+            Winded bladder filled with fiber and printed with scratch resistant ink.</p>
+        <P class="details__usage">Usage: <span>TRAINING</span></P>
         <P class="details__panel">Panel Quantity: <span>32 PANELS</span></P>
 
         <select name="" id="">
-            <option>select a size</option>
-            <% product.sizes.forEach(s => { %>
-                <option value="<%= s.identifier %>"><%= s.size %></option>
-            <% }) %>
-            
+            <option value="5">select a size</option>
+            <option value="5">Size 5</option>
+            <option value="5">Size 4</option>
         </select>
 
         <button class="btn btn-full btn-solid-primary">Ask for Quote</button>

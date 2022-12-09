@@ -12,7 +12,7 @@
 		<% for( let s in sizes ) { %>
 			<tr>
 				<td><%= sizes[s].size %></td>
-				<td><%= sizes[s].active %></td>
+				<td> <input type="checkbox" <%= sizes[s].active ? 'checked': '' %> disabled> </td>
 				<td>
 					<a class="btn btn-link link-blue" href="/home/update-size/<%= sizes[s].identifier %>">Edit</a> |
 					<a class="btn btn-link link-red" href="/home/delete-size/<%= sizes[s].identifier %>">Delete</a>

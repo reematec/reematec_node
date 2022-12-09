@@ -292,8 +292,8 @@ function GetImagesModal(e) {
                     
                     const image = document.createElement('img');
                     image.classList.add('product-image')
-                    image.src = `/images/assets/${img.src}`;
-                    image.width = 100
+                    image.src = `/images/assets/100/${img.src}`;
+                    // image.width = 100
                     image.setAttribute('id', img.id)
                     imageShowcase.appendChild(image);
 
@@ -374,8 +374,8 @@ if (imageShowcase) {
     
                 let image = document.createElement('img');
                 image.src = e.target.src;
-                image.setAttribute('width', '100px');
-                image.setAttribute('height', '100px');
+                // image.setAttribute('width', '100px');
+                // image.setAttribute('height', '100px');
     
                 span.appendChild(button)
                 span.appendChild(image)
