@@ -130,8 +130,8 @@ app.use('*', function(req, res){
 // 	res.render('500', {layout: 'layouts/main.ejs'})
 // });
 
-HOST =  '192.168.10.101';
 HOST =  'localhost';
+HOST =  '192.168.10.9';
 const PORT = process.env.PORT;
 
 // var os = require('os');

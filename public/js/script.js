@@ -4,13 +4,13 @@
 //     const module = await import(moduleSpecifier)
 //     module.default();
 //     module.doStuff();
-    
+
 // })();
 // (async () => {
 // const moduleSpecifier = `./testing.mjs`;
 //     const testing = await import(moduleSpecifier)
-    
-    
+
+
 // })();
 
 
@@ -286,10 +286,10 @@ function GetImagesModal(e) {
             return
         }
 
-        function fillModalWithImages(params) {
+        function fillModalWithImages() {
             if (!btnLoadMoreImages.disabled) {
                 data.images.forEach(img => {
-                    
+
                     const image = document.createElement('img');
                     image.classList.add('product-image')
                     image.src = `/images/assets/100/${img.src}`;
@@ -303,7 +303,7 @@ function GetImagesModal(e) {
 
         if (data.currentPage < data.totalPages) {
             let pageNumber = Number(data.currentPage) + Number(1);
-            action = 'imagesAjax/?page=' + pageNumber;
+            action = `/home/imagesAjax/?page=${pageNumber}`;
         } else {
             btnLoadMoreImages.disabled = true;
             data.images = null
@@ -312,6 +312,19 @@ function GetImagesModal(e) {
 
     request.send();
     return false;
+
+    // const data = { username: 'example' };
+    // fetch('imagesAjax/?page=0', {
+    //     method: 'POST',
+    //     headers: {'Content-Type': 'application/json',},
+    //     body: JSON.stringify(data),
+    // }).then(
+    //     (response) => response.json()
+    // ).then((data) => {
+    //     console.log('Success:', data);
+    // }).catch((error) => {
+    //     console.error('Error:', error);
+    // });
 }
 
 if (document.querySelector('#modal-images .close-button')) {
@@ -327,9 +340,9 @@ const productImageArray = document.querySelector('#product-image-array')
 const selectedImages = document.querySelector('#selected-images')
 
 if (imageShowcase) {
-    
+
     imageShowcase.addEventListener('click', (e) => {
-    
+
         if (e.target.localName == 'img') {
             let imageFound = null
             if (productImageArray) {
@@ -341,8 +354,8 @@ if (imageShowcase) {
                     }
                 });
             }
-    
-    
+
+
             if (selectedImages) {
                 Array.from(selectedImages.children).forEach(element => {
                     if (element.id == e.target.id) {
@@ -351,40 +364,40 @@ if (imageShowcase) {
                     }
                 });
             }
-    
-    
-    
+
+
+
             if (!imageFound) {
                 const input = document.createElement('input');
                 input.setAttribute('type', 'hidden');
                 input.setAttribute('name', 'image');
                 input.setAttribute('value', e.target.id);
                 productImageArray.appendChild(input);
-    
-    
-    
+
+
+
                 const span = document.createElement('span');
                 span.setAttribute('id', e.target.id);
-    
+
                 const button = document.createElement('input');
                 button.setAttribute('type', 'button');
                 button.setAttribute('id', e.target.id);
                 button.setAttribute('value', 'x');
                 button.classList.add('remove-button');
-    
+
                 let image = document.createElement('img');
                 image.src = e.target.src;
                 // image.setAttribute('width', '100px');
                 // image.setAttribute('height', '100px');
-    
+
                 span.appendChild(button)
                 span.appendChild(image)
                 selectedImages.appendChild(span)
                 e.target.classList.add('image-border-highlight')
             }
-    
+
         }
-    
+
     });
 }
 

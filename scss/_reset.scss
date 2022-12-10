@@ -92,9 +92,12 @@
    * Add the correct font weight in Chrome, Edge, and Safari.
    */
   
-  b,
-  strong {
+  b {
     font-weight: bolder;
+  }
+  
+  strong {
+    // font-weight: bolder;
   }
   
   /**

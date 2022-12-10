@@ -366,25 +366,29 @@ module.exports.updateImage_post = async (req, res) => {
 }
 module.exports.imagesAjax = async (req, res) => {
     const getPagination = (page, size) => {
-        const limit = 2;
+        const limit = 10;
         const offset = page ? page * limit : 0;         
         return { limit, offset };
     };
+
     const getPagingData = (data, page, limit) => {        
-        const { count: totalItems, rows: images } = data;        
-        const currentPage = page ? page : 0;        
-        const totalPages = Math.ceil(totalItems / limit);        
+        const { count: totalItems, rows: images } = data;
+        const currentPage = page ? page : 0;
+        const totalPages = Math.ceil(totalItems / limit);
         return { totalItems, images, totalPages, currentPage };
     };
     
     const { page } = req.query;
     const { limit, offset } = getPagination(page);
+
+    console.log(page, limit, offset);
     
-    Image.findAndCountAll({ limit, offset })
-        .then(data => {
+    Image.findAndCountAll({ limit, offset }).then(data => {
             const response = getPagingData(data, page, limit);
             res.json(response);
-        }) .catch(err => { res.json(500, { message: err.message || "Some error occurred."});
+        }).catch((err) => { 
+            res.json(500, { message: err.message || "Some error occurred."}
+        );
     });
 }
 module.exports.deleteImage_get = async (req, res) => {
@@ -398,7 +402,9 @@ module.exports.deleteImage_post = async (req, res) => {
     await image.destroy();
 
     fs.unlinkSync(`./public/images/assets/${image.src}`);
-    fs.unlinkSync(`./public/images/assets/200/${image.src}`);
+    fs.unlinkSync(`./public/images/assets/100/${image.src}`);
+    fs.unlinkSync(`./public/images/assets/300/${image.src}`);
+    fs.unlinkSync(`./public/images/assets/500/${image.src}`);
 
     res.redirect('/home/images')
 }

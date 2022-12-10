@@ -43,9 +43,6 @@
                     PRODUCTS DETAILS PAGES
 
     ********************************************************* */
-
-
-
     .product-essential{
         display: flex;
         flex-direction: row;
@@ -116,6 +113,22 @@
             //     color: $orange-color;
                 
             // }
+        }
+    }
+
+    .recommended-collection {
+        .flex {
+            
+            .card {                
+                flex-basis: 23.28%;
+            }
+            // .card:nth-child(3n+3){
+            //     margin-right: 0;
+            // }
+            // &__card:nth-child(even){
+            //     margin-right: 2rem;
+            // }
+
         }
     }
 }
