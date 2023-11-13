@@ -1,0 +1,18 @@
+<% if (message.info) { %>
+    <% message.info.forEach(s => { %>
+        <p class="message-info"><%= s.message %></p>
+    <% }) %>
+<% } %>
+
+
+<% if (message.success) { %>
+    <% message.success.forEach(s => { %>
+        <p class="message-success"><%= s.message %></p>
+    <% }) %>
+<% } %>
+
+<% if (message.errors) { %>
+    <% for( let i = 0; i < message.errors.length; i++ ) { %>
+        <p class="message-error"><%= message.errors[i].message %></p>
+    <% } %>
+<% } %>

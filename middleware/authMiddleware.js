@@ -19,7 +19,7 @@ const requireAuth = (req, res, next) => {
     // }else{
     //     res.redirect('/login')
     // }
-
+    console.log('is authenticated-------------------------------');
     if (req.isAuthenticated()) {
         return next()
     }

@@ -1,11 +1,6 @@
 <section class="container dashboard-page">
 
-    <p>
-		<% if (message) { %>
-			<%= message.info %>
-			<%= message.error %>
-		<% } %>
-	</p>
+    <%- include('../components/_flashMessages') %>
 
     <div class="card">
         <div class="card-header">
@@ -26,7 +21,7 @@
 
             <div class="form-control"><label class="label caption" for="pagetitle">pagetitle: </label><%= product.pagetitle %></div>
             
-            <div class="form-control"><label class="label caption" for="shortDescription">shortDescription: </label><% if (product.shortDescription) { %> <%= product.shortDescription %> <% } %></div>
+            <div class="form-control"><label class="label caption" for="shortDescription">short Description: </label><% if (product.shortDescription) { %> <%= product.shortDescription %> <% } %></div>
 
             <div class="form-control"><label class="label caption" for="txtLongDescription">Long Description: </label><% if (product.LongDescription) { %> <%= product.LongDescription %> <% } %></div>
 

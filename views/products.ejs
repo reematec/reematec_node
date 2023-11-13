@@ -1,112 +1,209 @@
-
-
 <div class="breadcrumb container">
-    <a class="breadcrumb__link btn" href="#">Home</a> 
-    <span class="breadcrumb__separator">/</span> 
-    <span class="breadcurmb__page">Soccer & Footballs</span>
+    <a class="breadcrumb__link btn" href="#">Home</a>
+    <span class="breadcrumb__separator">/</span>
+    <span class="breadcurmb__page">
+        <%= title %>
+    </span>
 </div>
 
 <article class="showcase container">
-    <aside  class="sidebar">
+    <aside class="sidebar">
         <ul class="sidebar__list">
-            
-            <% categories.forEach(c => { %>
+
+            <% categories.forEach(c=> { %>
                 <% if (c.showSubMenu) { %>
-                
+
                     <li id="<%= c.slug %>">
                         <label class="sidebar__list__header" for="<%= c.name %>">
-                            <p><%= c.name %></p>
+                            <p>
+                                <%= c.name %>
+                            </p>
                             <span><i class="fas fa-caret-down"></i></span>
                         </label>
                         <input type="checkbox" id="<%= c.name %>">
-                        <ul  class="sidebar__list__items__sub">
-                            <% c.subCategories.forEach(s => { %>
-                                <li><a class="btn" href="/subcategory/<%= s.slug %>"><%= s.name %></a></li>
-                            <% }) %>
-                            
+                        <ul class="sidebar__list__items__sub">
+                            <% c.subCategories.forEach(s=> { %>
+                                <li><a class="btn" href="/subcategory/<%= s.slug %>">
+                                        <%= s.name %>
+                                    </a></li>
+                                <% }) %>
+
                         </ul>
-                    </li>                
-                <% } else { %>                 
-                    <li class="sidebar__list__items"><a class="btn"  href="/category/<%= c.slug %>"><%= c.name %></a></li>
+                    </li>
+                <% } else { %>
+                    <li class="sidebar__list__items"><a class="btn" href="/category/<%= c.slug %>"><%= c.name %> </a></li>
                 <% } %>
             <% }) %>
-            
+
         </ul>
     </aside>
-    
+
     <section class="products">
         <div class="products__description">
 
-            <h1>Soccer & Footballs</h1>
-            <p>Reematec not only hand and machine Swen football but also produce Hybrid and Thermo Bonded footballs using technology. We not only provide the products according to customer demand but also provide excellent services to customers. We manufacture Such footballs in our factory, Whose design does not only impress the customers, but they can also use for a long time.</p>
+            <h1>
+                <%= title %>
+            </h1>
+            <p>Reematec not only hand and machine Swen football but also produce Hybrid and Thermo Bonded footballs
+                using technology. We not only provide the products according to customer demand but also provide
+                excellent services to customers. We manufacture Such footballs in our factory, Whose design does not
+                only impress the customers, but they can also use for a long time.</p>
 
         </div>
 
         <div class="products__toolbar">
-            <p>Total: <span>75</span> Models</p>
+            <p>Total: <span>
+                    <%= products.count %>
+                </span> Models</p>
             <div class="sort-by">
-                <label for="">SORT BY: </label>
-                <select name="" id="">
-                    <option value="Position">Position</option>
-                    <option value="Position">Newest</option>
-                    <option value="Position">Oldest</option>
-                    <option value="Position">Usage</option>
+                <label for="sorting">Sort By: </label>
+                <select name="sorting" id="sorting">
+                    <option value="ascending">A - Z</option>
+                    <option value="descending">Z - A</option>
+                    <option value="descending">Newer</option>
+                    <option value="descending">Older</option>
+                    <option value="usage">Usage</option>
                 </select>
             </div>
         </div>
-        
-        
-        <div class="product-page-collection__flex">
-            
-            <% for (let p = 0; p < products.length; p++) {%>
-            <div class="product-page-collection__flex__card">
-                <a class="btn card__wrapper" href="/product/<%= products[p].slug %>">
-                    <img src="/images/assets/300/<%= products[p].images[0].src %>" alt="">
-                    <div class="card__caption">
+
+
+        <div id="product-container" class="product-page-collection__grid">
+
+            <% for (let p=0; p < products.rows.length; p++) {%>
+                <div class="product-page-collection__grid__card">
+                    <a class="btn card__wrapper" href="/product/<%= products.rows[p].slug %>">
+                        <img class="image-responsive" src="/images/assets/300/<%= products.rows[p].images[0].src %>"alt="">
                         
-                        <div class="card__caption__basic">
-                            <p class="card__caption__basic__name"><%= products[p].name %></p>
-                            <div class="card__caption__basic__info">
-                                <p><%= products[p].categoryId ? products[p].category.name : '' %></p>
-                                <p><%= products[p].usage %></p>
+                        <div class="card__caption">
+                            <div class="card__caption__basic">
+                                <p class="card__caption__basic__name">Arena Star</p>
+                                <div class="card__caption__basic__info">
+                                    <h3 class="construction-type" >Fusion Tec</h3>
+                                    <p class="usage">Top Competition</p>
+                                </div>
                             </div>
+    
+                            <div class="card__caption__attribute">
+                                <div class="card__caption__attribute__sizing">
+                                    <h4 class="card__caption__attribute__sizes">&nbsp;</h4>
+                                    <p class="">
+                                        <span class="">&nbsp;</span>   
+                                    </p>
+                                </div>
+    
+                                <button>GET QUOTE</button>
+                            </div> 
                         </div>
-                    </div>
-                </a>
-            </div>
+                    </a>
+                </div>
 
-            <% } %> 
-            
-            <!-- <div class="product-page-collection__flex__card">
-                <a class="btn card__wrapper" href="#">
-                    <img class="image-responsive" src="/images/Phantom.jpeg" alt="">
-                    <div class="card__caption">
-                        <div class="card__caption__basic">
-                            <p class="card__caption__basic__name">Phantom</p>
-                            <div class="card__caption__basic__info">
-                                <p>Hand Stitched</p>
-                                <p>Match</p>
-                            </div>
-                        </div>
+                <% } %>
 
-                        <div class="card__caption__attribute">
-                            <p class="card__caption__attribute__size">Size Availability</p>
-                            <p class="card__caption__attribute__sizes">
-                                <span class="availble">1</span>                                    
-                                <span class="availble">2</span>                                    
-                                <span class="availble">3</span>                                                                        
-                            </p>
-                        </div>
+        </div>
+        <% if (products.count) { %>
+            <button class="btn btn-standard btn-solid-primary" id="btnLoadMore">Load More</button>
 
-                    </div> 
-                </a>
-            </div> -->
-            
-            
-        </div>            
+        <% } %>
     </section>
 </article>
 
 <%- include('./components/_recommended') %>
 
-<%- include('./components/_footer') %>
+    <%- include('./components/_footer') %>
+
+
+        <script>
+            const url = window.location.href
+
+            let page = 1;
+            const productContainer = document.querySelector('#product-container')
+            const btnLoadMore = document.querySelector('#btnLoadMore')
+
+            btnLoadMore.addEventListener('click', (e) => {
+                e.preventDefault()
+
+                fetch(`${url}/${page}`).then(response => response.json())
+                    .then(data => {
+                        const products = data.data.rows
+
+                        console.log(Number(data.currentPage), data.totalPages);
+
+                        if (Number(data.currentPage) + 1 >= data.totalPages) {
+
+                            btnLoadMore.style.visibility = 'hidden'
+                        }
+
+                        page++
+
+                        products.forEach(product => {
+
+                            const card = document.createElement('div')
+                            card.classList = 'product-page-collection__flex__card'
+                            const cardLink = document.createElement('a')
+                            cardLink.classList = 'btn card__wrapper'
+                            cardLink.href = `/product/${product.slug}`
+                            card.append(cardLink)
+
+                            const thumb = document.createElement('img')
+                            thumb.classList = 'image-responsive'
+                            thumb.src = `/images/assets/300/${product.images[0].src}`
+                            cardLink.append(thumb)
+
+                            const cardCaption = document.createElement('div')
+                            cardCaption.classList = 'card__caption'
+                            cardLink.append(cardCaption)
+
+                            const cardCaptionBasic = document.createElement('div')
+                            cardCaptionBasic.classList = 'card__caption__basic'
+                            cardCaption.append(cardCaptionBasic)
+
+                            const cardCaptionP = document.createElement('p')
+                            cardCaptionP.classList = 'card__caption__basic__name'
+                            cardCaptionP.append(product.name)
+                            cardCaptionBasic.append(cardCaptionP)
+
+                            const cardCaptionBasicInfo = document.createElement('div')
+                            cardCaptionBasicInfo.classList = 'card__caption__basic__info'
+                            cardCaptionBasic.append(cardCaptionBasicInfo)
+
+                            const cardCaptionBasicInfoP = document.createElement('p')
+                            cardCaptionBasicInfo.append(cardCaptionBasicInfoP)
+                            if (product.categoryId) cardCaptionBasicInfoP.append(product.category.name)
+
+                            const cardCaptionBasicInfoPP = document.createElement('p')
+                            cardCaptionBasicInfo.append(cardCaptionBasicInfoPP)
+                            cardCaptionBasicInfoPP.append(product.usage)
+
+                            productContainer.append(card)
+
+
+                            //     productContainer.innerHTML += `<div class="product-page-collection__flex__card">
+                            //     <a class="btn card__wrapper" href="/product/${product.slug}">
+                            //         <img class="image-responsive" src="/images/assets/300/${product.images[0].src}" alt="">
+                            //         <div class="card__caption">
+
+                            //             <div class="card__caption__basic">
+                            //                 <p class="card__caption__basic__name">
+                            //                     ${product.name}
+                            //                 </p>
+                            //                 <div class="card__caption__basic__info">
+                            //                     <p>
+                            //                         ${product.categoryId ? product.category.name : ''}
+                            //                     </p>
+                            //                     <p>
+                            //                         ${ product.usage}
+                            //                     </p>
+                            //                 </div>
+                            //             </div>
+                            //         </div>
+                            //     </a>
+                            // </div>`
+
+                        });
+                    })
+
+            })
+
+
+        </script>

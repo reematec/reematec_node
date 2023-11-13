@@ -18,16 +18,24 @@ router.get('/',  publicController.home);
 
 router.get('/about', publicController.about );
 router.get('/contact', publicController.contact);
-router.get('/products', publicController.products);
-router.get('/category/:slug', publicController.categoryProducts);
-router.get('/subcategory/:slug', publicController.subCategoryProducts);
-
-router.get('/product/:slug', publicController.product);
 router.get('/blogs', publicController.blog);
 router.get('/faqs', publicController.faq);
 router.get('/terms', publicController.terms);
 router.get('/privacy', publicController.privacy);
 router.get('/cookie', publicController.cookie_policy);
+
+router.get('/products', publicController.products);
+router.get('/products/:page', publicController.products_page);
+
+router.get('/category/:slug', publicController.categoryProducts);
+router.get('/category/:slug/:page', publicController.categoryProducts_page);
+
+router.get('/subcategory/:slug', publicController.subCategoryProducts);
+router.get('/subcategory/:slug/:page', publicController.subCategoryProducts_page);
+router.get('/product/:slug', publicController.product); //productDetails Page
+
+// router.get('/products', publicController.products_page);
+
 // router.get('/pagination', publicController.pagination);
 
 

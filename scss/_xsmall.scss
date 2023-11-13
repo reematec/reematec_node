@@ -210,9 +210,14 @@
     &__title {
         font-size: 7vh;
         font-weight: 900;
+        margin-top:0rem;
+
 
         &__sub {
             @include section-subtitle;
+            text-transform: capitalize;
+            letter-spacing: 1px;
+            font-size: 1.8rem;
         }
 
         &::after {
@@ -223,7 +228,7 @@
     &__para {
         font-size: 1.8rem;
         line-height: 3rem;
-        letter-spacing: 1.5px;
+        letter-spacing: 1.0px;
         max-width: 90%;
         @include my-0;
         @include mx-auto;
@@ -324,41 +329,27 @@
                     }
 
                     &__attribute {
-                        position: relative;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: end;
+                        margin-top: 1rem;
 
-                        &__size {
-                            font-size: 1.3rem;
-                            color: $gray-color-font;
-                            @include my-0;
+                        &__sizing{
+                            h4{
+                                margin: 0;
+                                font-size: 1.4rem;
+                                color: #777;
+                                font-weight: 300;
+                            }
+                            p{
+                                color: #999;
+                                margin: 0;
+                            }
                         }
 
-                        &__sizes {
-                            @include my-0;
-                        }
-
-                        &__sizes span {
-                            font-size: 1.3rem;
-                            line-height: 1.3rem;
-                            color: $gray-color-font;
-                            margin: 0 1rem 0 0;
-                            display: inline-block;
-                        }
-
-                        & .availble {
-                            background: $orange-color;
-                            color: #fff;
-                            width: 20px;
-                            height: 20px;
-                            line-height: 2rem;
-                            font-size: 1.3rem;
-                            border-radius: 50%;
-                            text-align: center;
-                        }
+                        
 
                         & button {
-                            position: absolute;
-                            bottom: 0;
-                            right: 0;
                             background: $dark-color;
                             color: white;
                             padding: 1rem 1.2rem;
@@ -668,35 +659,34 @@
             cursor: pointer;
         }
     }
+
+    #btnLoadMore{
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
 }
 
-.product-page-collection__flex {
-    display: flex;
-    flex-wrap: wrap;
+.product-page-collection__grid {
+    display: grid;
+    grid-template-columns: repeat(1, auto);
+    gap: 1rem;
+    justify-content: center;
 
     &__card {
-        flex-basis: 47.99%;
         background: #eee;
         border-radius: 6px 6px 0 0;
         border-top: 5px solid $yellow-color;
-        margin: 0 2rem 2rem 0;
+        margin: 0 0rem 2rem 0;
         transition: all .3s;
         box-shadow: 0 7px 16px #d7e0ea;
 
         & .card__wrapper {
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-
             & img {
                 border-bottom: 2px solid #efefef;
             }
 
             & .card__caption {
-                flex-basis: 100%;
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between;
 
                 padding: 1rem;
 
@@ -713,58 +703,62 @@
                         display: flex;
                         justify-content: space-between;
 
-                        & p {
+                        & h3, p {
                             font-size: 1.3rem;
                             line-height: 1.3rem;
                             color: #727272;
-                            margin: 0 0 2rem 0;
-                            margin-bottom: 2rem;
+                            margin: 0;
+                            font-weight: 300;
                         }
+                        
                     }
                 }
 
                 &__attribute {
-
-                    &__size {
-                        @include my-0;
-                        font-size: 1.3rem;
-                        color: #515151;
+                    margin-top: 2rem;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: end;
+                    &__sizing{
+                        color: #727272;
                     }
-
-                    &__sizes {
-                        @include my-0;
-                    }
-
-                    &__sizes span {
+                    h4, p {
                         font-size: 1.3rem;
                         line-height: 1.3rem;
-                        color: #727272;
-                        margin: 0 1rem 0 0;
+                        margin: 0;                        
+                        font-weight: 300;
+                    }                    
+
+                    p{
                         display: inline-block;
+                    }
+
+                    & button {
+                        background: $dark-color;
+                        color: white;
+                        padding: 1rem 1.2rem;
+                        cursor: pointer;
+                        border: none;
+                        outline: none;
+                        border-radius: .3rem;
+
+                        transition: .3s all;
+                        font-weight: 300;
+                        font-size: 1.2rem;
+                        // letter-spacing: 1px;
 
                     }
 
-                    & .availble {
-                        background: $orange-color;
-                        color: #fff;
-                        width: 20px;
-                        height: 20px;
-                        line-height: 2rem;
-                        font-size: 1.3rem;
-                        border-radius: 50%;
-                        text-align: center;
-
+                    & button:hover {
+                        background: $yellow-color;
+                        font-weight: 500;
+                        color: black;
                     }
                 }
             }
         }
 
     }
-
-    &__card:nth-child(even) {
-        margin-right: 0;
-    }
-
 
     &__card:hover {
         border-top: 5px solid #222;
@@ -952,7 +946,8 @@
                     ABOUT PAGE
 
 ********************************************************* */
-.dashboard-page .signup-page,
+.dashboard-page, 
+.signup-page,
 .login-page,
 .terms,
 .faqs,

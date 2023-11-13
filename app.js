@@ -9,13 +9,11 @@ const flash = require('connect-flash');
 const fileUpload = require('express-fileupload');
 const csrf = require('csurf')
 
-
-
 const passport = require('passport')
+const localStrategy = require('passport-local').Strategy;
+
 const morgan = require('morgan')
 const expressLayouts = require('express-ejs-layouts');
-
-
 
 require('dotenv').config()
 require('./utils/passport')(passport)
@@ -58,14 +56,14 @@ app.use(fileUpload({
     tempFileDir : './public/tmp/'
 }));
 
+
+
 // middleware
 // app.use(express.static('public'));
 app.use(express.static(path.join(__dirname, '/public')));
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json({limit: '5mb'}))
 app.use(cookieParser())
-
-
 
 // view engine
 app.use(expressLayouts);
@@ -131,7 +129,7 @@ app.use('*', function(req, res){
 // });
 
 HOST =  'localhost';
-HOST =  '192.168.10.9';
+HOST =  '192.168.10.27';
 const PORT = process.env.PORT;
 
 // var os = require('os');

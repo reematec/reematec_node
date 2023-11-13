@@ -21,9 +21,11 @@
     "file-type": "^16.5.4",
     "jsonwebtoken": "^8.5.1",
     "mysql2": "^2.3.3",
+    "nodemailer": "^6.9.7",
     "passport": "^0.5.2",
     "passport-google-oauth20": "^2.0.0",
     "passport-instagram": "^1.0.0",
+    "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
     "randomstring": "^1.2.2",
     "read-chunk": "^4.0.3",
@@ -36,17 +38,14 @@
     "livereload": "^0.9.3",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.15",
-    "sass": "^1.49.7",
-    "uglifyjs-webpack-plugin": "^2.2.0",
-    "webpack": "^5.75.0",
-    "webpack-cli": "^4.10.0"
+    "sass": "^1.49.7"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon app",
     "scss": "sass --watch ./scss:./public/css",
     "watch": "nodemon --ext js,ejs --ignore public",
-    "build": "webpack"
+    "build": "webpack --watch"
   },
   "repository": {
     "type": "git",

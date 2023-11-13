@@ -42,7 +42,18 @@ const User = sequelize.define('user', {
     role: {
         type: Sequelize.DataTypes.STRING,
     },
-
+    token:{
+        type: Sequelize.DataTypes.STRING,
+        allowNull: true,
+    },
+    verified: {
+		type: Sequelize.DataTypes.BOOLEAN,
+		allowNull: false,
+		defaultValue: false,
+	},
+    expiresIn: {
+		type: Sequelize.DataTypes.DATE
+	},
 })
 
 User.beforeCreate(async (user, options) => {
@@ -51,7 +62,7 @@ User.beforeCreate(async (user, options) => {
 });
 
 User.afterSave(async function (user, options){
-    console.log('new user was created & saved', user)
+    // console.log('new user was created & saved', user)
 });
 
 User.sync(
@@ -62,17 +73,17 @@ User.sync(
 User.login = async function (email, password, done) {
 
 	const user = await User.findOne({where: { email }})
+    
 	if (user) {
 		const auth = await bcrypt.compare(password, user.password)
-		if (auth) {
-            return done(null, user) 
-			// return user;
-		}
-        return done(null, false, {message: 'Password incorrect'})
-		// throw Error('incorrect password')
+
+		if (auth) return done(null, user) 
+
+        // Incorrect PW
+        return done(null, false, {message: 'Password or Email is not correct'})
 	}
-    return done(null, false, {message: 'No user with that email'})
-	// throw Error('incorrect email')
+    // incorrect Email
+    return done(null, false, {message: 'Email or Password is not correct'})
 }
 
 module.exports = User;

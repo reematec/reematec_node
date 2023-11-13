@@ -1,17 +1,8 @@
 <section class="container dashboard-page">
 
 
-    <% if (message.success) { %>
-		<% message.success.forEach(s => { %>
-			<p style="color:green; font-weight: 700"><%= s.msg %></p>
-		<% }) %>
-    <% } %>
-	
-	<% if (message.errors) { %>
-		<% message.errors.forEach(error => { %>
-			<p style="color:red; font-weight: 700"><%= error.msg %></p>
-		<% }) %>
-    <% } %>
+    <%- include('../components/_flashMessages') %>
+
 
     <div class="card">
         <div  class="card-header">

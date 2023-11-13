@@ -1,16 +1,8 @@
 <section class="container dashboard-page">
 
-    <% if (message.success) { %>
-		<% message.success.forEach(s => { %>
-			<p style="color:green; font-weight: 700"><%= s.msg %></p>
-		<% }) %>
-    <% } %>
-	
-	<% if (message.errors) { %>
-		<% message.errors.forEach(error => { %>
-			<p style="color:red; font-weight: 700"><%= error.msg %></p>
-		<% }) %>
-    <% } %>
+   
+    <%- include('../components/_flashMessages') %>
+
 
     <h1>Sub Category Summary</h1>
 
@@ -32,7 +24,7 @@
                 <td><%= subCategories[i].name %></td>
                 <td><%= subCategories[i].category.name %></td>
                 <td><%= subCategories[i].slug %></td>
-                <td><%= subCategories[i].active %></td>
+                <td><%= subCategories[i].active ? '✓' : '❌' %></td>
                 
                 <td>
                     <a class="btn btn-link link-blue" href="/home/update-subcategory/<%= subCategories[i].slug %>">Edit</a> |

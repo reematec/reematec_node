@@ -1,0 +1,30 @@
+<section class="container dashboard-page">
+
+    <%- include('../components/_flashMessages') %>
+
+    <div class="card">
+        <div class="card-header">
+            <p>Preview - Blog</p>
+        </div>
+        <div class="card-body">
+            <div class="form-control"><label class="label caption" for="txtName">Name: </label><%= blog.name %></div>
+
+            <div class="form-control"><label class="label caption" for="txtSlug">slug: </label><%= blog.slug %></div>
+            
+            <div class="form-control"><label class="label caption" for="pagetitle">pagetitle: </label><%= blog.pagetitle %></div>
+            
+            <div class="form-control"><label class="label caption" for="content">content: </label><% if (blog.content) { %> <%- blog.content %> <% } %></div>
+            
+            <div class="form-control"><label class="label caption" for="chkactive">active: </label><% if (blog.active) { %> <%= 'Yes' %> <% } %></div>
+                        
+            <div class="form-control">
+                <div class="caption"></div>
+                <div class="field">
+                    <a class="btn btn-normal btn-gray" href="/home/blogs">Blogs</a>
+                    <a class="btn btn-link link-blue" href="/home/update-blog/<%= blog.slug %>">Edit</a>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</section>

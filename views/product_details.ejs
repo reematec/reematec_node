@@ -1,10 +1,9 @@
 <div class="breadcrumb container">
     <a class="breadcrumb__link btn" href="/">Home</a>
     <span class="breadcrumb__separator">|</span>
-    <a class="breadcrumb__link btn" href="#"><%= product.category.name %> </a>
+    <a class="breadcrumb__link btn" href="/category/<%= product.category.slug %>"><%= product.category.name %> </a>
     <span class="breadcrumb__separator">|</span>
-    <a class="breadcrumb__link btn" href="#"><%= product.subCategory.name %></a>
-    <span class="breadcrumb__separator">|</span>
+    <% if (product.subCategoryId > 0) { %> <a class="breadcrumb__link btn" href="/subcategory/<%= product.subCategory.slug %>"> <%= product.subCategory.name %> &nbsp; | &nbsp; </a> <% } %>
     <span class="breadcurmb__page"><%= product.name %></span>
 </div>
 
@@ -25,7 +24,7 @@
     </div>
 
     <div class="details">
-        <h1 class="details__heading"><%= product.name %> <span><%= product.subCategory.name %> | <%= product.category.name %></span></h1>
+        <h1 class="details__heading"><%= product.name %> <span> <% if (product.subCategoryId > 0) { %> <%= product.subCategory.name %> &nbsp; | &nbsp; <% } %> <%= product.category.name %></span></h1>
 
         <p class="details__description"><%= product.shortDescription %></p>
         <P class="details__usage">Usage: <span><%= product.usage %></span></P>

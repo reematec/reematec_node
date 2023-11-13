@@ -1,13 +1,7 @@
 <section class="container dashboard-page">
 	<h1>Products</h1>
 
-	<p>
-		<% if (message) { %>
-			<%= message.info %>
-			<%= message.error %>
-		<% } %>
-
-	</p>
+	<%- include('../components/_flashMessages') %>
 
 
 	<a class="btn btn-standard btn-solid-primary" href="/home/add-product">Add Product</a>

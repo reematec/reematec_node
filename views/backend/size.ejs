@@ -1,4 +1,8 @@
 <section class="container dashboard-page">
+
+	
+    <%- include('../components/_flashMessages') %>
+
 	<h1>Sizes Summary</h1>
 
 	<a class="btn btn-standard btn-solid-primary" href="/home/add-size">Add Size</a>
@@ -12,7 +16,7 @@
 		<% for( let s in sizes ) { %>
 			<tr>
 				<td><%= sizes[s].size %></td>
-				<td> <input type="checkbox" <%= sizes[s].active ? 'checked': '' %> disabled> </td>
+				<td><%= sizes[s].active ? '✓' : '❌' %></td>
 				<td>
 					<a class="btn btn-link link-blue" href="/home/update-size/<%= sizes[s].identifier %>">Edit</a> |
 					<a class="btn btn-link link-red" href="/home/delete-size/<%= sizes[s].identifier %>">Delete</a>

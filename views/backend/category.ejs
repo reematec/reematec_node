@@ -1,16 +1,6 @@
 <section class="container dashboard-page">
 
-	<% if (message.success) { %>
-		<% message.success.forEach(s => { %>
-			<p style="color:green; font-weight: 700"><%= s.msg %></p>
-		<% }) %>
-    <% } %>
-	
-	<% if (message.errors) { %>
-		<% message.errors.forEach(error => { %>
-			<p style="color:red; font-weight: 700"><%= error.msg %></p>
-		<% }) %>
-    <% } %>
+	<%- include('../components/_flashMessages') %>
 
 	<h1>Category Summary</h1>
 
@@ -30,8 +20,8 @@
 		<tr>              
 			<td><%= i.name %> </td>
 			<td><%= i.slug %> </td>
-			<td><%= i.showSubMenu %> </td>
-			<td><%= i.active %> </td>              
+			<td><%= i.showSubMenu ? '✓' : '❌' %></td>
+			<td><%= i.active ? '✓' : '❌' %></td>
 			<td>
 			<a class="btn btn-link link-blue" href="/home/update-category/<%= i.slug %>">Edit</a> |
 			<a class="btn btn-link link-red" href="/home/delete-category/<%= i.slug %>">Delete</a>

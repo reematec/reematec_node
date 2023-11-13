@@ -1,11 +1,6 @@
 <section class="container dashboard-page">
 
-    <p>
-		<% if (message) { %>
-			<%= message.info %>
-			<%= message.error %>
-		<% } %>
-	</p>
+    <%- include('../components/_flashMessages') %>
 
     <div class="card">
         <div class="card-header">
@@ -225,6 +220,7 @@
             sltSubCategory.innerHTML = '';
             const option = document.createElement("option");
             option.text = text;
+            option.value = 0
             sltSubCategory.add(option);
         }
     });

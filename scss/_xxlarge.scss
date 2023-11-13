@@ -15,16 +15,7 @@
                 // Products Page
     // ********************************************************
 
-    .product-page-collection__flex{
     
-        &__card{
-            flex-basis: 31.8%;
-        }
-    
-        &__card:nth-child(3n+3){
-            margin-right: 0;
-        }
-    }
 
     /* *********************************************************
                     Recommended

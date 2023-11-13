@@ -71,14 +71,14 @@ const Product = sequelize.define('product', {
         type: Sequelize.DataTypes.STRING,
         allowNull: true,
     },    
-    // categoryId: {
-	// 	type: Sequelize.DataTypes.INTEGER,
-	// 	allowNull: false,
-	// },
-    // subCategoryId: {
-	// 	type: Sequelize.DataTypes.INTEGER,
-	// 	allowNull: false,
-	// },
+    categoryId: {
+		type: Sequelize.DataTypes.INTEGER,
+		allowNull: true,
+	},
+    subCategoryId: {
+		type: Sequelize.DataTypes.INTEGER,
+		allowNull: true,
+	},
 })
 
 Category.hasMany(Product);

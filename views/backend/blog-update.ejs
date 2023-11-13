@@ -1,0 +1,55 @@
+<section class="container dashboard-page">
+
+    <%- include('../components/_flashMessages') %>
+
+    <div class="card">
+        <div  class="card-header">
+            <p>Update - Blog</p>
+        </div>
+        <div class="card-body">
+            
+            <form action="/home/update-blog" method="post">
+                <input type="hidden" name="identifier" value="<%= blog.identifier %>">
+
+                <div class="form-control">
+                    <label class="label caption" for="txtBlogName">Blog Name: </label>
+                    <input class="textbox field" type="text" name="name" id="txtBlogName" value="<%= blog.name %>">
+                </div>
+                
+                <div class="form-control">
+                    <label class="label caption" for="txtSlug">Slug: </label>
+                    <input  class="textbox field" type="text" name="slug" id="txtSlug"  value="<%= blog.slug %>">
+                </div>
+
+                <div class="form-control">
+                    <label class="label caption" for="txtPageTitle">Page Title: </label>
+                    <input  class="textbox field" type="text" name="pagetitle" id="txtPageTitle" value="<%- blog.pagetitle %>">
+                </div>
+                
+                <div class="form-control">
+                    <label class="label caption" for="txtContent">Content: </label>
+                    <textarea  class="textbox field" type="text" name="content" id="txtContent"><%- blog.content %></textarea>
+                </div>
+                
+                <div class="form-control">
+                    <label class="label caption" for="chkActive">Active: </label>
+                    <div>
+                        <input class="field" type="checkbox" name="active" id="chkActive" <% if (blog.active) { %> <%= 'checked' %> <% } else { %> <%= '' %>  <% } %> >
+                    </div>
+                </div>
+
+                <div class="form-control">
+                    <div class="caption">&nbsp;</div>
+                    <div class="field">
+                        <input class="btn btn-normal btn-blue" type="submit" value="Update">
+                        <a class="btn btn-normal btn-gray" href="/home/blogs">Cancel</a>
+                    </div>
+                </div>               
+                
+            </form>
+            
+        </div>
+    </div>
+</section>
+
+       

@@ -1,16 +1,6 @@
 <section class="container dashboard-page">
 
-    <% if (message.success) { %>
-		<% message.success.forEach(s => { %>
-			<p style="color:green; font-weight: 700"><%= s.msg %></p>
-		<% }) %>
-    <% } %>
-    
-    <% if (message.errors) { %>
-        <% for( let i = 0; i < message.errors.length; i++ ) { %>
-            <p><%= message.errors[i].msg %></p>
-        <% } %>
-    <% } %>
+    <%- include('../components/_flashMessages') %>
     
     
     

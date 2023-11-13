@@ -24,20 +24,7 @@
     
     }
     
-    .product-page-collection__flex{
-        
-        &__card{
-            flex-basis: 31.5%;
-        }
-    
-        &__card:nth-child(3n+3){
-            margin-right: 0;
-        }
-        // The rules is entered to nulify the effect of large size css rule.
-        &__card:nth-child(even){
-            margin-right: 2rem;
-        }
-    }
+   
     /* *********************************************************
 
                     PRODUCTS DETAILS PAGES

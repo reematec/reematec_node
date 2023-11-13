@@ -1,0 +1,37 @@
+<section class="container dashboard-page">
+
+	<%- include('../components/_flashMessages') %>
+
+	<h1>Blogs</h1>
+
+
+	<a class="btn btn-standard btn-solid-primary" href="/home/add-blog">Add Blog</a>
+	
+	<table>
+		<tr>
+		
+		<th>Name</th>
+		<th>Slug</th>		
+		<th>Active</th>
+		<th>Action</th>
+		</tr>
+		<% blogs.forEach(i => { %>
+		
+		<tr>              
+			<td><%= i.name %> </td>
+			<td><%= i.slug %> </td>
+			<td><%= i.active ? '✓' : '❌' %></td>
+			<td>
+				
+			<a class="btn btn-link link-blue" href="/home/view-blog/<%= i.slug %>">View</a> |
+			<a class="btn btn-link link-blue" href="/home/update-blog/<%= i.slug %>">Edit</a> |
+			<a class="btn btn-link link-red" href="/home/delete-blog/<%= i.slug %>">Delete</a>
+			</td>
+		</tr>
+		
+		<% }) %>
+		
+	</table>
+  </section>
+
+

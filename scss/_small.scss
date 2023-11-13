@@ -41,13 +41,13 @@
 
     ********************************************************* */
     
-
-    .product-page-collection__flex{
-                
-        &__card{
-            flex-basis: 47.96%;
-        }
+    .product-page-collection__grid {
+        
+        grid-template-columns: repeat(2, auto);
+        
+        justify-content: center;
     }
+    
     /* *********************************************************
 
                     ABOUT PAGE

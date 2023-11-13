@@ -88,13 +88,11 @@
                     PRODUCTS PAGES
 
     ********************************************************* */
-
-    .product-page-collection__flex{
-     
-        &__card{
-            flex-basis: 48.41%;
-        }
+    .product-page-collection__grid{
+        
+        grid-template-columns: repeat(3, auto);
     }
+    
     /* *********************************************************
                     Recommended
     ********************************************************* */

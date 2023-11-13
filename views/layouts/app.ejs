@@ -16,8 +16,14 @@
         menubar: "",
         plugins: "advlist autolink lists link image charmap print preview anchor searchreplace visualblocks code fullscreen insertdatetime media table paste code help wordcount",
         toolbar: "undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist checklist | forecolor backcolor casechange permanentpen formatpainter removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media pageembed template link anchor codesample | a11ycheck ltr rtl | showcomments addcomment code",
-        custom_undo_redo_levels: 10,
-      
+        // custom_undo_redo_levels: 10,
+        // automatic_uploads: true,
+        // images_upload_url: 'postAcceptor.php',
+        // images_reuse_filename: true
+        
+        images_upload_url: 'postAcceptor.php',
+        // images_upload_url: '',
+        automatic_uploads: false
     });
   </script>
     
@@ -39,10 +45,10 @@
                 </div>
                 <div class="topbar__links">
                     <ul class="topbar__links__list flex-right">
-                        <li  class="topbar__links__list__items"><button id="btnSearch" class="btn btn-icon" href="#"><i class="fas fa-search"></i></button></li>
-                        <li  class="topbar__links__list__items"><a class="btn btn-icon" href="#"><i class="fas fa-quote-right"></i></a></li>
+                        <!-- <li  class="topbar__links__list__items"><button id="btnSearch" class="btn btn-icon" href="#"><i class="fas fa-search"></i></button></li>
+                        <li  class="topbar__links__list__items"><a class="btn btn-icon" href="#"><i class="fas fa-quote-right"></i></a></li> -->
                         <% if (user) { %>
-                            <li  class="topbar__links__list__items"><a class="btn btn-icon" href="/dashboard">Dashboard</a></li>
+                            <li  class="topbar__links__list__items"><a class="btn btn-icon" href="/dashboard"><%= user.firstname +' '+ user.lastname %></a></li>
                             <li  class="topbar__links__list__items"><a class="btn btn-icon" href="/logout">Logout</a></li>
                         <% } else { %>
                             <li  class="topbar__links__list__items"><a class="btn btn-icon" href="/login">Login</a></li>
