@@ -1,0 +1,29 @@
+<section class="container blog-page" >
+    <h1 class="blog-page-heading">BLOGS & ARTICLES</h1>
+    
+    <div class="blogs">
+
+        
+
+        <% blogs.forEach(i => { %>
+            <% if (i.active) { %>
+                
+                <a href="/blog/<%= i.slug %>" class="blog-card">
+                    <img class="blog-image image-responsive" src="/images/assets/<%= i.image %>" alt="<%= i.image %>"> 
+                    
+                    <div class="blog-caption">
+                        <h2 class="blog-title"><%= i.name %></h2>
+                        <p class="blog-intro"><%= i.pagetitle %></p>
+                    </div>
+                </a>
+            <%} %>
+            
+        <% }) %>
+        
+        
+
+    </div>
+
+</section>
+
+<%- include('./components/_footer') %>

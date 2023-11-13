@@ -16,9 +16,9 @@ const Blog = sequelize.define('blog', {
         type: Sequelize.DataTypes.STRING,
         allowNull: false,
     },
-    CaptionImage: {
+    image: {
         type: Sequelize.DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
     },
     name: {
         type: Sequelize.DataTypes.STRING,

@@ -7,15 +7,18 @@
             <p>Preview - Blog</p>
         </div>
         <div class="card-body">
+            <div class="form-control"><label class="label caption" for="chkactive">active: </label><% if (blog.active) { %> <%= 'Yes' %> <% } %></div>
+            
+            <div class="form-control"><label class="label caption" for="txtName"></label><img width="100" src="/images/assets/<%= blog.image %>" alt="<%= blog.image %>"></div>
+
             <div class="form-control"><label class="label caption" for="txtName">Name: </label><%= blog.name %></div>
 
             <div class="form-control"><label class="label caption" for="txtSlug">slug: </label><%= blog.slug %></div>
             
             <div class="form-control"><label class="label caption" for="pagetitle">pagetitle: </label><%= blog.pagetitle %></div>
             
-            <div class="form-control"><label class="label caption" for="content">content: </label><% if (blog.content) { %> <%- blog.content %> <% } %></div>
+            <div class=""><% if (blog.content) { %> <%- blog.content %> <% } %></div>
             
-            <div class="form-control"><label class="label caption" for="chkactive">active: </label><% if (blog.active) { %> <%= 'Yes' %> <% } %></div>
                         
             <div class="form-control">
                 <div class="caption"></div>

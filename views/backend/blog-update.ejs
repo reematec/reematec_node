@@ -8,8 +8,13 @@
         </div>
         <div class="card-body">
             
-            <form action="/home/update-blog" method="post">
+            <form encType="multipart/form-data"  action="/home/update-blog" method="post">
                 <input type="hidden" name="identifier" value="<%= blog.identifier %>">
+
+                <div class="form-control">
+                    <label class="label caption" for="image">Blog Image: </label>
+                    <input class="field" type="file" name="image" value="">
+                </div>
 
                 <div class="form-control">
                     <label class="label caption" for="txtBlogName">Blog Name: </label>

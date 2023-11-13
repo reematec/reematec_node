@@ -18,7 +18,8 @@ router.get('/',  publicController.home);
 
 router.get('/about', publicController.about );
 router.get('/contact', publicController.contact);
-router.get('/blogs', publicController.blog);
+router.get('/blogs', publicController.blogs);
+router.get('/blog/:slug', publicController.blog);
 router.get('/faqs', publicController.faq);
 router.get('/terms', publicController.terms);
 router.get('/privacy', publicController.privacy);

@@ -7,7 +7,7 @@ const SubCategory = require('../models/SubCategory');
 const Image = require('../models/Image');
 const Product = require('../models/Product');
 const Size = require("../models/Size");
-
+const Blog = require('../models/Blog');
 
 
 
@@ -131,8 +131,15 @@ module.exports.product = async (req, res) => {
     
     res.render('product_details', {layout: 'layouts/main.ejs', product, randomProducts})
 }
-module.exports.blog = (req, res) => {
-    res.render('blog', {layout: 'layouts/main.ejs'})
+module.exports.blogs = async (req, res) => {
+    const blogs = await Blog.findAll({})
+    res.render('blogs', {layout: 'layouts/main.ejs', blogs})
+}
+module.exports.blog = async (req, res) => {
+    const slug = req.params.slug;
+    
+    const blog = await Blog.findOne({ where: { slug: slug } })
+    res.render('blog', {layout: 'layouts/main.ejs', blog})
 }
 module.exports.faq = (req, res) => {
     res.render('faq', {layout: 'layouts/main.ejs'})

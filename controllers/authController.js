@@ -775,10 +775,8 @@ module.exports.deleteProduct_post = async (req, res) => {
 
 //#region Blog
 module.exports.blogs = async (req, res) => {
-    const blogs = await Blog.findAll({
-        // include: [ { model: Category}, { model: SubCategory}, { model: Image } ]
-    })
-    res.render('backend/blog', { layout: 'layouts/app.ejs', blogs })
+    const blogs = await Blog.findAll({})
+    res.render('backend/blogs', { layout: 'layouts/app.ejs', blogs })
 }
 module.exports.viewBlog_get = async (req, res) => {
     const slug = req.params.slug;
@@ -802,10 +800,10 @@ module.exports.viewBlog_get = async (req, res) => {
 module.exports.addBlog_get = async (req, res) => {
     res.render('backend/blog-add', { layout: 'layouts/app.ejs' })
 }
-module.exports.addBlog_post = async (req, res) => {
-    
+module.exports.addBlog_post = async (req, res) => {    
     const { name, slug, pagetitle, content, active } = req.body
-    const imageName = req.files.image.name
+    
+    const blogImage = req.files
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -815,16 +813,19 @@ module.exports.addBlog_post = async (req, res) => {
         return res.redirect('/home/add-blog')
     }
 
-    req.files.image.mv(`./public/images/assets/${imageName}` , function (err) {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log("uploaded");
-        }
-    })
+    if (blogImage) {
+        blogImage.image.mv(`./public/images/assets/${blogImage.image.name}` , function (err) {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log("uploaded");
+            }
+        })
+    }
+    
     const blog = {
         identifier: randomstring.generate(),
-        CaptionImage: imageName,
+        image: blogImage ? blogImage.image.name : null,
         name: name,
         slug: slug,
         pagetitle: pagetitle,
@@ -834,7 +835,7 @@ module.exports.addBlog_post = async (req, res) => {
     
     try {
         await Blog.create(blog)
-        req.flash('success', [{ message: 'blog created successfully.' }])
+        req.flash('success', [{ message: `Blog <strong>"${blog.name}"</strong> created successfully.` }])
         // delete req.session.blog
         res.redirect(`/home/view-blog/${blog.slug}`)
     } catch (err) {
@@ -863,6 +864,8 @@ module.exports.updateBlog_get = async (req, res) => {
 }
 module.exports.updateBlog_post = async (req, res) => {
     const { identifier, name, slug, pagetitle, content, active } = req.body
+    const blogImage = req.files
+
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -872,13 +875,23 @@ module.exports.updateBlog_post = async (req, res) => {
         return res.redirect(`/home/update-blog/${slug}`)
     }
 
+    if (blogImage) {
+        blogImage.image.mv(`./public/images/assets/${blogImage.image.name}` , function (err) {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log("uploaded");
+            }
+        })
+    }
+
     try {
         const blog = await Blog.findOne({ where: { identifier } });
         if (!blog) {
             req.flash('errors', [{ message: 'blog not found.' }])
             return res.redirect('/home/blogs')
         }
-
+        blog.image = blogImage ? blogImage.image.name : blog.image,
         blog.name = name;
         blog.slug = slug;
         blog.pagetitle = pagetitle;
@@ -887,6 +900,7 @@ module.exports.updateBlog_post = async (req, res) => {
 
         await blog.save();
 
+        req.flash('success', [{ message: `Blog <strong>"${blog.name}"</strong> Updated successfully.` }])
         res.redirect(`/home/view-blog/${blog.slug}`)
     } catch (error) {
         res.send(error)

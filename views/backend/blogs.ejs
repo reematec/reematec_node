@@ -10,6 +10,7 @@
 	<table>
 		<tr>
 		
+		<th>Image</th>
 		<th>Name</th>
 		<th>Slug</th>		
 		<th>Active</th>
@@ -17,7 +18,9 @@
 		</tr>
 		<% blogs.forEach(i => { %>
 		
-		<tr>              
+		<tr>
+			
+			<td><img width="100" src="/images/assets/<%= i.image %>" alt="<%= i.image %>"> </td>
 			<td><%= i.name %> </td>
 			<td><%= i.slug %> </td>
 			<td><%= i.active ? '✓' : '❌' %></td>
