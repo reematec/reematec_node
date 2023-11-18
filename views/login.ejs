@@ -9,9 +9,9 @@
         <% } %>
     <% } %>
 
-    
-
     <form action="" method="POST">
+        <input type="hidden" name="_csrfToken" value="<%= csrfToken %>">
+
         <div class="form-control">
             <label class="label" for="txtEmail">Email</label>
             <input class="textbox input-full" type="email" name="email" id="txtEmail" value="<%- message.login ? message.login[0].email : '' %>" required>

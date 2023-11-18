@@ -1,0 +1,59 @@
+<section class="container dashboard-page">
+
+    <%- include('../components/_flashMessages') %>
+
+    <div class="card">
+        <div  class="card-header">
+            <p>Update - User</p>
+        </div>
+        <div class="card-body">
+            
+            <form action="" method="POST">
+                
+                <input type="hidden" name="identifier" value="<%= user.identifier %>">
+
+                &nbsp;
+
+                <div >
+                    <label  for="txtName">Full Name: </label>
+                    <span class="field"> <%= user.firstname %> <%= user.lastname %></span>
+                </div>
+
+                    &nbsp;
+
+                <div >
+                    <label  for="txtName">Email: </label>
+                    <span class="field"><%= user.email %></span>
+                </div>
+
+                    &nbsp;
+
+                <div >
+                    <label  for="sltRoles">User Roles</label>
+                    <select class="select field" name="role" id="sltRoles">
+                        <option value="Admin" <% if (user.role === "Admin") { %><%= 'selected' %> <% } %> >Admin</option>
+                        <option value="Visitor" <% if (user.role === "Visitor") { %><%= 'selected' %> <% } %> >Visitor</option>
+                        <option value="Staff" <% if (user.role === "Staff") { %><%= 'selected' %> <% } %> >Staff</option>
+                    </select>
+                </div>
+
+                    &nbsp;
+
+                <div >
+                    <div>
+                        <label  for="chkActive">Active: </label>
+                        <input type="checkbox" name="active" id="chkActive" <% if (user.active) { %> <%= 'checked' %> <% } else { %> <%= '' %>  <% } %>>
+                    </div>
+                </div>
+
+                &nbsp;
+
+                <div>
+                    <input class="btn btn-normal btn-blue" type="submit" name="Submit" value="Submit">
+                    <a  class="btn btn-normal btn-gray" href="/home/users">Cancel</a>
+                </div>
+            </form> 
+
+        </div>
+    </div>
+</section>

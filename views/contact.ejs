@@ -12,35 +12,38 @@
 
     <div class="contact-section">
         <div class="contact-form">
-            <p>Fill in the fields below and we will contact you shortly</p>
-            <form class="frmContact" action="">
+
+            <p id="message"></p>
+            
+            <form id="contactus" class="frmContact" action="/contact" method="post">
                 <div class="form-control">
-                    <label class="label" for="txtName">Name</label>
-                    <input class="textbox input-full"  type="text" name="name" id="txtName">
-                    <span class="msg-error">That email address is too short, please use a longer one.</span>
+                    <label class="label" for="txtName">Name <span class="link-red">*</span></label>
+                    <input class="textbox input-full" minlength="4"  type="text" name="name" id="txtName" value="<%- message.contact ? message.contact[0].name : '' %>" autofocus required>
+                    <span class="msg-error"></span>
                 </div>
+
                 <div class="form-control">
-                    <label class="label" for="dplCountry">Country</label>
-                    <select class="select input-full" name="country" id="dplCountry" placeholder="testing">
-                        <option>Please select a country</option>
+                    <label class="label"  for="txtEmail">Email <span class="link-red">*</span></label>
+                    <input class="textbox input-full" type="email" name="email" id="txtEmail" value="<%- message.contact ? message.contact[0].email : '' %>" required>
+                    <span class="msg-error"></span>
+                </div>
+
+                <div class="form-control">
+                    <label class="label" for="dplCountry">Country <span class="link-red">*</span></label>
+                    <select class="select input-full" name="country" id="dplCountry" required >
+                        <option value="">Please select a country</option>
                         <option value="UK">UK</option>
                         <option value="USA">USA</option>
-                        
                     </select>
-                    <span class="msg-error">That email address is too short, please use a longer one.</span>
-                </div>
-                <div class="form-control">
-                    <label class="label"  for="txtEmail">Email</label>
-                    <input class="textbox input-full" type="email" name="email" id="txtEmail">
-                    <span class="msg-error">That email address is too short, please use a longer one.</span>
-                </div>
+                    <span class="msg-error"></span>
+                </div>                
                 
                 <div class="form-control">
-                    <label class="label" for="txtMessage">Message</label>
-                    <textarea class="textarea input-full" placeholder="Please provide a detailed description about your inquiry" type="email" name="message" id="txtMessage"></textarea>
-                    <span class="msg-error">That email address is too short, please use a longer one.</span>
+                    <label class="label" for="txtMessage">Message <span class="link-red">*</span></label>
+                    <textarea class="textarea input-full" name="message" id="txtMessage" placeholder="Please provide a detailed specification and description of your inquiry" required><%- message.contact ? message.contact[0].message : '' %></textarea>
+                    <span class="msg-error"></span>
                 </div>
-                <input class="btn btn-full btn-solid-primary" type="submit" value="Send">
+                <input id="btnSend" class="btn btn-full btn-solid-primary" type="submit" value="Send">
             </form>
         </div>
         
@@ -69,3 +72,57 @@
 </section>
 
 <%- include('./components/_footer') %>
+<%- contentFor('captcha-Script') %>
+<script src="https://www.google.com/recaptcha/api.js?render=6LefTBApAAAAAGdco4sK5twxnRng07x-QJLSaO8K"></script>
+<script>
+    document.getElementById('contactus').addEventListener('submit', (e)=>{
+        e.preventDefault();
+
+        const fullname =  document.querySelector('#txtName')
+        const email =  document.querySelector('#txtEmail')
+        const country =  document.querySelector('#dplCountry')
+        const message =  document.querySelector('#txtMessage')
+
+        grecaptcha.execute('6LefTBApAAAAAGdco4sK5twxnRng07x-QJLSaO8K', {action: 'submit'})
+        .then(async function(token) {
+            
+            const captcha = token
+            const data = JSON.stringify({ 
+                    fullname: fullname.value,
+                    email: email.value,
+                    country: country.value,
+                    message: message.value, 
+                    captcha
+                })
+
+            const response = await fetch('/contact', {
+                method: 'POST', 
+                headers: {
+                    'Accept': 'application/json, text/plain, */*',
+                    'content-type': 'application/json'
+                },
+                body: data,
+            })
+
+            const result = await response.json();
+            const messageElement = document.querySelector('#message')
+
+            if (result.success) {
+                messageElement.classList.add('message-success')
+                messageElement.textContent = result.message
+
+                fullname.value = ""
+                email.value = ""
+                country.selectedIndex = 0;  
+                message.value = ""
+
+            }else {
+                messageElement.classList.add('message-error')
+                messageElement.textContent = result.message
+            }
+
+        });
+
+    });
+
+</script>

@@ -2,6 +2,13 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
 
+const isAccountActive = (req, res, next) => {
+    if (req.user.active) {
+        return next()
+    }else{
+        res.redirect('/logout')
+    }
+}
 const requireAuth = (req, res, next) => {
     // console.log(req.cookies)
     // const token = req.cookies.jwt;
@@ -19,12 +26,23 @@ const requireAuth = (req, res, next) => {
     // }else{
     //     res.redirect('/login')
     // }
+    // console.log(req.user, " ", 4);
     console.log('is authenticated-------------------------------');
     if (req.isAuthenticated()) {
         return next()
     }
     res.redirect('/login')
 }
+
+
+const onlyAdmin = (req, res, next) => {
+    if (req.user.active === true && req.user.role === "Admin") {
+        return next()
+    }
+    res.redirect('/restricted')
+}
+
+
 
 const guestUser = (req, res, next) => {
     
@@ -34,7 +52,7 @@ const guestUser = (req, res, next) => {
     // }else{
     //     next()
     // }
-
+    
     if (req.isAuthenticated()) {
         return res.redirect('/')
     }
@@ -63,4 +81,4 @@ const guestUser = (req, res, next) => {
 //     }
 // }
 
-module.exports = {requireAuth, guestUser}
+module.exports = {requireAuth, guestUser, onlyAdmin, isAccountActive}

@@ -5,6 +5,7 @@
             <%- include('./components/_flashMessages') %>
 
             <form method="post">
+                <input type="hidden" name="_csrfToken" value="<%= csrfToken %>">
 
                 <div class="personal-fields">
                     <div class="form-control">

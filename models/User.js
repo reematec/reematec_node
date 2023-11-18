@@ -1,7 +1,6 @@
 const Sequelize = require('sequelize');
 const { isEmail } = require('validator');
 const bcrypt = require('bcrypt')
-
 const sequelize = require('../utils/sequelizeCN');
 
 
@@ -10,6 +9,10 @@ const User = sequelize.define('user', {
         type: Sequelize.DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true
+    },
+    identifier: {
+        type: Sequelize.DataTypes.STRING,
+        allowNull: false,
     },
     googleId: {
         type: Sequelize.DataTypes.STRING,
@@ -39,6 +42,7 @@ const User = sequelize.define('user', {
     image: {
         type: Sequelize.DataTypes.STRING,
     },
+    // Roles types are given at time of signup post action
     role: {
         type: Sequelize.DataTypes.STRING,
     },
@@ -51,14 +55,23 @@ const User = sequelize.define('user', {
 		allowNull: false,
 		defaultValue: false,
 	},
+    active: {
+		type: Sequelize.DataTypes.BOOLEAN,
+		defaultValue: true,
+	},
     expiresIn: {
 		type: Sequelize.DataTypes.DATE
 	},
 })
 
+
+
 User.beforeCreate(async (user, options) => {
     const salt = await bcrypt.genSalt();
- 	user.password = await bcrypt.hash(user.password, salt)    
+ 	user.password = await bcrypt.hash(user.password, salt);
+    
+    
+    
 });
 
 User.afterSave(async function (user, options){
@@ -73,6 +86,8 @@ User.sync(
 User.login = async function (email, password, done) {
 
 	const user = await User.findOne({where: { email }})
+
+    if (!user.active) return done(null, false, {message: 'Unverified Account'})
     
 	if (user) {
 		const auth = await bcrypt.compare(password, user.password)

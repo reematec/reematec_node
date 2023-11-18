@@ -18,10 +18,12 @@ const sequelize = require('../utils/sequelizeCN');
 const { createCanvas, loadImage } = require('canvas')
 const FileType = require('file-type');
 
+
 const nodemailer = require('nodemailer');
 const { encrypt, decrypt } = require('../utils/encrypter')
 const bcrypt = require('bcrypt')
 const crypto = require('crypto');
+const Tokens = require('csrf')
 
 Date.prototype.addHours = function (h) {
     this.setTime(this.getTime() + (h * 60 * 60 * 1000));
@@ -940,27 +942,154 @@ module.exports.deleteBlog_post = async (req, res) => {
 }
 //#endregion
 
+//#region User
+module.exports.users = async (req, res) => {
+    const users = await User.findAll({})
+    res.render('backend/Users', { layout: 'layouts/app.ejs', users })
+}
+module.exports.viewUser_get = async (req, res) => {
+    // const slug = req.params.slug;
+
+    // const errors = validationResult(req);
+    // if (!errors.isEmpty()) {
+    //     req.flash('blog', { slug })
+
+    //     req.flash('errors', errors.array())
+    //     return res.redirect('/home/blogs')
+    // }
+
+    // const blog = await Blog.findOne({ where: { slug: slug } })
+    // if (!blog) {
+    //     req.flash('errors', [{ message: 'blog not found.' }])
+    //     return res.redirect('/home/blogs')
+    // }
+
+    // res.render('backend/blog-view', { layout: 'layouts/app.ejs', blog })
+}
+module.exports.updateUser_get = async (req, res) => {User
+    const identifier = req.params.identifier
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        // req.flash('user', { identifier })
+
+        req.flash('errors', errors.array())
+        return res.redirect('/home/users')
+    }
+
+    const user = await User.findOne({ where: { identifier } });
+    if (!user) {
+        req.flash('errors', [{ message: 'User not found.' }])
+        return res.redirect('/home/Users')
+    }
+
+    res.render('backend/user-update', { layout: 'layouts/app.ejs', user })
+}
+module.exports.updateUser_post = async (req, res) => {
+    console.log(req.body);
+    const { identifier, role, active } = req.body
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        req.flash('user', { identifier, role, active })
+
+        req.flash('errors', errors.array())
+        return res.redirect(`/home/update-user/${identifier}`)
+    }
+    
+    try {
+        const user = await User.findOne({ where: { identifier } });
+        if (!user) {
+            req.flash('errors', [{ message: 'User not found.' }])
+            return res.redirect('/home/users')
+        }
+
+        const adminUsers = await User.findAndCountAll({ where: { role: "Admin" } });
+        if (user.role === 'Admin' && adminUsers.count <= 1) {
+            req.flash('info', [{ message: `User "${user.firstname} ${user.lastname}" could not be edited.`}])
+            return res.redirect('/home/users')
+        }
+        
+        user.role = role;
+        user.active = active ? true : false;;
+
+        await user.save();
+
+        req.flash('success', [{ message: `User <strong>"${user.firstname} ${user.lastname}"</strong> Updated successfully.` }])
+        // res.redirect(`/home/view-user/${user.slug}`)
+        res.redirect(`/home/users`)
+    } catch (error) {
+        res.send(error)
+    }
+
+
+}
+module.exports.deleteUser_get = async (req, res) => {
+    const identifier = req.params.identifier
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        req.flash('user', { identifier })
+
+        req.flash('errors', errors.array())
+        return res.redirect('/home/users')
+    }
+
+    const user = await User.findOne({ where: { identifier } });
+    if (!user) {
+        req.flash('errors', [{ message: 'User not found.' }])
+        return res.redirect('/home/users')
+    }
+    res.render('backend/user-delete', { layout: 'layouts/app.ejs', user })
+}
+module.exports.deleteUser_post = async (req, res) => {
+    const { identifier } = req.body
+
+    const user = await User.findOne({ where: { identifier } });
+
+    const adminUsers = await User.findAndCountAll({ where: { role: "Admin" } });
+    if (user.role === 'Admin' && adminUsers.count <= 1) {
+        req.flash('info', [{ message: `User "${user.firstname} ${user.lastname}" could not be deleted.`}])
+        return res.redirect('/home/users')
+    }
+    
+    if (user) {
+        req.flash('success', [{ message: `User "${user.firstname} ${user.lastname}" deleted successfully.`}])
+        await user.destroy()
+    } else {
+        req.flash('errors', [{ message: 'user not found.' }])
+    }
+    return res.redirect('/home/users')
+}
+//#endregion
+
 module.exports.signup_get = (req, res) => {
-    res.render('signup', { layout: 'layouts/main.ejs' })
+    res.render('signup', { layout: 'layouts/main.ejs'})
 }
 
 module.exports.signup_post = async (req, res) => {
     const { first_name, last_name, email, password1, password2 } = req.body;
-    const role = 'customer'
+    let role = 'Visitor'
+
+    const users = await User.findAndCountAll();
+    if (users.count === 0) role = 'Admin' 
+    
 
     if (password1 !== password2) {
         req.flash('signup', { first_name, last_name, email })
         req.flash('errors', [{ message: "Password is not correct" }])
         return res.redirect('/signup');
-    }
+    }   
 
     try {
         const user = await User.create({
+            identifier: randomstring.generate(),
             firstname: first_name,
             lastname: last_name,
             email: email,
             password: password1,
-            role: role
+            role: role,
+            active: true,
         })
 
         req.flash('success', [{ message: "Account created" }])
@@ -973,7 +1102,7 @@ module.exports.signup_post = async (req, res) => {
 }
 
 module.exports.login_get = (req, res) => {
-    res.render('login', { layout: 'layouts/main.ejs' })
+    res.render('login', { layout: 'layouts/main.ejs'})
 }
 
 // this login_post is old code
@@ -1187,3 +1316,4 @@ function validationResultwithoutFields(req, res, redirect,) {
         return res.redirect(redirect)
     }
 }
+
