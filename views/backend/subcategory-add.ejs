@@ -10,8 +10,7 @@
         <div class="card-body">
 
             <form action="/home/add-subcategory" method="POST">
-
-
+                <input type="hidden" name="_csrfToken" value="<%= csrfToken %>">
                 <div class="form-control">
                     <label class="label caption" for="sltCategory">Main Category</label>
                     <select class="select field" name="category" id="sltCategory">

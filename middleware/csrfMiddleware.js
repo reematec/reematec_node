@@ -6,7 +6,7 @@ const verifyCSRF = (req, res, next) => {
         // // const secret = tokens.secretSync();
         // // const token = tokens.create(secret);
         const tokenVerification = tokens.verify(process.env.CSRF_TOKEN, req.body._csrfToken)
-        // console.log('token verificiation:' + tokenVerification);
+        console.log('token verificiation: ' + tokenVerification);
             
         if (!tokenVerification) {
             res.status(403);

@@ -10,6 +10,7 @@
             <p>This action is permanent.</p>
 
             <form action="/home/delete-subcategory/<%= subcategory.slug %>" method="POST">
+                <input type="hidden" name="_csrfToken" value="<%= csrfToken %>">
                 <input type="hidden" name="slug" value="<%= subcategory.slug %>">
                 <div>
                     <a class="btn btn-normal btn-gray" href="/home/subcategory">Cancel</a>

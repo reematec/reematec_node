@@ -9,7 +9,7 @@
         <div class="card-body">
             
             <form method="POST" action="/home/update-size/<%= size.identifier %>">
-
+                <input type="hidden" name="_csrfToken" value="<%= csrfToken %>">
                 <div class="form-control">
                     <label class="label caption" for="txtSize">Size: </label>
                     <input class="textbox field" type="text" name="size" id="txtSize" value="<%= size.size %>">

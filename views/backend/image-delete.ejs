@@ -10,7 +10,7 @@
             
             <img height="50" src="/images/assets/<%= image.src %>"/>
             <form action="/home/delete-image/<%= image.identifier %>" method="POST">
-                
+                <input type="hidden" name="_csrfToken" value="<%= csrfToken %>">
                 
                 <div>
                     <a class="btn btn-normal btn-gray" href="/home/images">Cancel</a>

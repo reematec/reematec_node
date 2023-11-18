@@ -11,6 +11,8 @@
         <div class="card-body">            
             
             <form encType="multipart/form-data" method="POST">
+
+                <input type="hidden" name="_csrfToken" value="<%= csrfToken %>">
                 
                 <div class="form-control">
                     <label class="label caption" for="image">Main Image: </label>

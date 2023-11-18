@@ -16,6 +16,7 @@
             <p id="message"></p>
             
             <form id="contactus" class="frmContact" action="/contact" method="post">
+                <input type="hidden" id="_csrfToken" name="_csrfToken" value="<%= csrfToken %>">
                 <div class="form-control">
                     <label class="label" for="txtName">Name <span class="link-red">*</span></label>
                     <input class="textbox input-full" minlength="4"  type="text" name="name" id="txtName" value="<%- message.contact ? message.contact[0].name : '' %>" autofocus required>
@@ -82,6 +83,7 @@
         const email =  document.querySelector('#txtEmail')
         const country =  document.querySelector('#dplCountry')
         const message =  document.querySelector('#txtMessage')
+        const csrf =  document.querySelector('#_csrfToken')
 
         grecaptcha.execute('6LefTBApAAAAAGdco4sK5twxnRng07x-QJLSaO8K', {action: 'submit'})
         .then(async function(token) {
@@ -91,34 +93,45 @@
                     fullname: fullname.value,
                     email: email.value,
                     country: country.value,
-                    message: message.value, 
+                    message: message.value,
+                    _csrfToken: csrf.value,
                     captcha
                 })
 
-            const response = await fetch('/contact', {
-                method: 'POST', 
-                headers: {
-                    'Accept': 'application/json, text/plain, */*',
-                    'content-type': 'application/json'
-                },
-                body: data,
-            })
-
-            const result = await response.json();
-            const messageElement = document.querySelector('#message')
-
-            if (result.success) {
-                messageElement.classList.add('message-success')
-                messageElement.textContent = result.message
-
-                fullname.value = ""
-                email.value = ""
-                country.selectedIndex = 0;  
-                message.value = ""
-
-            }else {
+                
+            try {
+                const response = await fetch('/contact', {
+                    method: 'POST', 
+                    headers: {
+                        'Accept': 'application/json, text/plain, */*',
+                        'content-type': 'application/json'
+                    },
+                    body: data,
+                })
+    
+                const result = await response.json();
+                const messageElement = document.querySelector('#message')
+                
+                console.log(result);
+    
+                if (result.success) {
+                    messageElement.classList.add('message-success')
+                    messageElement.textContent = result.message
+    
+                    fullname.value = ""
+                    email.value = ""
+                    country.selectedIndex = 0;  
+                    message.value = ""
+    
+                }else {
+                    messageElement.classList.add('message-error')
+                    messageElement.textContent = result.message
+                }
+                
+            } catch (error) {
+                console.log('bad response');
                 messageElement.classList.add('message-error')
-                messageElement.textContent = result.message
+                messageElement.textContent = 'Email not sent, invalid request'
             }
 
         });

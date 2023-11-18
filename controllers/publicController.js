@@ -24,7 +24,6 @@ module.exports.contact = (req, res) => {
 }
 // https://medium.com/@sergeisizov/using-recaptcha-v3-with-node-js-6a4b7bc67209
 module.exports.contact_post = async (req, res) => {
-    console.log(req.body);
     
     if (!req.body.captcha) res.json({'message': 'Captcha token is undefined', success: false})
 

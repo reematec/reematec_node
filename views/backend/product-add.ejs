@@ -9,6 +9,7 @@
         <div class="card-body">
 
             <form action="/home/add-product" method="POST">
+                <input type="hidden" name="_csrfToken" value="<%= csrfToken %>">
 
                 <div class="form-control">
                     <label class="label caption" for="txtName">Name: </label>

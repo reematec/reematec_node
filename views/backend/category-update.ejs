@@ -9,6 +9,7 @@
         <div class="card-body">
             
             <form action="/home/update-category" method="post">
+                <input type="hidden" name="_csrfToken" value="<%= csrfToken %>">
                 <input type="hidden" name="identifier" value="<%= category.identifier %>">
 
                 <div class="form-control">

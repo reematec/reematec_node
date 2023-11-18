@@ -10,6 +10,7 @@
             <p>This action is permanent.</p>
 
             <form action="" method="POST">
+                <input type="hidden" name="_csrfToken" value="<%= csrfToken %>">
                 <input type="hidden" name="identifier" value="<%= blog.identifier %>">
                 <div>
                     <a class="btn btn-normal btn-gray" href="/home/blog">Cancel</a>

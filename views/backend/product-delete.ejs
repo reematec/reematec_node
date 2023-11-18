@@ -9,7 +9,8 @@
             <p>Are you sure you want to delete <strong>"<%= product.name %>"</strong>?</p>
             <p>This action is permanent.</p>
             
-            <form action="/home/delete-product/<%= product.slug %>" method="POST">                
+            <form action="/home/delete-product/<%= product.slug %>" method="POST">   
+                <input type="hidden" name="_csrfToken" value="<%= csrfToken %>">             
                 <input type="hidden" name="slug" value="<%= product.slug %>">
                 <div>
                     <a class="btn btn-normal btn-gray" href="/home/product">Cancel</a>

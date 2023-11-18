@@ -9,6 +9,8 @@
         <div class="card-body">
             
             <form encType="multipart/form-data"  action="/home/update-blog" method="post">
+
+                <input type="hidden" name="_csrfToken" value="<%= csrfToken %>">
                 <input type="hidden" name="identifier" value="<%= blog.identifier %>">
 
                 <div class="form-control">

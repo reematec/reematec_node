@@ -9,6 +9,8 @@
         <div class="card-body">
 
             <form method="POST">
+                <input type="hidden" name="_csrfToken" value="<%= csrfToken %>">
+                
                 <div class="form-control">
                     <label class="label caption" for="txtName">Name: </label>
                     <input class="textbox field" type="text" name="name" id="txtName" <% if (product.name) { %> value="<%= product.name %>" <% } %>> 

@@ -9,6 +9,8 @@
         <div class="card-body">
             <img height="100" src="/images/assets/<%= image.src %>"  alt="">
             <form method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="_csrfToken" value="<%= csrfToken %>">
+                
                 <div class="form-control">
                     <label class="label caption" for="txtAlt">Alternate Text: </label>
                     <input class="textbox field" type="text" name="altText" id="txtAlt" value="<%= image.altText %>">
