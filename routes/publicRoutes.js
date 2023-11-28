@@ -9,6 +9,7 @@ router.get('/',  publicController.home);
 router.get('/about', publicController.about );
 router.get('/contact', publicController.contact);
 router.post('/contact', publicController.contact_post);
+router.post('/rfq', publicController.rfq_post);
 router.get('/blogs', publicController.blogs);
 router.get('/blog/:slug', publicController.blog);
 router.get('/faqs', publicController.faq);

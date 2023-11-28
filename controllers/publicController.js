@@ -81,6 +81,65 @@ module.exports.contact_post = async (req, res) => {
     });
     // res.render('contact', {layout: 'layouts/main.ejs'})
 }
+module.exports.rfq_post = async (req, res) => {
+    // console.log(req.body);
+    
+    if (!req.body.captcha) res.json({'message': 'Captcha token is undefined', success: false})
+
+    const verifyUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${'6LefTBApAAAAAA-rYEGQaEeY2FZPqxhkqUQFVAlx'}&response=${req.body.captcha}`
+    const response = await fetch(verifyUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    //   body: JSON.stringify(data),
+    });
+
+    const result = await response.json();
+    // console.log(result);
+    
+    if (!result.success || result.score < 0.4) return res.json({'message': "Email could not be sent.", success: false})
+        
+    const {fullname, email, country, quantity} = req.body
+    
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        req.flash('rfq', {fullname, email, country, quantity})
+
+        // req.flash('errors', errors.array())
+        res.json({errors: errors.array()})
+        return res.redirect('back')
+    }
+
+    // let transport = nodemailer.createTransport({
+    //     host: "sandbox.smtp.mailtrap.io",
+    //     port: 2525,
+    //     auth: { user: "ca01814960f9c3", pass: "662cb7ad726e43" }
+    // }, tls = { rejectUnauthorized: false, });
+        
+    // const mail = {
+    //     from: 'reematec@gmail.com', // Sender address
+    //     to: email,         // List of recipients
+    //     subject: 'Inquiry to Reema Group of Companies', // Subject line
+    //     html: `<p> Hello ${fullname} </p>
+
+    //     <p>Thanks for writing to us, your inquiry is important us and we reply you as soon as possible.</p>
+
+    //     <p>Kind Regards,</p>
+    //     <p>Reema Group of Companies</p>`,
+    // };
+    
+    // transport.sendMail(mail, function (err, info) {
+    //     if (err) {
+    //         console.log(err)
+    //         return res.json({'message': "Email could not be sent.", success: false})
+    //     } else {
+    //         return res.json({'message': "Email has been sent", success: true})
+    //         console.log(info);
+    //     }
+    // });
+    return res.json({'message': "Your RFQ has been sent successfully", success: true})
+}
 module.exports.products = async (req, res) => {
     // http://localhost:3000/products
     const categories = await Category.findAll({ include: SubCategory })
@@ -89,7 +148,7 @@ module.exports.products = async (req, res) => {
 
     const products = await Product.findAndCountAll({
         distinct: true,
-        limit:9,
+        limit:6,
         offset:0,
         include: [ { model: Category}, { model: SubCategory}, { model: Image } ]
     })
@@ -106,12 +165,13 @@ module.exports.products_page = async (req, res) => {
         limit, offset,
         include: [ { model: Category}, { model: SubCategory}, { model: Image } ] 
     }).then(data => {
-            const response = getPagingData(data, page, limit);
-            res.json(response);
-        }).catch((err) => { 
-            res.json(500, { message: err.message || "Some error occurred."}
-        );
-    });
+        console.log(data);
+        const response = getPagingData(data, page, limit);
+        res.json(response);
+    }).catch((err) => { 
+        res.json(500, { message: err.message || "Some error occurred."}
+    );
+});
     
 }
 module.exports.categoryProducts = async (req, res) => {
@@ -220,7 +280,7 @@ module.exports.access_restricted = (req, res) => {
 
 
 const getPagination = (page, size) => {
-    const limit=9;
+    const limit=6;
     const offset = page ? page * limit : 0;         
     return { limit, offset };
 };

@@ -30,10 +30,12 @@
 
                         </ul>
                     </li>
-                <% } else { %>
-                    <li class="sidebar__list__items"><a class="btn" href="/category/<%= c.slug %>"><%= c.name %> </a></li>
-                <% } %>
-            <% }) %>
+                    <% } else { %>
+                        <li class="sidebar__list__items"><a class="btn" href="/category/<%= c.slug %>">
+                                <%= c.name %>
+                            </a></li>
+                        <% } %>
+                            <% }) %>
 
         </ul>
     </aside>
@@ -71,29 +73,31 @@
         <div id="product-container" class="product-page-collection__grid">
 
             <% for (let p=0; p < products.rows.length; p++) {%>
-                <div class="product-page-collection__grid__card">
+                
+                <div quoteWrapper class="product-page-collection__grid__card">
                     <a class="btn card__wrapper" href="/product/<%= products.rows[p].slug %>">
-                        <img class="image-responsive" src="/images/assets/300/<%= products.rows[p].images[0].src %>"alt="">
-                        
+                        <img productImage class="image-responsive" src="/images/assets/300/<%= products.rows[p].images[0].src %>"
+                            alt="">
+
                         <div class="card__caption">
                             <div class="card__caption__basic">
-                                <p class="card__caption__basic__name">Arena Star</p>
+                                <p class="card__caption__basic__name"><%= products.rows[p].name %></p>
                                 <div class="card__caption__basic__info">
-                                    <h3 class="construction-type" >Fusion Tec</h3>
+                                    <h3 class="construction-type">Fusion Tec</h3>
                                     <p class="usage">Top Competition</p>
                                 </div>
                             </div>
-    
+
                             <div class="card__caption__attribute">
                                 <div class="card__caption__attribute__sizing">
                                     <h4 class="card__caption__attribute__sizes">&nbsp;</h4>
                                     <p class="">
-                                        <span class="">&nbsp;</span>   
+                                        <span class="">&nbsp;</span>
                                     </p>
                                 </div>
-    
-                                <button>GET QUOTE</button>
-                            </div> 
+
+                                <button quoteButton class="quote-button">Get Quote</button>
+                            </div>
                         </div>
                     </a>
                 </div>
@@ -104,106 +108,106 @@
         <% if (products.count) { %>
             <button class="btn btn-standard btn-solid-primary" id="btnLoadMore">Load More</button>
 
-        <% } %>
+            <% } %>
     </section>
 </article>
 
 <%- include('./components/_recommended') %>
 
-    <%- include('./components/_footer') %>
+<%- include('./components/_footer') %>
 
 
-        <script>
-            const url = window.location.href
+<script>
+    const url = window.location.href
 
-            let page = 1;
-            const productContainer = document.querySelector('#product-container')
-            const btnLoadMore = document.querySelector('#btnLoadMore')
+    let page = 1;
+    const productContainer = document.querySelector('#product-container')
+    const btnLoadMore = document.querySelector('#btnLoadMore')
 
-            btnLoadMore.addEventListener('click', (e) => {
-                e.preventDefault()
+    btnLoadMore.addEventListener('click', (e) => {
+        e.preventDefault()
 
-                fetch(`${url}/${page}`).then(response => response.json())
-                    .then(data => {
-                        const products = data.data.rows
+        fetch(`${url}/${page}`)
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            const products = data.data.rows
+            // console.log(Number(data.currentPage), data.totalPages);
 
-                        console.log(Number(data.currentPage), data.totalPages);
+            if (Number(data.currentPage) + 1 >= data.totalPages) btnLoadMore.style.visibility = 'hidden'
 
-                        if (Number(data.currentPage) + 1 >= data.totalPages) {
+            page++
 
-                            btnLoadMore.style.visibility = 'hidden'
-                        }
+            products.forEach(product => {
 
-                        page++
+                const card = document.createElement('div')
+                card.classList = 'product-page-collection__flex__card'
+                const cardLink = document.createElement('a')
+                cardLink.classList = 'btn card__wrapper'
+                cardLink.href = `/product/${product.slug}`
+                card.append(cardLink)
 
-                        products.forEach(product => {
+                const thumb = document.createElement('img')
+                thumb.classList = 'image-responsive'
+                thumb.src = `/images/assets/300/${product.images[0].src}`
+                cardLink.append(thumb)
 
-                            const card = document.createElement('div')
-                            card.classList = 'product-page-collection__flex__card'
-                            const cardLink = document.createElement('a')
-                            cardLink.classList = 'btn card__wrapper'
-                            cardLink.href = `/product/${product.slug}`
-                            card.append(cardLink)
+                const cardCaption = document.createElement('div')
+                cardCaption.classList = 'card__caption'
+                cardLink.append(cardCaption)
 
-                            const thumb = document.createElement('img')
-                            thumb.classList = 'image-responsive'
-                            thumb.src = `/images/assets/300/${product.images[0].src}`
-                            cardLink.append(thumb)
+                const cardCaptionBasic = document.createElement('div')
+                cardCaptionBasic.classList = 'card__caption__basic'
+                cardCaption.append(cardCaptionBasic)
 
-                            const cardCaption = document.createElement('div')
-                            cardCaption.classList = 'card__caption'
-                            cardLink.append(cardCaption)
+                const cardCaptionP = document.createElement('p')
+                cardCaptionP.classList = 'card__caption__basic__name'
+                cardCaptionP.append(product.name)
+                cardCaptionBasic.append(cardCaptionP)
 
-                            const cardCaptionBasic = document.createElement('div')
-                            cardCaptionBasic.classList = 'card__caption__basic'
-                            cardCaption.append(cardCaptionBasic)
+                const cardCaptionBasicInfo = document.createElement('div')
+                cardCaptionBasicInfo.classList = 'card__caption__basic__info'
+                cardCaptionBasic.append(cardCaptionBasicInfo)
 
-                            const cardCaptionP = document.createElement('p')
-                            cardCaptionP.classList = 'card__caption__basic__name'
-                            cardCaptionP.append(product.name)
-                            cardCaptionBasic.append(cardCaptionP)
+                const cardCaptionBasicInfoP = document.createElement('p')
+                cardCaptionBasicInfo.append(cardCaptionBasicInfoP)
+                if (product.categoryId) cardCaptionBasicInfoP.append(product.category.name)
 
-                            const cardCaptionBasicInfo = document.createElement('div')
-                            cardCaptionBasicInfo.classList = 'card__caption__basic__info'
-                            cardCaptionBasic.append(cardCaptionBasicInfo)
+                const cardCaptionBasicInfoPP = document.createElement('p')
+                cardCaptionBasicInfo.append(cardCaptionBasicInfoPP)
+                cardCaptionBasicInfoPP.append(product.usage)
 
-                            const cardCaptionBasicInfoP = document.createElement('p')
-                            cardCaptionBasicInfo.append(cardCaptionBasicInfoP)
-                            if (product.categoryId) cardCaptionBasicInfoP.append(product.category.name)
-
-                            const cardCaptionBasicInfoPP = document.createElement('p')
-                            cardCaptionBasicInfo.append(cardCaptionBasicInfoPP)
-                            cardCaptionBasicInfoPP.append(product.usage)
-
-                            productContainer.append(card)
+                productContainer.append(card)
 
 
-                            //     productContainer.innerHTML += `<div class="product-page-collection__flex__card">
-                            //     <a class="btn card__wrapper" href="/product/${product.slug}">
-                            //         <img class="image-responsive" src="/images/assets/300/${product.images[0].src}" alt="">
-                            //         <div class="card__caption">
+                //     productContainer.innerHTML += `<div class="product-page-collection__flex__card">
+                //     <a class="btn card__wrapper" href="/product/${product.slug}">
+                //         <img class="image-responsive" src="/images/assets/300/${product.images[0].src}" alt="">
+                //         <div class="card__caption">
 
-                            //             <div class="card__caption__basic">
-                            //                 <p class="card__caption__basic__name">
-                            //                     ${product.name}
-                            //                 </p>
-                            //                 <div class="card__caption__basic__info">
-                            //                     <p>
-                            //                         ${product.categoryId ? product.category.name : ''}
-                            //                     </p>
-                            //                     <p>
-                            //                         ${ product.usage}
-                            //                     </p>
-                            //                 </div>
-                            //             </div>
-                            //         </div>
-                            //     </a>
-                            // </div>`
+                //             <div class="card__caption__basic">
+                //                 <p class="card__caption__basic__name">
+                //                     ${product.name}
+                //                 </p>
+                //                 <div class="card__caption__basic__info">
+                //                     <p>
+                //                         ${product.categoryId ? product.category.name : ''}
+                //                     </p>
+                //                     <p>
+                //                         ${ product.usage}
+                //                     </p>
+                //                 </div>
+                //             </div>
+                //         </div>
+                //     </a>
+                // </div>`
 
-                        });
-                    })
+            });
+        })
+    })
 
-            })
 
+</script>
 
-        </script>
+<%- contentFor('captcha-Script') %>
+<script src="https://www.google.com/recaptcha/api.js?render=6LefTBApAAAAAGdco4sK5twxnRng07x-QJLSaO8K"></script>

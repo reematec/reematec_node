@@ -511,6 +511,19 @@ p {
   border: 1px solid #1a1a1a;
 }
 
+.btn-solid-black {
+  border: 1px solid #000;
+  background: #000;
+  color: #fff;
+  border-radius: 0.1rem;
+}
+
+.btn-solid-black:hover {
+  transition: 0.3s all;
+  background: #333333;
+  border: 1px solid #333333;
+}
+
 .btn-icon {
   color: white;
   padding: 1rem 1.5rem;
@@ -724,6 +737,130 @@ tr:nth-child(even) {
 .message-error {
   color: red;
   font-size: 1.4rem;
+}
+
+.flex {
+  display: flex;
+}
+
+.center-middle {
+  justify-content: center;
+  align-items: center;
+}
+
+.backdrop {
+  background-color: rgba(0, 0, 0, 0.7);
+  top: 0;
+  bottom: 0;
+  position: fixed;
+  left: 0;
+  right: 0;
+  z-index: 9;
+}
+
+.message-wrapper {
+  position: fixed;
+  top: -5.7rem;
+  left: 10rem;
+  right: 10rem;
+  text-align: center;
+  z-index: 8;
+  color: white;
+}
+
+.bg-green {
+  background: green;
+}
+
+.bg-red {
+  background: red;
+}
+
+.show-message {
+  animation-name: message-slide;
+  animation-duration: 4s;
+  animation-iteration-count: 1;
+  animation-direction: alternate;
+}
+
+@keyframes message-slide {
+  0% {
+    top: -5.7rem;
+  }
+  10% {
+    top: 0rem;
+  }
+  90% {
+    top: 0rem;
+  }
+  100% {
+    top: -5.7rem;
+  }
+}
+.loader {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  position: relative;
+  animation: rotate 1s linear infinite;
+}
+
+.loader::before,
+.loader::after {
+  content: "";
+  box-sizing: border-box;
+  position: absolute;
+  inset: 0px;
+  border-radius: 50%;
+  border: 5px solid #FFF;
+  animation: prixClipFix 2s linear infinite;
+}
+
+.loader::after {
+  transform: rotate3d(90, 90, 0, 180deg);
+  border-color: #FF3D00;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@keyframes prixClipFix {
+  0% {
+    clip-path: polygon(50% 50%, 0 0, 0 0, 0 0, 0 0, 0 0);
+  }
+  50% {
+    clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 0, 100% 0, 100% 0);
+  }
+  75%, 100% {
+    clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 100% 100%, 100% 100%);
+  }
+}
+.quote-button {
+  background: #000;
+  color: white;
+  padding: 1rem 1.2rem;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  border-radius: 0.3rem;
+  transition: 0.3s all;
+  font-weight: 300;
+  font-size: 1.2rem;
+  letter-spacing: 1px;
+}
+
+.quote-button:hover {
+  background: #FFC300;
+  color: black;
+}
+
+.display-none {
+  display: none;
 }
 
 .topbar {
@@ -998,24 +1135,6 @@ tr:nth-child(even) {
   color: #999;
   margin: 0;
 }
-.product-collection__flex__card .card__wrapper .card__caption__attribute button {
-  background: #000;
-  color: white;
-  padding: 1rem 1.2rem;
-  cursor: pointer;
-  border: none;
-  outline: none;
-  border-radius: 0.3rem;
-  transition: 0.3s all;
-  font-weight: 300;
-  font-size: 1.2rem;
-  letter-spacing: 1px;
-}
-.product-collection__flex__card .card__wrapper .card__caption__attribute button:hover {
-  background: #FFC300;
-  font-weight: 500;
-  color: black;
-}
 .product-collection__flex__card:hover {
   border-top: 5px solid #000;
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
@@ -1123,6 +1242,11 @@ tr:nth-child(even) {
 .footer__heading span {
   display: block;
   font-weight: 300;
+}
+
+.message-wrapper {
+  left: 0rem;
+  right: 0rem;
 }
 
 /* *********************************************************
@@ -1336,7 +1460,6 @@ tr:nth-child(even) {
 }
 .product-page-collection__grid__card .card__wrapper .card__caption__attribute button:hover {
   background: #FFC300;
-  font-weight: 500;
   color: black;
 }
 .product-page-collection__grid__card:hover {
@@ -1879,7 +2002,7 @@ tr:nth-child(even) {
 }
 
 .modal-content {
-  width: 80%;
+  width: 90%;
 }
 
 #frmSearch #txtSearch {
@@ -1901,13 +2024,21 @@ tr:nth-child(even) {
   margin-bottom: 2rem;
 }
 #modal-quote #rfq-preview img {
-  height: 100px;
+  max-width: 10rem;
+  max-height: 10rem;
+}
+#modal-quote #rfq-preview .rfq-detail h4 {
+  font-size: 1.6rem;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 #modal-quote #rfq-preview .rfq-detail p {
   color: #777;
   font-size: 1.4rem;
-  margin-left: 1rem;
-  margin-right: 1rem;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
   margin-top: 0;
   margin-bottom: 0;
 }
@@ -1918,6 +2049,10 @@ tr:nth-child(even) {
 #modal-quote #frmQuote input {
   margin-top: 0;
   margin-bottom: 2rem;
+}
+#modal-quote #frmQuote .sidebyside {
+  display: flex;
+  gap: 1rem;
 }
 
 #image-showcase img {
@@ -2278,6 +2413,13 @@ tr:nth-child(even) {
 
   .features__section {
     flex-basis: 43%;
+  }
+
+  .message-wrapper {
+    left: 2.5rem;
+    right: 2.5rem;
+    border-bottom-left-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
   }
 
   /* *********************************************************

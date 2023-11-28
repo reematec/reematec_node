@@ -18,13 +18,13 @@
         </ul>
 
         <div class="product-views">
-            <img class="image-responsive" src="/images/assets/<%= product.images[0].src %>" alt="">
+            <img id="current-image" class="image-responsive" src="/images/assets/<%= product.images[0].src %>" alt="">
         </div>
 
     </div>
 
     <div class="details">
-        <h1 class="details__heading"><%= product.name %> <span> <% if (product.subCategoryId > 0) { %> <%= product.subCategory.name %> &nbsp; | &nbsp; <% } %> <%= product.category.name %></span></h1>
+        <h1 id="name-rfq" class="details__heading"><%= product.name %> <span> <% if (product.subCategoryId > 0) { %> <%= product.subCategory.name %> &nbsp; | &nbsp; <% } %> <%= product.category.name %></span></h1>
 
         <p class="details__description"><%= product.shortDescription %></p>
         <P class="details__usage">Usage: <span><%= product.usage %></span></P>
@@ -37,7 +37,7 @@
             <% }) %>
         </select>
             
-        <button class="btn btn-full btn-solid-primary">Ask for Quote</button>
+        <button RFQ-BUTTON class="btn btn-full btn-solid-primary">Ask for Quote</button>
 
     </div>
 </article>
@@ -83,3 +83,6 @@
 <%- include('./components/_recommended') %>
 
 <%- include('./components/_footer') %>
+
+<%- contentFor('captcha-Script') %>
+<script src="https://www.google.com/recaptcha/api.js?render=6LefTBApAAAAAGdco4sK5twxnRng07x-QJLSaO8K"></script>

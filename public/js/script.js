@@ -116,6 +116,10 @@ if (contactSlider) {
 }
 //#endregion
 
+const waitSpinner = document.querySelector('#wait-spinner')
+const messagebox = document.querySelector('#messagebox')
+// console.log(waitSpinner);
+
 // ********************************************************************
 // Search Modal & Modal Common Functions
 // ********************************************************************
@@ -206,40 +210,148 @@ function modalClose(modal) {
 // ********************************************************************
 //#region 
 let quoteWrapper, modalQuote;
-let inquiredProductImage, inquiredProductName, inquiredProductConstructionType, inquiredProductUsage
-quoteWrapper = document.querySelectorAll(".quote-wrapper");
+let inquiredProductImage, inquiredProductName
+
+const btnRFQ = document.querySelector("[RFQ-BUTTON]");
+if (btnRFQ) {
+    btnRFQ.addEventListener('click', (e)=>{
+        e.preventDefault()
+
+        if (modalQuote) {
+            
+            toggleModal(modalQuote);
+
+            let rfqPreview = modalQuote.querySelector("#rfq-preview");
+            rfqPreview.querySelector(".image-responsive").src = document.querySelector("#current-image").src;            
+            rfqPreview.querySelector("#prod-name").innerText = document.querySelector("#name-rfq").firstChild.textContent;
+            
+            clearQuotefrm()
+        }
+    })
+}
+
+quoteWrapper = document.querySelectorAll("[quoteWrapper]");
+modalQuote = document.querySelector('#modal-quote');
 
 for (let i = 0; i < quoteWrapper.length; i++) {
     quoteWrapper[i].addEventListener('click', GetQuoteModal);
 }
-function GetQuoteModal(e) {
-    console.time("GetQuoteModal")
 
-    if (e.target.classList == 'quote-button') {
+function GetQuoteModal(e) {
+    
+    if (e.target.hasAttribute('quoteButton')) {
         e.preventDefault();
-        if (document.querySelector('#modal-quote')) {
-            //Quote Modal is assigned to the variable only here.
-            modalQuote = document.querySelector('#modal-quote');
+        
+        if (modalQuote) {
+            
             toggleModal(modalQuote);
 
-            let rfqPreview = document.getElementById("rfq-preview");
-            const element = e.target.parentElement.parentElement.parentElement;
+            let rfqPreview = modalQuote.querySelector("#rfq-preview");
+            const cardWrapperAnchorTag = e.target.parentElement.parentElement.parentElement;
 
-            rfqPreview.querySelector(".image-responsive").src = element.querySelector(".product-image").src;
-            rfqPreview.querySelector("#prod-name").innerText = element.querySelector(".card__caption__basic__name").innerText;
-            rfqPreview.querySelector("#prod-construction").innerText = element.querySelector(".construction-type").innerText;
-            rfqPreview.querySelector("#prod-usage").innerText = element.querySelector(".usage").innerText;
+            rfqPreview.querySelector(".image-responsive").src = cardWrapperAnchorTag.querySelector("[productImage]").src;
+            rfqPreview.querySelector("#prod-name").innerText = cardWrapperAnchorTag.querySelector(".card__caption__basic__name").innerText;
+
+            clearQuotefrm()   
         }
     }
-
-    console.timeEnd("GetQuoteModal")
 }
 
-if (document.querySelector('#modal-quote .close-button')) {
-    btnClose = document.querySelector('#modal-quote .close-button');
-    btnClose.addEventListener("click", function () {
-        modalClose(modalQuote);
+function clearQuotefrm() {
+    const frmQuote = modalQuote.querySelector('#frmQuote')
+    frmQuote.txtFullName.value = null
+    frmQuote.txtEmail.value = null
+    frmQuote.txtCountry.value = null
+    frmQuote.txtQuantity.value = null
+    
+    frmQuote.addEventListener('submit', sendQuote);
+}
+
+function sendQuote (e) {
+    e.preventDefault()
+    e.stopImmediatePropagation()
+    
+    grecaptcha.execute('6LefTBApAAAAAGdco4sK5twxnRng07x-QJLSaO8K', {action: 'submit'})
+    .then(async function(token) {
+        
+        const data = JSON.stringify({ 
+            fullname: e.target.txtFullName.value,
+            email: e.target.txtEmail.value,
+            country: e.target.txtCountry.value,
+            quantity: e.target.txtQuantity.value,
+            _csrfToken: e.target._csrfToken.value,
+            captcha: token
+        })
+
+        
+            waitSpinner.classList.remove('display-none')
+            waitSpinner.classList.add('flex')
+            
+        try {
+            const response = await fetch('/rfq', {
+                method: 'POST', 
+                headers: {
+                    'Accept': 'application/json, text/plain, */*',
+                    'content-type': 'application/json'
+                },
+                body: data,
+            })
+
+            const result = await response.json();
+            // console.log(result);
+            
+
+            if (result.success) {
+                messagebox.classList.remove('bg-red')
+                messagebox.classList.add('bg-green')
+                messagebox.firstElementChild.textContent = result.message
+                
+                e.target.txtFullName.value = null
+                e.target.txtEmail.value = null
+                e.target.txtCountry.value = null
+                e.target.txtQuantity.value = null
+                
+            }else {
+                
+                messagebox.classList.add('bg-red')
+                messagebox.classList.remove('bg-green')
+                messagebox.firstElementChild.textContent = result.message
+            }
+            
+        } catch (error) {
+            console.log('bad response', error);
+
+            messagebox.classList.add('bg-red')
+            messagebox.classList.remove('bg-green')
+            messagebox.firstElementChild.textContent = 'Email not sent, invalid request'
+            
+        }finally{
+            console.log('finally');
+            waitSpinner.classList.remove('flex')
+            waitSpinner.classList.add('display-none')
+
+            messagebox.classList.add('show-message')
+
+            modalClose(modalQuote);
+        }
+
     });
+}
+
+// if (document.querySelector('#modal-quote .close-button')) {
+//     btnClose = document.querySelector('#modal-quote .close-button');
+//     btnClose.addEventListener("click", function () {
+//         modalClose(modalQuote);
+//     });
+// }
+
+if (modalQuote) {
+    const closeButtons = modalQuote.querySelectorAll('[close-button]')
+    if (closeButtons.length > 0) {
+        for (let i = 0; i < closeButtons.length; i++) {
+            closeButtons[i].addEventListener("click", () => { modalClose(modalQuote); });
+        }
+    }
 }
 //#endregion
 
@@ -276,7 +388,7 @@ function GetImagesModal(e) {
 
     request.onload = () => {
         const data = JSON.parse(request.responseText);
-        console.log(data);
+        // console.log(data);
 
         if (e.target.id == 'btn-model-images' && data['page'] == 1) {
             fillModalWithImages();

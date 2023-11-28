@@ -28,9 +28,9 @@
         <!-- You'll find a wide selection of gear suitable for youth football on up through college level play -->
         <div class="product-collection__flex">
             <!-- Quote Modal travers to .quote-wrapper from quote-button -->
-            <div class="product-collection__flex__card quote-wrapper">
-                <a class="btn card__wrapper" href="#">
-                    <img class="image-responsive product-image" src="/images/Arena Star.jpeg" alt="">
+            <div quoteWrapper class="product-collection__flex__card quote-wrapper">
+                <a class="btn card__wrapper" href="/product/active-sala">
+                    <img productImage class="image-responsive" src="/images/Arena Star.jpeg" alt="">
                     <div class="card__caption">
                         
                         <div class="card__caption__basic">
@@ -43,17 +43,13 @@
 
                         <div class="card__caption__attribute">
                             <div class="card__caption__attribute__sizing">
-                                <h4 class="">Size Availability</h4>
+                                <h4 class="">&nbsp;</h4>
                                 <p class="">
-                                    <span class="">1</span>                                    
-                                    <span class="">2</span>                                    
-                                    <span class="">3</span>                                    
-                                    <span class="">4</span>                                    
-                                    <span class="">5</span>                                    
+                                    <span class="">&nbsp;</span>                               
                                 </p>
                             </div>
 
-                            <button class="quote-button">GET QUOTE</button>
+                            <button quoteButton class="quote-button">Get Quote</button>
                         </div> 
 
                     </div>
@@ -468,3 +464,6 @@
 </section>
 
 <%- include('./components/_footer') %>
+
+<%- contentFor('captcha-Script') %>
+<script src="https://www.google.com/recaptcha/api.js?render=6LefTBApAAAAAGdco4sK5twxnRng07x-QJLSaO8K"></script>
