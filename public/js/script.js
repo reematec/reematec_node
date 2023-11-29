@@ -357,6 +357,112 @@ if (modalQuote) {
 
 
 // ********************************************************************
+// Products Page Load More button
+// ********************************************************************
+//#region 
+
+const url = window.location
+
+let page = 1;
+const productContainer = document.querySelector('#product-container')
+const btnLoadMore = document.querySelector('#btnLoadMore')
+
+if (btnLoadMore) {
+    
+    btnLoadMore.addEventListener('click', (e) => {
+        e.preventDefault()
+    
+        fetch(`${url.origin}${url.pathname}/${page}${url.search}`)
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            const products = data.data.rows
+            // console.log(Number(data.currentPage), data.totalPages);
+    
+            if (Number(data.currentPage) + 1 >= data.totalPages) btnLoadMore.style.visibility = 'hidden'
+    
+            page++
+    
+            products.forEach(product => {
+    
+                const card = document.createElement('div')
+                card.setAttribute("quoteWrapper", "");
+                card.classList = 'product-page-collection__grid__card'
+                const cardLink = document.createElement('a')
+                cardLink.classList = 'btn card__wrapper'
+                cardLink.href = `/product/${product.slug}`
+                card.append(cardLink)
+    
+                card.addEventListener('click', GetQuoteModal)
+    
+                const thumb = document.createElement('img')
+                thumb.setAttribute("productImage", "");
+                thumb.classList = 'image-responsive'
+                thumb.src = `/images/assets/300/${product.images[0].src}`
+                cardLink.append(thumb)
+    
+                const cardCaption = document.createElement('div')
+                cardCaption.classList = 'card__caption'
+                cardLink.append(cardCaption)
+    
+                const cardCaptionBasic = document.createElement('div')
+                cardCaptionBasic.classList = 'card__caption__basic'
+                cardCaption.append(cardCaptionBasic)
+    
+                const cardCaptionP = document.createElement('p')
+                cardCaptionP.classList = 'card__caption__basic__name'
+                cardCaptionP.append(product.name)
+                cardCaptionBasic.append(cardCaptionP)
+    
+                const cardCaptionBasicInfo = document.createElement('div')
+                cardCaptionBasicInfo.classList = 'card__caption__basic__info'
+                cardCaptionBasic.append(cardCaptionBasicInfo)
+    
+                const cardCaptionBasicInfoP = document.createElement('h3')
+                cardCaptionBasicInfo.append(cardCaptionBasicInfoP)
+                if (product.subCategoryId) cardCaptionBasicInfoP.append(product.subCategory.name)
+    
+                const cardCaptionBasicInfoPP = document.createElement('p')
+                cardCaptionBasicInfo.append(cardCaptionBasicInfoPP)
+                cardCaptionBasicInfoPP.append(product.usage)
+    
+                const cardCaptionAttribute = document.createElement('div')
+                cardCaptionAttribute.classList = 'card__caption__attribute'
+                cardCaption.append(cardCaptionAttribute)
+                
+                const cardCaptionAttributeMod = document.createElement('div')
+                cardCaptionAttributeMod.classList = 'card__caption__attribute__mod'
+                cardCaptionAttribute.append(cardCaptionAttributeMod)
+    
+                const cardCaptionAttributeH = document.createElement('h4')
+                cardCaptionAttributeMod.append(cardCaptionAttributeH)
+    
+                const cardCaptionAttributeP = document.createElement('p')
+                cardCaptionAttributeMod.append(cardCaptionAttributeP)
+                
+                const cardCaptionAttributeS = document.createElement('span')
+                cardCaptionAttributeMod.append(cardCaptionAttributeS)
+                
+                const cardCaptionAttributeButton = document.createElement('button')
+                cardCaptionAttributeButton.setAttribute("quoteButton", "");
+                cardCaptionAttributeButton.classList = 'quote-button'
+                cardCaptionAttributeButton.append("Get Quote")
+                cardCaptionAttribute.append(cardCaptionAttributeButton)
+                
+                
+                if (productContainer) productContainer.append(card)
+    
+            });
+        })
+    })
+
+}
+
+
+//#endregion
+
+
+// ********************************************************************
 // SELECT IMAGES Modal & Load More images button in modal
 // ********************************************************************
 //#region 

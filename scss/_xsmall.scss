@@ -658,7 +658,8 @@
 
 .product-page-collection__grid {
     display: grid;
-    grid-template-columns: repeat(1, auto);
+    // grid-template-columns: repeat(1, auto);
+    grid-template-columns: 1fr 1fr;
     gap: 1rem;
     justify-content: center;
 
@@ -708,9 +709,11 @@
                     display: flex;
                     justify-content: space-between;
                     align-items: end;
-                    &__sizing{
+
+                    &__mod{
                         color: #727272;
                     }
+
                     h4, p {
                         font-size: 1.3rem;
                         line-height: 1.3rem;

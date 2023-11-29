@@ -142,30 +142,36 @@ module.exports.rfq_post = async (req, res) => {
 }
 module.exports.products = async (req, res) => {
     // http://localhost:3000/products
+    
+    const query = req.query   
     const categories = await Category.findAll({ include: SubCategory })
-    const randomProducts = await Product.findAll({ order: Sequelize.literal('random()'), limit: 4, include: [ { model: Category}, { model: SubCategory}, { model: Image } ] })
-
-
+    const random = await getRandomProducts()    
+    const { limit, offset } = getPagination(0);
+    
     const products = await Product.findAndCountAll({
         distinct: true,
-        limit:6,
-        offset:0,
-        include: [ { model: Category}, { model: SubCategory}, { model: Image } ]
+        limit,
+        offset,
+        include: [ { model: Category}, { model: SubCategory}, { model: Image } ],
+        order: [orderSTR(query.sort)],
     })
 
-    res.render('products', {layout: 'layouts/main.ejs', categories, products, title: categories[0].name, randomProducts})
+    console.log(JSON.stringify(products, null, 4));
+    res.render('products', {layout: 'layouts/main.ejs', categories, products, title: categories[0].name, randomProducts: random, sort: query.sort})
 }
 module.exports.products_page = async (req, res) => {
-    
+    // Fetch http://localhost:3000/products/page
+    const query = req.query
     const { page } = req.params;
     const { limit, offset } = getPagination(page);
 
     Product.findAndCountAll({
         distinct: true, 
-        limit, offset,
-        include: [ { model: Category}, { model: SubCategory}, { model: Image } ] 
+        limit, 
+        offset,
+        include: [ { model: Category}, { model: SubCategory}, { model: Image } ],
+        order: [orderSTR(query)],
     }).then(data => {
-        console.log(data);
         const response = getPagingData(data, page, limit);
         res.json(response);
     }).catch((err) => { 
@@ -177,19 +183,22 @@ module.exports.products_page = async (req, res) => {
 module.exports.categoryProducts = async (req, res) => {
     // http://localhost:3000/category/futsal-balls
     const {slug} = req.params
+    const query = req.query
 
     const categories = await Category.findAll({ include: SubCategory })
-    const randomProducts = await Product.findAll({ order: Sequelize.literal('random()'), limit: 4, include: [ { model: Category}, { model: SubCategory}, { model: Image } ] })
+    const random = await getRandomProducts()    
     const breadcrumb = await Category.findOne({ where: {slug} })
+    const { limit, offset } = getPagination(0);
 
     const products = await Product.findAndCountAll({
         distinct: true, 
-        limit:9,
-        offset : 0,
+        limit,
+        offset,
         include: [ { model: Category, where: {slug}}, { model: SubCategory}, { model: Image } ]
     })
-    res.render('products', {layout: 'layouts/main.ejs', categories, products, title: breadcrumb.name, randomProducts})
+    res.render('products', {layout: 'layouts/main.ejs', categories, products, title: breadcrumb.name, randomProducts: random, sort: query.sort })
 }
+// Against Fetch Call
 module.exports.categoryProducts_page = async (req, res) => {
     
     const {slug, page} = req.params
@@ -211,18 +220,20 @@ module.exports.categoryProducts_page = async (req, res) => {
 module.exports.subCategoryProducts = async (req, res) => {
     // http://localhost:3000/subcategory/fusiontec-hybrid-footballs
     const {slug} = req.params
+    const query = req.query
 
     const categories = await Category.findAll({ include: SubCategory })
-    const randomProducts = await Product.findAll({ order: Sequelize.literal('random()'), limit: 4, include: [ { model: Category}, { model: SubCategory}, { model: Image } ] })
+    const random = await getRandomProducts()    
     const breadcrumb = await SubCategory.findOne({ where: {slug}, include: Category })
+    const { limit, offset } = getPagination(0);
     
     const products = await Product.findAndCountAll({
         distinct: true, 
-        limit:9,
-        offset : 0,
+        limit,
+        offset,
         include: [ { model: Category}, { model: SubCategory, where: {slug}}, { model: Image } ]
     })
-    res.render('products', {layout: 'layouts/main.ejs', categories, products, title: breadcrumb.category.name, randomProducts})
+    res.render('products', {layout: 'layouts/main.ejs', categories, products, title: breadcrumb.category.name, randomProducts: random,  sort: query.sort })
 }
 module.exports.subCategoryProducts_page = async (req, res) => {
     const {slug, page} = req.params
@@ -280,7 +291,7 @@ module.exports.access_restricted = (req, res) => {
 
 
 const getPagination = (page, size) => {
-    const limit=6;
+    const limit=7;
     const offset = page ? page * limit : 0;         
     return { limit, offset };
 };
@@ -292,3 +303,39 @@ const getPagingData = (data, page, limit) => {
     return { totalItems, data, totalPages, currentPage };
 };
 
+const orderSTR = (query)=>{
+    let orderby = []
+
+    switch(query) {
+        case 'asc':
+          orderby = ['name', 'ASC']
+          break;
+        case 'desc':
+            orderby = ['name', 'DESC']
+          break;
+        // case 'newer':
+        //     orderby = ['year', 'ASC']
+        //   break;
+        // case 'older':
+        //     orderby = ['year', 'DESC']
+        //   break;
+        case 'usage':
+            orderby = ['usage', 'ASC']
+          break;
+        default:
+            orderby = ['name', 'ASC']
+    }
+
+    return orderby
+}
+
+async function getRandomProducts() {
+    const products = await Product.findAll(
+        { 
+            order: Sequelize.literal('random()'), 
+            limit: 4, 
+            include: [ { model: Category}, { model: SubCategory}, { model: Image } ] 
+        }
+    )
+    return products
+}
