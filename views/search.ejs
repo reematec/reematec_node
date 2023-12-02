@@ -1,0 +1,66 @@
+<div class="breadcrumb container">
+    <a class="breadcrumb__link btn" href="/">Home</a>
+    <span class="breadcrumb__separator">/</span>
+    <span class="breadcurmb__page"> Search </span>
+</div>
+
+<article class="search container">
+    
+    <section class="products">
+        <div class="products__description">
+            <h1 class="search-keyword">You searched for: <span><%= title %></span> </h1>            
+        </div>
+        
+        <div class="products__toolbar">
+            <p>Total: <span> <%= products.count %> </span> Models</p>
+        </div>
+
+
+        <div id="product-container" class="product-page-collection__grid">
+
+            <% for (let p=0; p < products.length; p++) {%>
+                
+                <div quoteWrapper class="product-page-collection__grid__card">
+                    <a class="btn card__wrapper" href="/product/<%= products[p].slug %>">
+                        <span productIdentifier class="display-none"><%= products[p].identifier %></span>
+                        <img productImage class="image-responsive" src="/images/assets/300/<%= products[p].images[0].src %>" alt="">
+
+                        <div class="card__caption">
+                            <div class="card__caption__basic">
+                                <p class="card__caption__basic__name"><%= products[p].name %></p>
+                                <div class="card__caption__basic__info">
+                                    <h3 class="construction-type"><%= products[p].usage %></h3>
+                                    <p class="usage"><%= products[p].subCategoryId ? products[p].subCategory.name : '' %></p>
+                                </div>
+                            </div>
+
+                            <div class="card__caption__attribute">
+                                <div class="card__caption__attribute__mod">
+                                    <h4 class="">&nbsp;</h4>
+                                    <p class="">
+                                        <span class="">&nbsp;</span>
+                                    </p>
+                                </div>
+
+                                <button quoteButton class="quote-button">Get Quote</button>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+            <% } %>
+
+        </div>
+        <% if (products.count > 0) { %>
+            <button class="btn btn-standard btn-solid-primary" id="btnLoadMore">Load More</button>
+
+        <% } %>
+    </section>
+</article>
+
+
+
+<%- include('./components/_footer') %>
+
+<%- contentFor('captcha-Script') %>
+<script src="https://www.google.com/recaptcha/api.js?render=6LefTBApAAAAAGdco4sK5twxnRng07x-QJLSaO8K"></script>

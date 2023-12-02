@@ -97,7 +97,7 @@ app.use(function (req, res, next) {
 	res.locals.message = req.flash();
     res.locals.user = req.user || null;
 	res.locals.csrfToken = getCSRF()
-	res.locals.testing = 'changed'
+	// console.log(res.locals);
     next();
 })
 

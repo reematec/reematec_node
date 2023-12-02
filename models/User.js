@@ -87,6 +87,7 @@ User.login = async function (email, password, done) {
 
 	const user = await User.findOne({where: { email }})
 
+    if (!user) return done(null, false, {message: 'Email or Password is not correct'})
     if (!user.active) return done(null, false, {message: 'Unverified Account'})
     
 	if (user) {

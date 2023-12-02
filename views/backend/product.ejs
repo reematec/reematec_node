@@ -27,7 +27,8 @@
 		<% for (let p = 0; p < products.length; p++) {%>
 		
 		<tr>
-			<td><img src="/images/assets/100/<%= products[p].images[0].src %>" alt=""> </td>
+			
+			<td><img src="/images/assets/100/<%= products[p].images[0] ? products[p].images[0].src : '' %>" alt=""> </td>
 			<td><%= products[p].name %> </td>
 			<td><%= products[p].slug %></td>
 			<td><%= products[p].showcased ? '✓' : '❌' %></td>

@@ -16,3 +16,9 @@
         <p class="message-error"><%- message.errors[i].message %></p>
     <% } %>
 <% } %>
+
+<% if (message.errors) { %>
+    <% for( let i = 0; i < message.errors.length; i++ ) { %>
+        <p class="message-error"><%- message.errors[i].msg %></p>
+    <% } %>
+<% } %>

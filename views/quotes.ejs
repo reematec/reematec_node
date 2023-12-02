@@ -1,0 +1,36 @@
+<div class="breadcrumb container">
+    <a class="breadcrumb__link btn" href="/">Home</a>
+    <span class="breadcrumb__separator">/</span>
+    <span class="breadcurmb__page">Quotes</span>
+</div>
+
+<section class="quotes container">
+
+    <% if (!rfqs) { %>
+        
+        <h2 class="empty">Request for quote list is empty</h2>
+
+    <% } else{ %>
+
+        <h1 class="title">Request for Quotes</h1>
+        <p class="sub">Summary of products asked for quotes</p>
+
+        <% for (let p=0; p < rfqs.length; p++) {%>
+            <div class="rfq">
+                <div class="thumb"><img src="/images/assets/100/<%= rfqs[p].product.images[0].src %>" alt=""></div>
+                <div class="rfq-info">
+                    <div><span>Name:</span> <%= rfqs[p].product.name %></div>
+                    <div><span>Quantity:</span> <%= rfqs[p].quantity %></div>
+                </div>                
+            </div>
+        <% } %> 
+    
+    <% } %> 
+	
+   
+    
+</section>
+
+
+<%- include('./components/_footer') %>
+

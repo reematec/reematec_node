@@ -212,6 +212,7 @@ function modalClose(modal) {
 let quoteWrapper, modalQuote;
 let inquiredProductImage, inquiredProductName
 
+// Product_Details page Qoute button modal handling
 const btnRFQ = document.querySelector("[RFQ-BUTTON]");
 if (btnRFQ) {
     btnRFQ.addEventListener('click', (e)=>{
@@ -222,10 +223,11 @@ if (btnRFQ) {
             toggleModal(modalQuote);
 
             let rfqPreview = modalQuote.querySelector("#rfq-preview");
+
             rfqPreview.querySelector(".image-responsive").src = document.querySelector("#current-image").src;            
             rfqPreview.querySelector("#prod-name").innerText = document.querySelector("#name-rfq").firstChild.textContent;
-            
-            clearQuotefrm()
+            document.querySelector("#prodIdentifier").value = document.querySelector("[productIdentifier]").textContent
+            clearfrmAddListner()
         }
     })
 }
@@ -249,15 +251,16 @@ function GetQuoteModal(e) {
             let rfqPreview = modalQuote.querySelector("#rfq-preview");
             const cardWrapperAnchorTag = e.target.parentElement.parentElement.parentElement;
 
-            rfqPreview.querySelector(".image-responsive").src = cardWrapperAnchorTag.querySelector("[productImage]").src;
-            rfqPreview.querySelector("#prod-name").innerText = cardWrapperAnchorTag.querySelector(".card__caption__basic__name").innerText;
+            rfqPreview.querySelector(".image-responsive").src = cardWrapperAnchorTag.querySelector("[productImage]").src;            
+            rfqPreview.querySelector("#prod-name").textContent = cardWrapperAnchorTag.querySelector(".card__caption__basic__name").textContent;
+            document.querySelector("#prodIdentifier").value = cardWrapperAnchorTag.querySelector("[productIdentifier]").textContent
 
-            clearQuotefrm()   
+            clearfrmAddListner()   
         }
     }
 }
 
-function clearQuotefrm() {
+function clearfrmAddListner() {
     const frmQuote = modalQuote.querySelector('#frmQuote')
     frmQuote.txtFullName.value = null
     frmQuote.txtEmail.value = null
@@ -280,12 +283,12 @@ function sendQuote (e) {
             country: e.target.txtCountry.value,
             quantity: e.target.txtQuantity.value,
             _csrfToken: e.target._csrfToken.value,
+            identifier: e.target.prodIdentifier.value,
             captcha: token
         })
-
         
-            waitSpinner.classList.remove('display-none')
-            waitSpinner.classList.add('flex')
+        waitSpinner.classList.remove('display-none')
+        waitSpinner.classList.add('flex')
             
         try {
             const response = await fetch('/rfq', {
@@ -420,11 +423,12 @@ if (btnLoadMore) {
     
                 const cardCaptionBasicInfoP = document.createElement('h3')
                 cardCaptionBasicInfo.append(cardCaptionBasicInfoP)
-                if (product.subCategoryId) cardCaptionBasicInfoP.append(product.subCategory.name)
+                // if (product.subCategoryId) cardCaptionBasicInfoP.append(product.subCategory.name)
+                cardCaptionBasicInfoP.append(product.usage)
     
                 const cardCaptionBasicInfoPP = document.createElement('p')
                 cardCaptionBasicInfo.append(cardCaptionBasicInfoPP)
-                cardCaptionBasicInfoPP.append(product.usage)
+                if (product.subCategoryId) cardCaptionBasicInfoPP.append(product.subCategory.name)
     
                 const cardCaptionAttribute = document.createElement('div')
                 cardCaptionAttribute.classList = 'card__caption__attribute'

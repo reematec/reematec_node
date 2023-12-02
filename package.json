@@ -29,7 +29,7 @@
     "passport-local": "^1.0.0",
     "randomstring": "^1.2.2",
     "read-chunk": "^4.0.3",
-    "sequelize": "^6.16.1",
+    "sequelize": "^6.35.1",
     "sqlite3": "^5.1.2",
     "validator": "^13.7.0"
   },

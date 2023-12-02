@@ -96,9 +96,10 @@ module.exports.updateCategory_post = async (req, res) => {
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
+        
         req.flash('category', { identifier, name, slug, pagetitle, description, active, showSubMenu })
-
-        req.flash('errors', errors.array())
+        
+        req.flash('errors', errors.errors)
         return res.redirect(`/home/update-category/${slug}`)
     }
 
@@ -113,14 +114,15 @@ module.exports.updateCategory_post = async (req, res) => {
         category.slug = slug;
         category.pagetitle = pagetitle;
         category.description = description;
-        category.active = active;
-        category.showSubMenu = showSubMenu;
+        category.active = active ? true : false;
+        category.showSubMenu = showSubMenu ? true : false;
 
         await category.save();
 
         res.redirect('/home/category')
     } catch (error) {
-        res.send(error)
+        console.log(JSON.stringify(error, null, 4));
+        // res.send(error)
     }
 
 
@@ -248,7 +250,7 @@ module.exports.updateSubcategory_post = async (req, res) => {
         subcategory.slug = slug;
         subcategory.pagetitle = pagetitle;
         subcategory.description = description;
-        subcategory.active = active;
+        subcategory.active = active ? true : false;
         subcategory.categoryId = category;
 
         await subcategory.save();
@@ -587,8 +589,9 @@ module.exports.addProduct_get = async (req, res) => {
     res.render('backend/product-add', { layout: 'layouts/app.ejs', sizes, tags, categories })
 }
 module.exports.addProduct_post = async (req, res) => {
+    const { name, slug, showcased, recommended, active, usage, price, pagetitle, shortDescription, LongDescription, specifications, features, care, category, subCategory, image, size, tag } = req.body
 
-    const { name, slug, showcased, recommended, active, usage, price, pagetitle, shortDescription, LongDescription, specifications, features, care, category, subCategory } = req.body
+    if (!name || !slug) res.redirect('/home/add-product') 
 
     const t = await sequelize.transaction();
 
@@ -608,28 +611,32 @@ module.exports.addProduct_post = async (req, res) => {
             specifications: specifications,
             features: features,
             care: care,
-            categoryId: category,
-            subCategoryId: subCategory,
+            categoryId: category == 0 ? null : category,
+            subCategoryId: subCategory == 0 ? null : subCategory,
         }, { transaction: t })
 
         //#region Foreign Keys Array
-        const images = await Image.findAll({ raw: true, attributes: ['id'], where: { id: req.body.image } })
         const imageKey = []
-        Object.keys(images).forEach((key) => {
-            imageKey.push(images[key].id)
-        })
-
-        const sizes = await Size.findAll({ attributes: ['id'], where: { identifier: req.body.size } })
         const sizeKey = []
-        Object.keys(sizes).forEach((key) => {
-            sizeKey.push(sizes[key].id)
-        })
-
-        const tags = await Tag.findAll({ attributes: ['id'], where: { identifier: req.body.tag } })
         const tagKey = []
-        Object.keys(tags).forEach((key) => {
-            tagKey.push(tags[key].id)
-        })
+
+            console.log(image && image.length > 0);
+            if (image && image.length > 0) {
+                const images = await Image.findAll({ raw: true, attributes: ['id'], where: { id: image } })
+                Object.keys(images).forEach((key) => imageKey.push(images[key].id))
+            }
+
+            console.log(size && size.length > 0);
+            if (size && size.length > 0) {
+                const sizes = await Size.findAll({ attributes: ['id'], where: { identifier: size } })
+                Object.keys(sizes).forEach((key) =>  sizeKey.push(sizes[key].id))
+            }
+
+            console.log(tag && tag.length > 0);
+            if (tag && tag.length > 0) {
+                const tags = await Tag.findAll({ attributes: ['id'], where: { identifier: tag } })
+                Object.keys(tags).forEach((key) => tagKey.push(tags[key].id))
+            }
         //#endregion
 
         await product.addImage(imageKey, { transaction: t });
@@ -637,11 +644,20 @@ module.exports.addProduct_post = async (req, res) => {
         await product.addTag(tagKey, { transaction: t });
         await t.commit();
 
-        req.flash('info', 'Product saved successfully')
+        console.log(JSON.stringify(product, null, 4));
+
+        req.flash('info', [{ message: 'Product saved successfully.' }])
         res.redirect('/home/product')
-    } catch (error) {
-        console.log(error);
-        req.flash('error', 'error occurred')
+    } catch (err) {
+        
+        req.flash('addProduct', { name, slug, showcased, recommended, active, usage, price, pagetitle, shortDescription, LongDescription, specifications, features, care, category, subCategory })
+
+        if (err.errors.length > 0) {
+            req.flash('errors', err.errors)
+        }else{
+            req.flash('errors', [{ message: 'some error occured.' }])
+        }
+            
         await t.rollback();
         res.redirect('/home/add-product')
     }
@@ -841,7 +857,8 @@ module.exports.addBlog_post = async (req, res) => {
         // delete req.session.blog
         res.redirect(`/home/view-blog/${blog.slug}`)
     } catch (err) {
-        res.status(500).send(err.errors);
+        console.log(err.errors);
+        // res.status(500).send(err.errors);
     }
 
 }

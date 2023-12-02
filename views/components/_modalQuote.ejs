@@ -8,6 +8,7 @@
             <div class="rfq-detail">
                 <h4>REQUEST FOR QUOTE</h4>
                 <p>Model Name: <span id="prod-name"></span></p>
+                
             </div>
         </div>
 
@@ -16,6 +17,7 @@
         <div>
             <form id="frmQuote" method="POST">
                 <input type="hidden" name="_csrfToken" value="<%= csrfToken %>">
+                <input type="hidden" name="prodIdentifier" id="prodIdentifier" value="">
 
                 <div class="form-control">
                     <label class="label" for="txtFullName">Name <span class="link-red">*</span></label>

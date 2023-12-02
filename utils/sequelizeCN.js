@@ -3,20 +3,22 @@ const path = require('path');
 const colors = require('colors')
 
 const sequelize = new Sequelize(
-	// 'reema_node', 'root', '', 
+	'reema_node', 'root', 'Bismillah&786', 
 	{
-	// host: 'localhost',
-	// dialect: 'mysql',
-	// // operatorsAliases: false,
-	
-	dialect: 'sqlite',
-	storage: path.join(__dirname, '..', 'database_test.sqlite'),
+	host: 'localhost',
+	dialect: 'mysql',
 	logging: false,
-	dialectOptions: {
-		// Your sqlite3 options here
-		// for instance, this is how you can configure the database opening mode:
-		// mode: SQLite.OPEN_READWRITE | SQLite.OPEN_CREATE | SQLite.OPEN_FULLMUTEX,
-	},
+	// operatorsAliases: false,
+	
+	// dialect: 'sqlite',
+	// storage: path.join(__dirname, '..', 'database_test.sqlite'),
+	// logging: false,
+	// dialectOptions: {
+	// 	// Your sqlite3 options here
+	// 	// for instance, this is how you can configure the database opening mode:
+	// 	// mode: SQLite.OPEN_READWRITE | SQLite.OPEN_CREATE | SQLite.OPEN_FULLMUTEX,
+	// },
+
 });
 
 sequelize.authenticate().then(() => {

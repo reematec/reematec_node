@@ -24,6 +24,7 @@
     </div>
 
     <div class="details">
+        <span productIdentifier class="display-none"><%= product.identifier %></span>
         <h1 id="name-rfq" class="details__heading"><%= product.name %> <span> <% if (product.subCategoryId > 0) { %> <%= product.subCategory.name %> &nbsp; | &nbsp; <% } %> <%= product.category.name %></span></h1>
 
         <p class="details__description"><%= product.shortDescription %></p>

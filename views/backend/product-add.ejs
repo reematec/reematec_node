@@ -13,78 +13,84 @@
 
                 <div class="form-control">
                     <label class="label caption" for="txtName">Name: </label>
-                    <input class="textbox field" type="text" name="name" id="txtName">
+                    <input class="textbox field" type="text" name="name" id="txtName" value="<%- message.addProduct ? message.addProduct[0].name : '' %>" autofocus required>
                 </div>
 
                 <div class="form-control">
                     <label class="label caption" for="txtSlug">slug: </label>
-                    <input class="textbox field" type="text" name="slug" id="txtSlug">
+                    <input class="textbox field" type="text" name="slug" id="txtSlug" value="<%- message.addProduct ? message.addProduct[0].slug : '' %>" required>
                 </div>
 
                 <div class="form-control">
                     <label class="label caption" for="chkShowcased">Showcased: </label>
-                    <div><input class="field" type="checkbox" name="showcased" id="chkShowcased"></div>
+                    <div><input class="field" type="checkbox" name="showcased" id="chkShowcased" <%- message.addProduct && message.addProduct[0].showcased ? 'checked' : '' %>></div>
                 </div>
 
                 <div class="form-control">
                     <label class="label caption" for="chkrecommended">recommended: </label>
-                    <div><input class="field" type="checkbox" name="recommended" id="chkrecommended"></div>
+                    <div><input class="field" type="checkbox" name="recommended" id="chkrecommended" <%- message.addProduct && message.addProduct[0].recommended ? 'checked' : '' %>></div>
                 </div>
 
                 <div class="form-control">
                     <label class="label caption" for="chkactive">active: </label>
-                    <div><input class="field" type="checkbox" name="active" id="chkactive"></div>
+                    <div><input class="field" type="checkbox" name="active" id="chkactive" <%- message.addProduct && message.addProduct[0].active ? 'checked' : '' %>></div>
                 </div>
 
                 <div class="form-control">
                     <label class="label caption" for="txtUsage">Usage: </label>
-                    <input class="textbox field" type="text" name="usage" id="txtUsage">
+                    <input class="textbox field" type="text" name="usage" id="txtUsage" value="<%- message.addProduct ? message.addProduct[0].usage : '' %>">
                 </div>
 
                 <div class="form-control">
                     <label class="label caption" for="price">price: </label>
-                    <input class="textbox field" type="text" name="price" id="price">
+                    <input class="textbox field" type="text" name="price" id="price" value="<%- message.addProduct ? message.addProduct[0].price : '0' %>" required>
                 </div>
 
                 <div class="form-control">
                     <label class="label caption" for="pagetitle">pagetitle: </label>
-                    <input class="textbox field" type="text" name="pagetitle" id="pagetitle">
+                    <input class="textbox field" type="text" name="pagetitle" id="pagetitle" value="<%- message.addProduct ? message.addProduct[0].pagetitle : '' %>" required>
                 </div>
 
                 <div class="form-control">
                     <label class="label caption" for="shortDescription">shortDescription: </label>
-                    <input class="textbox field" type="text" name="shortDescription" id="shortDescription">
+                    <input class="textbox field" type="text" name="shortDescription" id="shortDescription" value="<%- message.addProduct ? message.addProduct[0].shortDescription : '' %>" required>
                 </div>
 
                 <div class="form-control">
                     <label class="label caption" for="txtLongDescription">Long Description: </label>
-                    <textarea name="LongDescription" class="textarea field" id="" cols="30" rows="10"></textarea>
+                    <textarea name="LongDescription" class="textarea field" id="" cols="30" rows="10"><%- message.addProduct ? message.addProduct[0].LongDescription : '' %></textarea>
                 </div>
 
                 <div class="form-control">
                     <label class="label caption" for="specifications">specifications: </label>
-                    <textarea name="specifications" class="textarea field" id="" cols="30" rows="10"></textarea>
+                    <textarea name="specifications" class="textarea field" id="" cols="30" rows="10"><%- message.addProduct ? message.addProduct[0].specifications : '' %></textarea>
                 </div>
 
                 <div class="form-control">
                     <label class="label caption" for="features">features: </label>
-                    <textarea name="features" class="textarea field" id="" cols="30" rows="10"></textarea>
+                    <textarea name="features" class="textarea field" id="" cols="30" rows="10"><%- message.addProduct ? message.addProduct[0].features : '' %></textarea>
                 </div>
 
                 <div class="form-control">
                     <label class="label caption" for="care">care: </label>
-                    <textarea name="care" class="textarea field" id="" cols="30" rows="10"></textarea>
+                    <textarea name="care" class="textarea field" id="" cols="30" rows="10"><%- message.addProduct ? message.addProduct[0].care : '' %></textarea>
                 </div>
 
                 <div class="form-control">
                     <label class="label caption" for="sltCategory">Main Category</label>
-                    <select class="select field" name="category" id="sltCategory">
+                    <select class="select field" name="category" id="sltCategory" required>
                         <option value="">Please select a category</option>
+                        
                         <% for( let c in categories ) { %>
-                            <option value="<%= categories[c].id %>">
-                                <%= categories[c].name %>
-                            </option>
+                            <% if (message.addProduct && message.addProduct[0].category) { %>
+                                <option value="<%=  categories[c].id %>"  <%= message.addProduct[0].category == categories[c].id ? 'selected' : ''  %>> 
+                                    <%= categories[c].name %> 
+                                </option>
+                            <% } else { %>
+                                <option value="<%=  categories[c].id %>"> <%= categories[c].name %> </option>
+                            <% } %>
                         <% } %>
+
                     </select>
                 </div>
 
@@ -153,9 +159,14 @@
     const sltCategory = document.querySelector('#sltCategory');
     const sltSubCategory = document.querySelector('#sltSubCategory');
 
+    if (sltCategory.value === ''){
+            AddOption('No subcategory available')
+            // return
+    } 
     
     sltCategory.addEventListener('change', async (e) => {
         e.preventDefault();
+
         
         if (sltCategory.value === ''){
             AddOption('No subcategory available')
@@ -178,7 +189,7 @@
                 return
             }
             
-            sltSubCategory.innerHTML = '';
+            sltSubCategory.textContent = '';
             AddOption('Please select a subcategory')
             data.subcategories.forEach(e => {
                 
@@ -198,16 +209,14 @@
             // }
 
         }
-        catch (err) {
-            console.log(err);
-        }
+        catch (err) { console.log(err); }
 
-        function AddOption(text) {
-            sltSubCategory.innerHTML = '';
-            const option = document.createElement("option");
-            option.text = text;
-            option.value = 0
-            sltSubCategory.add(option);
-        }
     });
+    function AddOption(text) {
+        sltSubCategory.textContent = '';
+        const option = document.createElement("option");
+        option.text = text;
+        option.value = 0
+        sltSubCategory.add(option);
+    }
 </script>

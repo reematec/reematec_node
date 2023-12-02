@@ -78,8 +78,8 @@
                 
                 <div quoteWrapper class="product-page-collection__grid__card">
                     <a class="btn card__wrapper" href="/product/<%= products.rows[p].slug %>">
-                        <img productImage class="image-responsive" src="/images/assets/300/<%= products.rows[p].images[0].src %>"
-                            alt="">
+                        <span productIdentifier class="display-none"><%= products.rows[p].identifier %></span>
+                        <img productImage class="image-responsive" src="/images/assets/300/<%= products.rows[p].images[0].src %>" alt="">
 
                         <div class="card__caption">
                             <div class="card__caption__basic">
@@ -104,7 +104,7 @@
                     </a>
                 </div>
 
-                <% } %>
+            <% } %>
 
         </div>
         <% if (products.count) { %>

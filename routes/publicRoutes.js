@@ -13,10 +13,12 @@ router.post('/rfq', publicController.rfq_post);
 router.get('/blogs', publicController.blogs);
 router.get('/blog/:slug', publicController.blog);
 router.get('/faqs', publicController.faq);
+router.get('/quotes', publicController.quotes);
 router.get('/terms', publicController.terms);
 router.get('/privacy', publicController.privacy);
 router.get('/cookie', publicController.cookie_policy);
 router.get('/restricted', publicController.access_restricted);
+router.get('/search', publicController.search);
 
 router.get('/products', publicController.products);
 router.get('/products/:page', publicController.products_page);
