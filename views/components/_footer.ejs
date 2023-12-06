@@ -67,21 +67,14 @@
         <div class="footer__section">
             <p class="footer__heading">PRODUCT CATEGORIES</p>
             <ul>
-                <li><a class="btn footer__links footer__links--large"
-                        href="https://reematec.com/subcategory/hand-stitched-footballs">SOCCER BALLS</a></li>
-                <li><a class="btn footer__links footer__links--large"
-                        href="https://reematec.com/subcategory/hand-stitched-handballs">HANDBALLS</a></li>
-                <li><a class="btn footer__links footer__links--large"
-                        href="https://reematec.com/category/volleyballs">VOLLEYBALLS</a></li>
-                <li><a class="btn footer__links footer__links--large"
-                        href="https://reematec.com/category/goalkeeper-gloves">GOALKEEPER GLOVES</a></li>
-                <li><a class="btn footer__links footer__links--large"
-                        href="https://reematec.com/category/face-mask">FACE MASKS</a></li>
+                <% categories.forEach(category => { %>
+                    <li><a class="btn footer__links footer__links--large" href="/category/<%= category.slug %>"><%= category.name %></a></li>
+                <% }) %>
             </ul>
         </div>
     </div>
     <div class="container">
-        <p class="copyright">Copyright ©2021 Reema Technologies® | All rights reserved.</p>
+        <p class="copyright">Copyright ©<%= new Date().getFullYear() %>  Reema Technologies® | All rights reserved.</p>
     </div>
 
 

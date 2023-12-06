@@ -8,7 +8,7 @@
     
     <section class="products">
         <div class="products__description">
-            <h1 class="search-keyword">You searched for: <span><%= title %></span> </h1>            
+            <h1 class="search-keyword">You searched for "<span><%= title %></span>"</h1>
         </div>
         
         <div class="products__toolbar">
@@ -18,19 +18,19 @@
 
         <div id="product-container" class="product-page-collection__grid">
 
-            <% for (let p=0; p < products.length; p++) {%>
+            <% for (let p=0; p < products.rows.length; p++) {%>
                 
                 <div quoteWrapper class="product-page-collection__grid__card">
-                    <a class="btn card__wrapper" href="/product/<%= products[p].slug %>">
-                        <span productIdentifier class="display-none"><%= products[p].identifier %></span>
-                        <img productImage class="image-responsive" src="/images/assets/300/<%= products[p].images[0].src %>" alt="">
+                    <a class="btn card__wrapper" href="/product/<%= products.rows[p].slug %>">
+                        <span productIdentifier class="display-none"><%= products.rows[p].identifier %></span>
+                        <img productImage class="image-responsive" src="/images/assets/300/<%= products.rows[p].images[0].src %>" alt="">
 
                         <div class="card__caption">
                             <div class="card__caption__basic">
-                                <p class="card__caption__basic__name"><%= products[p].name %></p>
+                                <p class="card__caption__basic__name"><%= products.rows[p].name %></p>
                                 <div class="card__caption__basic__info">
-                                    <h3 class="construction-type"><%= products[p].usage %></h3>
-                                    <p class="usage"><%= products[p].subCategoryId ? products[p].subCategory.name : '' %></p>
+                                    <h3 class="construction-type"><%= products.rows[p].usage %></h3>
+                                    <p class="usage"><%= products.rows[p].subCategoryId ? products.rows[p].subCategory.name : '' %></p>
                                 </div>
                             </div>
 

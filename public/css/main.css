@@ -643,6 +643,7 @@ option:not(:first-of-type) {
 }
 
 .footer__links--large {
+  text-transform: uppercase;
   font-size: 3rem;
   font-weight: 900;
 }
@@ -1341,6 +1342,51 @@ tr:nth-child(even) {
   border-bottom: 1px solid #d5d5d5;
 }
 
+.filters .collection {
+  margin-bottom: 1rem;
+  font-weight: 700;
+  font-size: 1.6rem;
+  text-transform: uppercase;
+}
+.filters form {
+  margin-left: 1rem;
+}
+.filters .field {
+  margin-bottom: 0.5rem;
+}
+.filters .btnFilter {
+  margin-top: 1rem;
+  background: #ee5a3b;
+  color: #fff;
+  padding: 0.7rem 1.2rem;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  border-radius: 0.3rem;
+  transition: 0.3s all;
+  font-weight: 300;
+  font-size: 1.2rem;
+}
+.filters .btnFilter:hover {
+  opacity: 0.8;
+}
+.filters .btnReset {
+  margin-top: 1rem;
+  background: #000;
+  color: white;
+  padding: 0.7rem 1.2rem;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  border-radius: 0.3rem;
+  transition: 0.3s all;
+  font-weight: 300;
+  font-size: 1.2rem;
+}
+.filters .btnReset:hover {
+  opacity: 0.8;
+}
+
 .products {
   flex-basis: 70%;
   margin-bottom: 5rem;
@@ -1380,13 +1426,13 @@ tr:nth-child(even) {
   border: 0px solid #eee;
   outline: none;
   background: #eee;
-  text-transform: uppercase;
   cursor: pointer;
 }
 .products #btnLoadMore {
   display: block;
   margin-left: auto;
   margin-right: auto;
+  border-radius: 0.3rem;
 }
 
 .product-page-collection__grid {
@@ -2337,7 +2383,8 @@ tr:nth-child(even) {
 ********************************************************* */
 .search .search-keyword {
   font-weight: 300;
-  text-transform: capitalize;
+  font-size: 2rem;
+  text-transform: unset;
 }
 .search .search-keyword span {
   font-weight: 900;

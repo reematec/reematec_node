@@ -374,6 +374,8 @@ if (btnLoadMore) {
     
     btnLoadMore.addEventListener('click', (e) => {
         e.preventDefault()
+
+        console.log(`${url.origin}${url.pathname}/${page}${url.search}`);
     
         fetch(`${url.origin}${url.pathname}/${page}${url.search}`)
         .then(response => response.json())
@@ -465,6 +467,25 @@ if (btnLoadMore) {
 
 //#endregion
 
+// ********************************************************************
+// SELECT IMAGES Modal & Load More images button in modal
+// ********************************************************************
+//#region 
+const frmCollection = document.querySelector('#frmCollection')
+
+const sorting = document.querySelector('#sorting')
+if (sorting) {
+    sorting.onchange = function (e) {
+        window.location.href = `/products?sort=${e.target.value}`;
+        
+        if (frmCollection && frmCollection.collection.value) {
+            window.location.href = `/products?sort=${e.target.value}&collection=${frmCollection.collection.value}`;
+        }
+    }
+
+}
+ 
+//#endregion
 
 // ********************************************************************
 // SELECT IMAGES Modal & Load More images button in modal

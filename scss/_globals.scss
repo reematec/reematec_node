@@ -462,6 +462,7 @@ option:not(:first-of-type) {
 }
 
 .footer__links--large {
+    text-transform: uppercase;
     font-size: 3rem;
     font-weight: 900;
 }

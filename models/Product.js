@@ -39,6 +39,10 @@ const Product = sequelize.define('product', {
         type: Sequelize.DataTypes.BOOLEAN,
         defaultValue: false,
     },
+    year:{
+        type: Sequelize.DataTypes.INTEGER,
+        allowNull:true
+    },
     price:{
         type: Sequelize.DataTypes.DECIMAL(10,2),
         allowNull:true

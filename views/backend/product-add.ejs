@@ -40,10 +40,16 @@
                     <label class="label caption" for="txtUsage">Usage: </label>
                     <input class="textbox field" type="text" name="usage" id="txtUsage" value="<%- message.addProduct ? message.addProduct[0].usage : '' %>">
                 </div>
+                
+                <div class="form-control">
+                    <label class="label caption" for="year">Year: </label>
+                    <input class="textbox field" type="number" min="1900" max="2099" name="year" step="1" value="<%- message.addProduct ? message.addProduct[0].year : '' %>" required>
+                    
+                </div>
 
                 <div class="form-control">
                     <label class="label caption" for="price">price: </label>
-                    <input class="textbox field" type="text" name="price" id="price" value="<%- message.addProduct ? message.addProduct[0].price : '0' %>" required>
+                    <input class="textbox field" type="number" min="0" name="price" id="price" value="<%- message.addProduct ? message.addProduct[0].price : '0' %>" required>
                 </div>
 
                 <div class="form-control">
@@ -219,4 +225,6 @@
         option.value = 0
         sltSubCategory.add(option);
     }
+
+
 </script>

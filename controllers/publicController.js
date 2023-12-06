@@ -1,7 +1,10 @@
 const randomstring = require("randomstring");
 const fs = require("fs");
+
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
+const { QueryTypes } = require('sequelize');
+const sequelize = require('../utils/sequelizeCN');
 const { body, validationResult } = require('express-validator');
 const nodemailer = require('nodemailer');
 
@@ -15,14 +18,17 @@ const RFQ = require('../models/RFQ');
 
 
 
-module.exports.home = (req, res) => {
-    res.render('home', { layout: 'layouts/main.ejs' })
+module.exports.home = async (req, res) => {
+    const categories = await getActiveCatAndSubCategories()
+    res.render('home', { layout: 'layouts/main.ejs', categories })
 }
-module.exports.about = (req, res) => {
-    res.render('about', { layout: 'layouts/main.ejs' })
+module.exports.about = async (req, res) => {
+    const categories = await getActiveCatAndSubCategories()
+    res.render('about', { layout: 'layouts/main.ejs', categories })
 }
-module.exports.contact = (req, res) => {
-    res.render('contact', { layout: 'layouts/main.ejs' })
+module.exports.contact = async (req, res) => {
+    const categories = await getActiveCatAndSubCategories()
+    res.render('contact', { layout: 'layouts/main.ejs', categories })
 }
 // https://medium.com/@sergeisizov/using-recaptcha-v3-with-node-js-6a4b7bc67209
 module.exports.contact_post = async (req, res) => {
@@ -157,24 +163,32 @@ module.exports.rfq_post = async (req, res) => {
     // return res.json({'message': "Your RFQ has been sent successfully", success: true})
 }
 module.exports.products = async (req, res) => {
-    // http://localhost:3000/products
+    // http://localhost:3000/products    
 
     const categories = await getActiveCatAndSubCategories()
-    const query = req.query
     const random = await getRandomProducts()
-    const { limit, offset } = getPagination(0);
-    
+    const {sort, collection, page} = req.query
+    const { limit, offset } = getPagination(page-1);
+    let where = { active: true }
+
+    if (collection) where = { active: true, year: collection }    
 
     const products = await Product.findAndCountAll({
         distinct: true,
         limit,
         offset,
         include: [{ model: Category}, { model: SubCategory }, { model: Image }],
-        order: [orderSTR(query.sort)],
-        where: { active: 1 }
+        order: [orderSTR(sort)],
+        where: where
     })
     
-    res.render('products', { layout: 'layouts/main.ejs', categories, products, title: categories[0].name, randomProducts:random, sort: query.sort })
+    const currentPage = page ? page : 0;
+    const totalPages = Math.ceil(products.count / limit);
+
+    products.currentPage = currentPage
+    products.totalPages = totalPages
+    
+    res.render('products', { layout: 'layouts/main.ejs', categories, products, title: categories[0].name, randomProducts:random, sort: sort })
 }
 module.exports.products_page = async (req, res) => {
     // Fetch http://localhost:3000/products/page
@@ -271,6 +285,7 @@ module.exports.subCategoryProducts_page = async (req, res) => {
     });
 }
 module.exports.product = async (req, res) => {
+    const categories = await getActiveCatAndSubCategories()
     const slug = req.params.slug
 
     const randomProducts = await Product.findAll({ order: Sequelize.literal('rand()'), limit: 4, include: [{ model: Category }, { model: SubCategory }, { model: Image }] })
@@ -280,80 +295,93 @@ module.exports.product = async (req, res) => {
         include: [{ model: Category }, { model: SubCategory }, { model: Image }, { model: Size }]
     })
 
-    res.render('product_details', { layout: 'layouts/main.ejs', product, randomProducts })
+    res.render('product_details', { layout: 'layouts/main.ejs', product, randomProducts, categories })
 }
 module.exports.blogs = async (req, res) => {
+    const categories = await getActiveCatAndSubCategories()
     const blogs = await Blog.findAll({})
-    res.render('blogs', { layout: 'layouts/main.ejs', blogs })
+    res.render('blogs', { layout: 'layouts/main.ejs', blogs, categories })
 }
 module.exports.blog = async (req, res) => {
     const slug = req.params.slug;
+    const categories = await getActiveCatAndSubCategories()
 
     const blog = await Blog.findOne({ where: { slug: slug } })
-    res.render('blog', { layout: 'layouts/main.ejs', blog })
+    res.render('blog', { layout: 'layouts/main.ejs', blog, categories })
 }
-module.exports.faq = (req, res) => {
-    res.render('faq', { layout: 'layouts/main.ejs' })
+module.exports.faq = async (req, res) => {
+    const categories = await getActiveCatAndSubCategories()
+    res.render('faq', { layout: 'layouts/main.ejs', categories })
 }
 module.exports.quotes = async (req, res) => {
-    console.log(req.session.guestUser);
+    // console.log(req.session.guestUser);
+    const categories = await getActiveCatAndSubCategories()
 
-    if (!req.session.guestUser) {
-        res.render('quotes', { layout: 'layouts/main.ejs', rfqs: null })
+    if (req.session && !req.session.guestUser) {
+        res.render('quotes', { layout: 'layouts/main.ejs', rfqs: null, categories })
     }
 
     const rfqs = await RFQ.findAll({
         where: { email: req.session.guestUser },
         include: [{ model: Product, include: [{ model: Image }] }],
     })
-    res.render('quotes', { layout: 'layouts/main.ejs', rfqs })
+    res.render('quotes', { layout: 'layouts/main.ejs', rfqs, categories })
 }
 module.exports.search = async (req, res) => {
+    const categories = await getActiveCatAndSubCategories()
     let keyword
     if (req.query) keyword = req.query.search
     // const categories = await Category.findAll({ include: SubCategory })
     // const random = await getRandomProducts()
     const { limit, offset } = getPagination(0);
 
+    // const products = await Product.findAll({offset: 1, limit: 2});
 
-    const products = await Product.findAll({
-        // distinct: true,
-        // limit,
-        // offset,
+    const products = await Product.findAndCountAll({
+        distinct: true,
+        limit,
+        offset,
 
         attributes: ['identifier','name', 'usage','slug', 'active'],
+        
+        include: [
+            { model: Image},
+            { model: Category },
+            { model: SubCategory, as: 'subCategory'}
+        ],
         where: {
             [Op.or]: [
                 { '$product.name$': { [Op.like]: `%${keyword}%` }, },
                 { '$product.usage$': { [Op.like]: `%${keyword}%` }, },
-                { '$subCategory.name$': { [Op.like]: `%${keyword}%`}, },
-                { '$category.name$': { [Op.like]: `%${keyword}%`} },
-
+            ],
+            [Op.and]: [
+                // { '$category.name$': { [Op.like]: `%${keyword}%`} },
+                // { '$subCategory.name$': { [Op.like]: `%${keyword}%`}, },
+                { '$product.active$': { [Op.not]: false }, },
             ],
         },
-        
-        include: [
-            { model: Image, as:'images', attributes: ['src', 'altText']},
-            { model: Category, as: 'category', attributes: ['name'] },
-            { model: SubCategory, as: 'subCategory', attributes: ['name']}
-        ],
-        logging: console.log
+        // order: [['id', 'desc']],
+        // logging: console.log
     })
+    
     // https://stackoverflow.com/questions/18838433/sequelize-find-based-on-association
-    console.log(JSON.stringify(products, null, 4));
+    // console.log(JSON.stringify(products, null, 4));
 
     // const plainMessages = messages.map((message) => message.get({ plain: true }));
 
-    res.render('search', { layout: 'layouts/main.ejs', products, title: keyword, })
+    res.render('search', { layout: 'layouts/main.ejs', products, title: keyword, categories})
 }
-module.exports.terms = (req, res) => {
-    res.render('terms-conditions', { layout: 'layouts/main.ejs' })
+module.exports.terms = async (req, res) => {
+    const categories = await getActiveCatAndSubCategories()
+    res.render('terms-conditions', { layout: 'layouts/main.ejs', categories })
 }
-module.exports.privacy = (req, res) => {
-    res.render('privacy', { layout: 'layouts/main.ejs' })
+module.exports.privacy = async (req, res) => {
+    const categories = await getActiveCatAndSubCategories()
+    res.render('privacy', { layout: 'layouts/main.ejs', categories })
 }
-module.exports.cookie_policy = (req, res) => {
-    res.render('cookie-policy', { layout: 'layouts/main.ejs' })
+module.exports.cookie_policy = async (req, res) => {
+    const categories = await getActiveCatAndSubCategories()
+    res.render('cookie-policy', { layout: 'layouts/main.ejs', categories})
 }
 module.exports.access_restricted = (req, res) => {
     res.render('access_restricted', { layout: 'layouts/main.ejs' })
@@ -361,7 +389,7 @@ module.exports.access_restricted = (req, res) => {
 
 
 const getPagination = (page, size) => {
-    const limit = 7;
+    const limit = 1;
     const offset = page ? page * limit : 0;
     return { limit, offset };
 };
@@ -370,6 +398,7 @@ const getPagingData = (data, page, limit) => {
     const { count: totalItems } = data;
     const currentPage = page ? page : 0;
     const totalPages = Math.ceil(totalItems / limit);
+    console.log(totalItems, data, totalPages, currentPage);
     return { totalItems, data, totalPages, currentPage };
 };
 
@@ -383,12 +412,12 @@ const orderSTR = (query) => {
         case 'desc':
             orderby = ['name', 'DESC']
             break;
-        // case 'newer':
-        //     orderby = ['year', 'ASC']
-        //   break;
-        // case 'older':
-        //     orderby = ['year', 'DESC']
-        //   break;
+        case 'newer':
+            orderby = ['year', 'ASC']
+          break;
+        case 'older':
+            orderby = ['year', 'DESC']
+          break;
         case 'usage':
             orderby = ['usage', 'ASC']
             break;

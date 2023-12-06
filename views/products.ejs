@@ -15,29 +15,57 @@
 
                     <li id="<%= c.slug %>">
                         <label class="sidebar__list__header" for="<%= c.name %>">
-                            <p>
-                                <%= c.name %>
-                            </p>
+                            <p><%= c.name %></p>
                             <span><i class="fas fa-caret-down"></i></span>
                         </label>
+                        
                         <input type="checkbox" id="<%= c.name %>">
+                        
                         <ul class="sidebar__list__items__sub">
                             <% c.subCategories.forEach(s=> { %>
-                                <li><a class="btn" href="/subcategory/<%= s.slug %>">
-                                        <%= s.name %>
-                                    </a></li>
-                                <% }) %>
-
+                                <li>
+                                    <a class="btn" href="/subcategory/<%= s.slug %>"><%= s.name %></a>
+                                </li>
+                            <% }) %>
                         </ul>
                     </li>
-                    <% } else { %>
-                        <li class="sidebar__list__items"><a class="btn" href="/category/<%= c.slug %>">
-                                <%= c.name %>
-                            </a></li>
-                        <% } %>
-                            <% }) %>
+                    
+                <% } else { %>
+                    <li class="sidebar__list__items">
+                        <a class="btn" href="/category/<%= c.slug %>"><%= c.name %></a>
+                    </li>
+                <% } %>
+            <% }) %>
 
         </ul>
+
+        <div class="filters">
+            <h4 class="collection">Filter collection:</h4>
+
+            <form id="frmCollection" action="">
+                <div class="field">
+                    <input type="radio" id="2023" name="collection" value="2023">
+                    <label for="2023">2023</label>
+                </div>
+
+                <div class="field">
+                    <input type="radio" id="2020" name="collection" value="2020">
+                    <label for="2020">2020</label>
+                </div>
+
+                <div class="field">
+                    <input type="radio" id="2019" name="collection" value="2019">
+                    <label for="2019">2019</label>
+                </div>
+
+                <button class="btnFilter" type="submit" value="filter">Filter</button>
+                <button class="btnReset" type="reset" value="reset">Reset</button>
+            </form>
+              
+            <form action="" method="get">
+                
+            </form>
+        </div>
     </aside>
 
     <section class="products">
@@ -59,8 +87,8 @@
                 </span> Models</p>
             <div class="sort-by">
                 <form action="" method="get">
-                    <label for="sorting">Sort By: </label>
-                    <select name="sort" id="sorting" onchange="this.form.submit()">
+                    <label for="sorting">Sort:</label>
+                    <select name="sort" id="sorting">
                         <option value="asc" <%= sort === 'asc' ? 'selected' : '' %>>A - Z</option>
                         <option value="desc" <%= sort === 'desc' ? 'selected' : '' %>>Z - A</option>
                         <option value="newer" <%= sort === 'newer' ? 'selected' : '' %>>Newer</option>
@@ -107,139 +135,24 @@
             <% } %>
 
         </div>
+        <div>
+            <ul>
+                <% for( let i = 1; i < products.totalPages+1; i++ ) { %>
+                    <li><a href="/products?page=<%= i %>"><%= i %></a></li>
+                    
+                <% } %>
+            </ul>
+        </div>
         <% if (products.count) { %>
             <button class="btn btn-standard btn-solid-primary" id="btnLoadMore">Load More</button>
 
-            <% } %>
+        <% } %>
     </section>
 </article>
 
 <%- include('./components/_recommended') %>
 
 <%- include('./components/_footer') %>
-
-
-<script>
-    /*
-    const url = window.location
-
-    let page = 1;
-    const productContainer = document.querySelector('#product-container')
-    const btnLoadMore = document.querySelector('#btnLoadMore')
-
-    btnLoadMore.addEventListener('click', (e) => {
-        e.preventDefault()
-
-        fetch(`${url.origin}${url.pathname}/${page}${url.search}`)
-        .then(response => response.json())
-        .then(data => {
-            console.log(data);
-            const products = data.data.rows
-            // console.log(Number(data.currentPage), data.totalPages);
-
-            if (Number(data.currentPage) + 1 >= data.totalPages) btnLoadMore.style.visibility = 'hidden'
-
-            page++
-
-            products.forEach(product => {
-
-                const card = document.createElement('div')
-                card.setAttribute("quoteWrapper", "");
-                card.classList = 'product-page-collection__grid__card'
-                const cardLink = document.createElement('a')
-                cardLink.classList = 'btn card__wrapper'
-                cardLink.href = `/product/${product.slug}`
-                card.append(cardLink)
-
-                card.addEventListener('click', GetQuoteModal)
-
-                const thumb = document.createElement('img')
-                thumb.setAttribute("productImage", "");
-                thumb.classList = 'image-responsive'
-                thumb.src = `/images/assets/300/${product.images[0].src}`
-                cardLink.append(thumb)
-
-                const cardCaption = document.createElement('div')
-                cardCaption.classList = 'card__caption'
-                cardLink.append(cardCaption)
-
-                const cardCaptionBasic = document.createElement('div')
-                cardCaptionBasic.classList = 'card__caption__basic'
-                cardCaption.append(cardCaptionBasic)
-
-                const cardCaptionP = document.createElement('p')
-                cardCaptionP.classList = 'card__caption__basic__name'
-                cardCaptionP.append(product.name)
-                cardCaptionBasic.append(cardCaptionP)
-
-                const cardCaptionBasicInfo = document.createElement('div')
-                cardCaptionBasicInfo.classList = 'card__caption__basic__info'
-                cardCaptionBasic.append(cardCaptionBasicInfo)
-
-                const cardCaptionBasicInfoP = document.createElement('h3')
-                cardCaptionBasicInfo.append(cardCaptionBasicInfoP)
-                if (product.subCategoryId) cardCaptionBasicInfoP.append(product.subCategory.name)
-
-                const cardCaptionBasicInfoPP = document.createElement('p')
-                cardCaptionBasicInfo.append(cardCaptionBasicInfoPP)
-                cardCaptionBasicInfoPP.append(product.usage)
-
-                const cardCaptionAttribute = document.createElement('div')
-                cardCaptionAttribute.classList = 'card__caption__attribute'
-                cardCaption.append(cardCaptionAttribute)
-                
-                const cardCaptionAttributeMod = document.createElement('div')
-                cardCaptionAttributeMod.classList = 'card__caption__attribute__mod'
-                cardCaptionAttribute.append(cardCaptionAttributeMod)
-
-                const cardCaptionAttributeH = document.createElement('h4')
-                cardCaptionAttributeMod.append(cardCaptionAttributeH)
-
-                const cardCaptionAttributeP = document.createElement('p')
-                cardCaptionAttributeMod.append(cardCaptionAttributeP)
-                
-                const cardCaptionAttributeS = document.createElement('span')
-                cardCaptionAttributeMod.append(cardCaptionAttributeS)
-                
-                const cardCaptionAttributeButton = document.createElement('button')
-                cardCaptionAttributeButton.setAttribute("quoteButton", "");
-                cardCaptionAttributeButton.classList = 'quote-button'
-                cardCaptionAttributeButton.append("Get Quote")
-                cardCaptionAttribute.append(cardCaptionAttributeButton)
-                
-                
-
-                productContainer.append(card)
-
-
-                //     productContainer.innerHTML += `<div class="product-page-collection__flex__card">
-                //     <a class="btn card__wrapper" href="/product/${product.slug}">
-                //         <img class="image-responsive" src="/images/assets/300/${product.images[0].src}" alt="">
-                //         <div class="card__caption">
-
-                //             <div class="card__caption__basic">
-                //                 <p class="card__caption__basic__name">
-                //                     ${product.name}
-                //                 </p>
-                //                 <div class="card__caption__basic__info">
-                //                     <p>
-                //                         ${product.categoryId ? product.category.name : ''}
-                //                     </p>
-                //                     <p>
-                //                         ${ product.usage}
-                //                     </p>
-                //                 </div>
-                //             </div>
-                //         </div>
-                //     </a>
-                // </div>`
-
-            });
-        })
-    })
-
-*/
-</script>
 
 <%- contentFor('captcha-Script') %>
 <script src="https://www.google.com/recaptcha/api.js?render=6LefTBApAAAAAGdco4sK5twxnRng07x-QJLSaO8K"></script>
