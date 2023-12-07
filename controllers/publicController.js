@@ -170,8 +170,9 @@ module.exports.products = async (req, res) => {
     const {sort, collection, page} = req.query
     const { limit, offset } = getPagination(page-1);
     let where = { active: true }
+    
 
-    if (collection) where = { active: true, year: collection }    
+    if (collection) where = { active: true, year: collection }
 
     const products = await Product.findAndCountAll({
         distinct: true,
@@ -182,7 +183,7 @@ module.exports.products = async (req, res) => {
         where: where
     })
     
-    const currentPage = page ? page : 0;
+    const currentPage = page ? page : 1;
     const totalPages = Math.ceil(products.count / limit);
 
     products.currentPage = currentPage
@@ -389,7 +390,7 @@ module.exports.access_restricted = (req, res) => {
 
 
 const getPagination = (page, size) => {
-    const limit = 1;
+    const limit = 3;
     const offset = page ? page * limit : 0;
     return { limit, offset };
 };
@@ -398,7 +399,6 @@ const getPagingData = (data, page, limit) => {
     const { count: totalItems } = data;
     const currentPage = page ? page : 0;
     const totalPages = Math.ceil(totalItems / limit);
-    console.log(totalItems, data, totalPages, currentPage);
     return { totalItems, data, totalPages, currentPage };
 };
 

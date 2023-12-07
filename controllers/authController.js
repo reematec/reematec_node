@@ -589,7 +589,7 @@ module.exports.addProduct_get = async (req, res) => {
     res.render('backend/product-add', { layout: 'layouts/app.ejs', sizes, tags, categories })
 }
 module.exports.addProduct_post = async (req, res) => {
-    const { name, slug, showcased, recommended, active, usage, price, pagetitle, shortDescription, LongDescription, specifications, features, care, category, subCategory, image, size, tag } = req.body
+    const { name, slug, showcased, recommended, active, usage, year, price, pagetitle, shortDescription, LongDescription, specifications, features, care, category, subCategory, image, size, tag } = req.body
 
     if (!name || !slug) res.redirect('/home/add-product') 
 
@@ -604,6 +604,7 @@ module.exports.addProduct_post = async (req, res) => {
             recommended: recommended ? true : false,
             active: active ? true : false,
             usage: usage,
+            year: year,
             price: price,
             pagetitle: pagetitle,
             shortDescription: shortDescription,
@@ -650,7 +651,7 @@ module.exports.addProduct_post = async (req, res) => {
         res.redirect('/home/product')
     } catch (err) {
         
-        req.flash('addProduct', { name, slug, showcased, recommended, active, usage, price, pagetitle, shortDescription, LongDescription, specifications, features, care, category, subCategory })
+        req.flash('addProduct', { name, slug, showcased, recommended, active, usage, year, price, pagetitle, shortDescription, LongDescription, specifications, features, care, category, subCategory })
 
         if (err.errors.length > 0) {
             req.flash('errors', err.errors)
@@ -709,7 +710,7 @@ module.exports.updateProduct_post = async (req, res) => {
         where: { slug: slugParam }
     })
 
-    const { name, slug, showcased, recommended, active, usage, price, pagetitle, shortDescription, LongDescription, specifications, features, care, category, subCategory, image, size, tag } = req.body
+    const { name, slug, showcased, recommended, active, usage, year, price, pagetitle, shortDescription, LongDescription, specifications, features, care, category, subCategory, image, size, tag } = req.body
 
     const t = await sequelize.transaction();
 
@@ -721,6 +722,7 @@ module.exports.updateProduct_post = async (req, res) => {
         product.recommended = recommended ? true : false;
         product.active = active ? true : false;
         product.usage = usage;
+        product.year = year;
         product.price = price;
         product.pagetitle = pagetitle;
         product.shortDescription = shortDescription;

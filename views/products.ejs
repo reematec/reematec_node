@@ -135,16 +135,33 @@
             <% } %>
 
         </div>
-        <div>
+        <div class="pagination_wrapper">
             <ul>
-                <% for( let i = 1; i < products.totalPages+1; i++ ) { %>
-                    <li><a href="/products?page=<%= i %>"><%= i %></a></li>
-                    
+                <% if ((parseInt(products.currentPage)-1) > 0  ) { %>
+                    <li><a href="/products?page=<%= parseInt(products.currentPage)-1 %>"><<</a></li>
+                <% } %>
+                 
+                
+                
+                
+                <% if (products.totalPages > 1) { %>
+                    <% for( let i = 1; i < products.totalPages+1; i++ ) { %>
+                        <% if (products.currentPage == i) { %>
+                            <li> <span class="active"><%= i %></span></li>
+                        <% } else { %>
+                            <li><a href="/products?page=<%= i %>"><%= i %></a></li>
+                        <% } %>
+                    <% } %>
+                <% } %>     
+
+
+                <% if (parseInt(products.totalPages) > (parseInt(products.currentPage))   ) { %>
+                    <li><a href="/products?page=<%= parseInt(products.currentPage)+1 %>">>></a></li>
                 <% } %>
             </ul>
         </div>
         <% if (products.count) { %>
-            <button class="btn btn-standard btn-solid-primary" id="btnLoadMore">Load More</button>
+            <!-- <button class="btn btn-standard btn-solid-primary" id="btnLoadMore">Load More</button> -->
 
         <% } %>
     </section>

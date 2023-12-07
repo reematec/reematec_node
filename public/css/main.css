@@ -1513,6 +1513,46 @@ tr:nth-child(even) {
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
 }
 
+.pagination_wrapper ul {
+  display: flex;
+  list-style: none;
+  justify-content: center;
+}
+.pagination_wrapper ul li a, .pagination_wrapper ul li .active {
+  color: #555;
+  width: 4rem;
+  height: 4rem;
+  line-height: 4rem;
+  font-size: 1.6rem;
+  border-radius: 50%;
+  text-align: center;
+  display: inline-block;
+  border: 1px solid #ffc300;
+  transition: all 0.3s ease-in-out;
+  text-decoration: none;
+  margin-left: 1rem;
+}
+.pagination_wrapper ul li a:hover {
+  background-color: #ffc300;
+  color: #fff;
+}
+.pagination_wrapper ul li .active {
+  background-color: #ffc300;
+  color: #fff;
+  width: 4rem;
+  height: 4rem;
+  line-height: 4rem;
+  font-size: 1.6rem;
+  border-radius: 50%;
+  text-align: center;
+  display: inline-block;
+  border: 1px solid #ffc300;
+  transition: all 0.3s ease-in-out;
+  text-decoration: none;
+  margin-left: 1rem;
+  font-weight: 500;
+}
+
 /* *********************************************************
 
                     PRODUCTS DETAILS PAGES

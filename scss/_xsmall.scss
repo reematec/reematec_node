@@ -809,6 +809,52 @@
 
 }
 
+.pagination_wrapper{
+    ul{
+        display: flex;
+        list-style: none;
+        justify-content: center;
+        li{
+            a, .active{
+                color: #555;
+                width: 4rem;
+                height: 4rem;
+                line-height: 4rem;
+                font-size: 1.6rem;
+                border-radius: 50%;
+                text-align: center;
+                display: inline-block;
+                border: 1px solid #ffc300;
+                transition: all .3s ease-in-out;
+                text-decoration: none;
+                margin-left: 1rem;
+            }
+            a:hover{
+                background-color: #ffc300;
+                color: #fff;
+            }
+
+            .active{
+                background-color: #ffc300;
+                color: #fff;
+                width: 4rem;
+                height: 4rem;
+                line-height: 4rem;
+                font-size: 1.6rem;
+                border-radius: 50%;
+                text-align: center;
+                display: inline-block;
+                border: 1px solid #ffc300;
+                transition: all .3s ease-in-out;
+                text-decoration: none;
+                margin-left: 1rem;
+                font-weight: 500;
+
+            }
+        }
+    }
+}
+
 /* *********************************************************
 
                     PRODUCTS DETAILS PAGES
