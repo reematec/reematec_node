@@ -14,12 +14,11 @@
 			<th>Showcased</th>
 			<th>Recommended</th>
 			<th>Active</th>
+			<th></th>
 			<th>Price</th>
 			<th>Usage</th>
 			<th>Category</th>
 			<th>Subcategory</th>
-			
-			
 			<th>Action</th>
 		</tr>
 
@@ -34,10 +33,21 @@
 			<td><%= products[p].showcased ? '✓' : '❌' %></td>
 			<td><%= products[p].recommended ? '✓' : '❌' %></td>
 			<td><%= products[p].active ? '✓' : '❌' %></td>
+			<td>
+				<% if (user && user.role === "Admin") { %>
+					<form action="/home/product-status/<%= products[p].slug %>" method="post">
+						<input  type="hidden" name="slug" value="<%= products[p].slug %>">
+						<input type="hidden" name="_csrfToken" value="<%= csrfToken %>">
+						<button class="btn btn-link" type="submit"> <%= products[p].active ? 'Take Offline' : 'Bring Online' %></button>
+					</form> 
+				<% } %>
+			</td>
+			
 			<td><%= products[p].price %></td>
 			<td><%= products[p].usage %></td>
 			<td><%= products[p].categoryId ? products[p].category.name : '' %></td>
 			<td><%= products[p].subCategoryId ? products[p].subCategory.name : '' %></td>
+			
 			
 			
 			
@@ -46,6 +56,7 @@
 				<a class="btn btn-link link-blue" href="/home/update-product/<%= products[p].slug %>">Edit</a> |
 				<a class="btn btn-link link-red" href="/home/delete-product/<%= products[p].slug %>">Delete</a>
 			</td>
+			
 		</tr>
 		
 		<% } %> 

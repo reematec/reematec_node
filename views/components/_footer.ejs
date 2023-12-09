@@ -67,9 +67,12 @@
         <div class="footer__section">
             <p class="footer__heading">PRODUCT CATEGORIES</p>
             <ul>
-                <% categories.forEach(category => { %>
-                    <li><a class="btn footer__links footer__links--large" href="/category/<%= category.slug %>"><%= category.name %></a></li>
-                <% }) %>
+                <% if (categories) { %>
+                    <% categories.forEach(category => { %>
+                        <li><a class="btn footer__links footer__links--large" href="/category/<%= category.slug %>"><%= category.name %></a></li>
+                    <% }) %>
+                 
+                <% } %>
             </ul>
         </div>
     </div>

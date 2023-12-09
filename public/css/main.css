@@ -1293,6 +1293,7 @@ tr:nth-child(even) {
   border-bottom: 0;
   cursor: pointer;
   align-items: center;
+  text-transform: uppercase;
 }
 .sidebar__list__header p {
   margin-top: 0;
@@ -1337,6 +1338,7 @@ tr:nth-child(even) {
 .sidebar__list .sidebar__list__items a {
   padding: 1.5rem;
   border-bottom: 0;
+  text-transform: uppercase;
 }
 .sidebar__list .sidebar__list__items:last-child {
   border-bottom: 1px solid #d5d5d5;

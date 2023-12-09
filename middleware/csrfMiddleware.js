@@ -6,7 +6,7 @@ const verifyCSRF = (req, res, next) => {
         // // const secret = tokens.secretSync();
         // // const token = tokens.create(secret);
         const tokenVerification = tokens.verify(process.env.CSRF_TOKEN, req.body._csrfToken)
-        console.log('token verificiation: ' + tokenVerification);
+        console.log('verifyCSRF: ' + tokenVerification);
             
         if (!tokenVerification) {
             res.status(403);
@@ -20,7 +20,7 @@ const getCSRF = () => {
     const tokens = new Tokens();
     // const secret = tokens.secretSync();
     const token = tokens.create(process.env.CSRF_TOKEN);
-    console.log('original token: '+ token);    
+    console.log('getCSRF: '+ token);    
     return token;
 }
 // function getCSRF() {

@@ -534,6 +534,7 @@
             border-bottom: 0;
             cursor: pointer;
             align-items: center;
+            text-transform: uppercase;
 
             & p {
                 @include my-0;
@@ -592,6 +593,7 @@
         .sidebar__list__items a {
             padding: 1.5rem;
             border-bottom: 0;
+            text-transform: uppercase;
         }
 
         .sidebar__list__items:last-child {

@@ -467,22 +467,18 @@ if (btnLoadMore) {
 
 //#endregion
 
-// ********************************************************************
-// SELECT IMAGES Modal & Load More images button in modal
-// ********************************************************************
-//#region 
-const frmCollection = document.querySelector('#frmCollection')
 
+//#region Sorting
+const frmCollection = document.querySelector('#frmCollection')
 const sorting = document.querySelector('#sorting')
 if (sorting) {
     sorting.onchange = function (e) {
-        window.location.href = `/products?sort=${e.target.value}`;
-        
-        if (frmCollection && frmCollection.collection.value) {
-            window.location.href = `/products?sort=${e.target.value}&collection=${frmCollection.collection.value}`;
-        }
-    }
 
+        if (frmCollection && frmCollection.collection.value) {
+            return window.location.href = `${document.location.pathname}?sort=${e.target.value}&collection=${frmCollection.collection.value}`;
+        }
+        return window.location.href = `${document.location.pathname}?sort=${e.target.value}`;
+    }
 }
  
 //#endregion
@@ -661,4 +657,14 @@ if (selectedImages) {
 }
 
 
+//#endregion
+
+//#region Products Page Reset filter Button
+const btnReset = document.querySelector('.btnReset')
+if (btnReset) {
+    btnReset.addEventListener('click', (e)=>{
+        e.preventDefault()
+        window.location.href = document.location.pathname
+    })
+}
 //#endregion

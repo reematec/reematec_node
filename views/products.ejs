@@ -42,22 +42,19 @@
         <div class="filters">
             <h4 class="collection">Filter collection:</h4>
 
+            
             <form id="frmCollection" action="">
-                <div class="field">
-                    <input type="radio" id="2023" name="collection" value="2023">
-                    <label for="2023">2023</label>
-                </div>
-
-                <div class="field">
-                    <input type="radio" id="2020" name="collection" value="2020">
-                    <label for="2020">2020</label>
-                </div>
-
-                <div class="field">
-                    <input type="radio" id="2019" name="collection" value="2019">
-                    <label for="2019">2019</label>
-                </div>
-
+                
+                
+                <% filterCollection.forEach(fc => { %>
+                    
+                    <div class="field">
+                        <input type="radio" id="<%= fc.year %>" name="collection" value="<%= fc.year %>" <%= collection == fc.year ? 'checked' : '' %>  >
+                        <label for="<%= fc.year %>"><%= fc.year %></label>
+                    </div>
+                    
+                <% }) %>
+                    
                 <button class="btnFilter" type="submit" value="filter">Filter</button>
                 <button class="btnReset" type="reset" value="reset">Reset</button>
             </form>
@@ -91,8 +88,6 @@
                     <select name="sort" id="sorting">
                         <option value="asc" <%= sort === 'asc' ? 'selected' : '' %>>A - Z</option>
                         <option value="desc" <%= sort === 'desc' ? 'selected' : '' %>>Z - A</option>
-                        <option value="newer" <%= sort === 'newer' ? 'selected' : '' %>>Newer</option>
-                        <option value="older" <%= sort === 'older' ? 'selected' : '' %>>Older</option>
                         <option value="usage" <%= sort === 'usage' ? 'selected' : '' %>>Usage</option>
                     </select>
                 </form>
@@ -138,7 +133,7 @@
         <div class="pagination_wrapper">
             <ul>
                 <% if ((parseInt(products.currentPage)-1) > 0  ) { %>
-                    <li><a href="/products?page=<%= parseInt(products.currentPage)-1 %>"><<</a></li>
+                    <li><a href="<%= currentUrl %>?page=<%= parseInt(products.currentPage)-1 %><%=collection ? `&collection=${collection}` : '' %><%=sort ? `&sort=${sort}` : '' %>"><<</a></li>
                 <% } %>
                  
                 
@@ -149,14 +144,15 @@
                         <% if (products.currentPage == i) { %>
                             <li> <span class="active"><%= i %></span></li>
                         <% } else { %>
-                            <li><a href="/products?page=<%= i %>"><%= i %></a></li>
+                            <li><a href="<%= currentUrl %>?page=<%= i %><%=collection ? `&collection=${collection}` : '' %><%=sort ? `&sort=${sort}` : '' %>"><%= i %></a></li>
                         <% } %>
                     <% } %>
-                <% } %>     
-
+                <% } %> 
+                
+                
 
                 <% if (parseInt(products.totalPages) > (parseInt(products.currentPage))   ) { %>
-                    <li><a href="/products?page=<%= parseInt(products.currentPage)+1 %>">>></a></li>
+                    <li><a href="<%= currentUrl %>?page=<%= parseInt(products.currentPage)+1 %><%=collection ? `&collection=${collection}` : '' %><%=sort ? `&sort=${sort}` : '' %>">>></a></li>
                 <% } %>
             </ul>
         </div>

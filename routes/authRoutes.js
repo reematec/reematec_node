@@ -123,6 +123,7 @@ router.get('/home/update-product/:slug', requireAuth,isAccountActive, authContro
 router.post('/home/update-product/:slug', requireAuth,isAccountActive, authController.updateProduct_post);
 router.get('/home/delete-product/:slug', requireAuth,isAccountActive, authController.deleteProduct_get);
 router.post('/home/delete-product/:slug', requireAuth,isAccountActive, authController.deleteProduct_post);
+router.post('/home/product-status/:slug', requireAuth,isAccountActive, authController.changeStatus_post);
 //#endregion
 
 //#region Blog

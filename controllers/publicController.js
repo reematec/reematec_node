@@ -15,6 +15,9 @@ const Product = require('../models/Product');
 const Size = require("../models/Size");
 const Blog = require('../models/Blog');
 const RFQ = require('../models/RFQ');
+const url = require('url').urlToHttpOptions
+
+
 
 
 
@@ -169,10 +172,7 @@ module.exports.products = async (req, res) => {
     const random = await getRandomProducts()
     const {sort, collection, page} = req.query
     const { limit, offset } = getPagination(page-1);
-    let where = { active: true }
-    
-
-    if (collection) where = { active: true, year: collection }
+    let where = collection ? { active: true, year: collection } : { active: true }
 
     const products = await Product.findAndCountAll({
         distinct: true,
@@ -182,14 +182,15 @@ module.exports.products = async (req, res) => {
         order: [orderSTR(sort)],
         where: where
     })
-    
+
     const currentPage = page ? page : 1;
     const totalPages = Math.ceil(products.count / limit);
 
     products.currentPage = currentPage
     products.totalPages = totalPages
     
-    res.render('products', { layout: 'layouts/main.ejs', categories, products, title: categories[0].name, randomProducts:random, sort: sort })
+    
+    res.render('products', { layout: 'layouts/main.ejs', categories, products, title: categories[0].name, randomProducts:random, sort: sort, currentUrl: pathname(req), collection, filterCollection: await filterCollection() })
 }
 module.exports.products_page = async (req, res) => {
     // Fetch http://localhost:3000/products/page
@@ -216,21 +217,32 @@ module.exports.products_page = async (req, res) => {
 module.exports.categoryProducts = async (req, res) => {
     // http://localhost:3000/category/futsal-balls
     const { slug } = req.params
-    const query = req.query
+    const {sort, collection, page} = req.query
     
     const categories = await getActiveCatAndSubCategories()
     const random = await getRandomProducts()
     const breadcrumb = await Category.findOne({ where: { slug } })
-    const { limit, offset } = getPagination(0);
+    const { limit, offset } = getPagination(page-1);
+    let where = collection ? { active: true, year: collection } : { active: true }
 
     const products = await Product.findAndCountAll({
         distinct: true,
         limit,
         offset,
         include: [{ model: Category, where: { slug } }, { model: SubCategory }, { model: Image }],
-        where: { active: 1 }
+        order: [orderSTR(sort)],
+        where: where
     })
-    res.render('products', { layout: 'layouts/main.ejs', categories, products, title: breadcrumb.name, randomProducts: random, sort: query.sort })
+
+    const currentPage = page ? page : 1;
+    const totalPages = Math.ceil(products.count / limit);
+
+    products.currentPage = currentPage
+    products.totalPages = totalPages
+
+    
+
+    res.render('products', { layout: 'layouts/main.ejs', categories, products, title: breadcrumb.name, randomProducts: random, sort: sort, currentUrl: pathname(req), collection, filterCollection: await filterCollection() })
 }
 // Against Fetch Call
 module.exports.categoryProducts_page = async (req, res) => {
@@ -253,21 +265,32 @@ module.exports.categoryProducts_page = async (req, res) => {
 
 module.exports.subCategoryProducts = async (req, res) => {
     // http://localhost:3000/subcategory/fusiontec-hybrid-footballs
+    
     const { slug } = req.params
-    const query = req.query
+    const {sort, collection, page} = req.query
 
     const categories = await getActiveCatAndSubCategories()
     const random = await getRandomProducts()
     const breadcrumb = await SubCategory.findOne({ where: { slug }, include: Category })
-    const { limit, offset } = getPagination(0);
+    const { limit, offset } = getPagination(page-1);
+    let where = collection ? { active: true, year: collection } : { active: true }
 
     const products = await Product.findAndCountAll({
         distinct: true,
         limit,
         offset,
-        include: [{ model: Category }, { model: SubCategory, where: { slug } }, { model: Image }]
+        include: [{ model: Category }, { model: SubCategory, where: { slug } }, { model: Image }],
+        order: [orderSTR(sort)],
+        where: where
     })
-    res.render('products', { layout: 'layouts/main.ejs', categories, products, title: breadcrumb.category.name, randomProducts: random, sort: query.sort })
+
+    const currentPage = page ? page : 1;
+    const totalPages = Math.ceil(products.count / limit);
+
+    products.currentPage = currentPage
+    products.totalPages = totalPages
+    
+    res.render('products', { layout: 'layouts/main.ejs', categories, products, title: breadcrumb.category.name, randomProducts: random, sort: sort, currentUrl: pathname(req), collection, filterCollection: await filterCollection() })
 }
 module.exports.subCategoryProducts_page = async (req, res) => {
     const { slug, page } = req.params
@@ -390,7 +413,7 @@ module.exports.access_restricted = (req, res) => {
 
 
 const getPagination = (page, size) => {
-    const limit = 3;
+    const limit = 2;
     const offset = page ? page * limit : 0;
     return { limit, offset };
 };
@@ -412,12 +435,12 @@ const orderSTR = (query) => {
         case 'desc':
             orderby = ['name', 'DESC']
             break;
-        case 'newer':
-            orderby = ['year', 'ASC']
-          break;
-        case 'older':
-            orderby = ['year', 'DESC']
-          break;
+        // case 'newer':
+        //     orderby = ['year', 'ASC']
+        //   break;
+        // case 'older':
+        //     orderby = ['year', 'DESC']
+        //   break;
         case 'usage':
             orderby = ['usage', 'ASC']
             break;
@@ -457,4 +480,25 @@ async function getActiveCatAndSubCategories(params) {
         // logging: console.log
     })
     return activeCategories
+}
+
+const pathname = (req)=>{
+    let pathname = ''
+    if (req.url.includes('?')) {
+        pathname = req.url.substring(0, req.url.indexOf("?"))
+    }
+    return pathname
+}
+
+async function filterCollection() {
+    const filterCollection = await Product.findAll({
+        distinct: true,
+        attributes: ['year'],
+        // include: [{ model: Category}, { model: SubCategory }, { model: Image }],
+        // order: [orderSTR(sort)],
+        where: {active: 1},
+        group: 'year'
+    })
+
+    return filterCollection;
 }

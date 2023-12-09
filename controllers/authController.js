@@ -589,7 +589,7 @@ module.exports.addProduct_get = async (req, res) => {
     res.render('backend/product-add', { layout: 'layouts/app.ejs', sizes, tags, categories })
 }
 module.exports.addProduct_post = async (req, res) => {
-    const { name, slug, showcased, recommended, active, usage, year, price, pagetitle, shortDescription, LongDescription, specifications, features, care, category, subCategory, image, size, tag } = req.body
+    const { name, slug, showcased, recommended, usage, year, price, pagetitle, shortDescription, LongDescription, specifications, features, care, category, subCategory, image, size, tag } = req.body
 
     if (!name || !slug) res.redirect('/home/add-product') 
 
@@ -602,7 +602,6 @@ module.exports.addProduct_post = async (req, res) => {
             slug: slug,
             showcased: showcased ? true : false,
             recommended: recommended ? true : false,
-            active: active ? true : false,
             usage: usage,
             year: year,
             price: price,
@@ -710,7 +709,7 @@ module.exports.updateProduct_post = async (req, res) => {
         where: { slug: slugParam }
     })
 
-    const { name, slug, showcased, recommended, active, usage, year, price, pagetitle, shortDescription, LongDescription, specifications, features, care, category, subCategory, image, size, tag } = req.body
+    const { name, slug, showcased, recommended, usage, year, price, pagetitle, shortDescription, LongDescription, specifications, features, care, category, subCategory, image, size, tag } = req.body
 
     const t = await sequelize.transaction();
 
@@ -720,7 +719,6 @@ module.exports.updateProduct_post = async (req, res) => {
         product.slug = slug;
         product.showcased = showcased ? true : false;
         product.recommended = recommended ? true : false;
-        product.active = active ? true : false;
         product.usage = usage;
         product.year = year;
         product.price = price;
@@ -789,6 +787,23 @@ module.exports.deleteProduct_post = async (req, res) => {
 
     await product.destroy();
     req.flash('info', 'Product deleted successfully')
+    res.redirect('/home/product');
+}
+
+module.exports.changeStatus_post = async (req, res) => {
+    const { slug } = req.body;
+
+    console.log(req.body);
+
+    try {
+        const product = await Product.findOne({ where: { slug } })
+        product.active = !product.active
+        await product.save();
+        req.flash('info', [{ message: 'Product status updated successfully.' }])
+    } catch (error) {
+        req.flash('errors', [{ message: 'Product status failed to update.' }])
+        console.log(error);
+    }
     res.redirect('/home/product');
 }
 //#endregion
