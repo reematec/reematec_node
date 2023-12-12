@@ -1240,7 +1240,7 @@
 
 /* *********************************************************
 
-                    Cookie Policy PAGE
+                    FAQ PAGE
 
 ********************************************************* */
 .faqs {
@@ -1851,5 +1851,32 @@
     }
     .product-page-collection__grid__card{
         justify-self: start;
+    }
+}
+
+/* *********************************************************
+                    Image Gallery Page
+********************************************************* */
+
+.gallery{
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: auto;
+    margin-right: auto;
+    .image-wrapper{
+        margin-bottom: 2rem;
+        margin-right: 2rem;
+
+        button{
+            border: 0;
+            background: none;
+            cursor: pointer;
+            margin: 0;
+        }
+
+        .action-wrapper{
+            margin-top: 1rem;
+            text-align: center;
+        }
     }
 }

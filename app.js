@@ -116,7 +116,7 @@ app.use('*', function(req, res){
 
 
 HOST =  'localhost';
-// HOST =  '192.168.10.27';
+HOST =  '192.168.10.27';
 const PORT = process.env.PORT;
 
 // var os = require('os');

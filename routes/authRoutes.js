@@ -7,13 +7,15 @@ const { slugValidator } = require('../validators/commonValidators');
 const { addValidator, editValidator } = require('../validators/categoryValidators');
 const { addSubValidator, editSubValidator } = require('../validators/subcategoryValidators');
 const { addTagValidator, editTagValidator } = require('../validators/tagValidators');
+const { addProductVal, editProductVal } = require('../validators/productValidators');
+const {singupValidator} = require('../validators/UserValidators');
 const router = Router();
 
 router.get('/dashboard', requireAuth, isAccountActive, authController.dashboard);
 
 //#region Authentication
 router.get('/signup', guestUser, authController.signup_get);
-router.post('/signup',  authController.signup_post);
+router.post('/signup', guestUser, singupValidator,  authController.signup_post);
 
 router.get('/login', guestUser, authController.login_get);
 router.post('/login',  passport.authenticate('local', {
@@ -95,13 +97,13 @@ router.post('/home/delete-image/:identifier', authController.deleteImage_post);
 //#endregion
 
 //#region Tags
-router.get('/home/tags',requireAuth,isAccountActive, authController.tags);
-router.get('/home/add-tag',requireAuth,isAccountActive, authController.addTag_get);
-router.post('/home/add-tag',requireAuth,isAccountActive, addTagValidator, authController.addTag_post);
-router.get('/home/update-tag/:slug',requireAuth,isAccountActive, slugValidator, authController.updateTag_get);
-router.post('/home/update-tag/:slug',requireAuth,isAccountActive, slugValidator, editTagValidator, authController.updateTag_post);
-router.get('/home/delete-tag/:slug',requireAuth,isAccountActive, slugValidator, authController.deleteTag_get);
-router.post('/home/delete-tag/:slug',requireAuth,isAccountActive, slugValidator, authController.deleteTag_post);
+router.get('/home/tags',requireAuth, isAccountActive, authController.tags);
+router.get('/home/add-tag',requireAuth, isAccountActive, authController.addTag_get);
+router.post('/home/add-tag',requireAuth, isAccountActive, addTagValidator, authController.addTag_post);
+router.get('/home/update-tag/:slug',requireAuth, isAccountActive, slugValidator, authController.updateTag_get);
+router.post('/home/update-tag/:slug',requireAuth, isAccountActive, slugValidator, editTagValidator, authController.updateTag_post);
+router.get('/home/delete-tag/:slug',requireAuth, isAccountActive, slugValidator, authController.deleteTag_get);
+router.post('/home/delete-tag/:slug',requireAuth, isAccountActive, slugValidator, authController.deleteTag_post);
 //#endregion
 
 //#region Sizes
@@ -115,15 +117,15 @@ router.post('/home/delete-size/:identifier', requireAuth,isAccountActive, authCo
 //#endregion
 
 //#region Product
-router.get('/home/product', requireAuth,isAccountActive, authController.productPosting);
-router.get('/home/add-product', requireAuth,isAccountActive, authController.addProduct_get);
-router.post('/home/add-product', requireAuth,isAccountActive, authController.addProduct_post);
-router.get('/home/view-product/:slug', requireAuth,isAccountActive, authController.viewProduct_get);
-router.get('/home/update-product/:slug', requireAuth,isAccountActive, authController.updateProduct_get);
-router.post('/home/update-product/:slug', requireAuth,isAccountActive, authController.updateProduct_post);
-router.get('/home/delete-product/:slug', requireAuth,isAccountActive, authController.deleteProduct_get);
-router.post('/home/delete-product/:slug', requireAuth,isAccountActive, authController.deleteProduct_post);
-router.post('/home/product-status/:slug', requireAuth,isAccountActive, authController.changeStatus_post);
+router.get('/home/product', requireAuth, isAccountActive, authController.productPosting);
+router.get('/home/add-product', requireAuth, isAccountActive, authController.addProduct_get);
+router.post('/home/add-product', requireAuth, isAccountActive, addProductVal, authController.addProduct_post);
+router.get('/home/view-product/:slug', requireAuth, isAccountActive, slugValidator, authController.viewProduct_get);
+router.get('/home/update-product/:slug', requireAuth, isAccountActive, slugValidator, authController.updateProduct_get);
+router.post('/home/update-product/:slug', requireAuth, isAccountActive, editProductVal, authController.updateProduct_post);
+router.get('/home/delete-product/:slug', requireAuth, isAccountActive, slugValidator, authController.deleteProduct_get);
+router.post('/home/delete-product/:slug', requireAuth, isAccountActive, slugValidator, authController.deleteProduct_post);
+router.post('/home/product-status/:slug', requireAuth, isAccountActive, slugValidator, authController.changeStatus_post);
 //#endregion
 
 //#region Blog

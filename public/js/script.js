@@ -1,21 +1,64 @@
-// console.log('console from script.js');
-// (async () => {
-// const moduleSpecifier = `./testing2.mjs`;
-//     const module = await import(moduleSpecifier)
-//     module.default();
-//     module.doStuff();
+//#region MODALS COMMON FUNCTIONS
+let KEY = { ESCAPE: 27, TAB: 9}
+function toggleModal(modal) {
+    document.body.classList.add('body-overflow')
+    console.log();
+    // window.style.overflow = "none";
+    focusedElementBeforeModal = document.activeElement;
+    
+    modal.classList.toggle("show-modal");
 
-// })();
-// (async () => {
-// const moduleSpecifier = `./testing.mjs`;
-//     const testing = await import(moduleSpecifier)
+    modal.addEventListener('keydown', processTabKey);
 
+    // Find all focusable modal elements
+    let focusableElements = modal.querySelectorAll('input:not([disabled]), button:not([disabled])');
 
-// })();
+    firstElementOfModal = focusableElements[0];
+    lastElementOfModal = focusableElements[focusableElements.length - 1];
 
+    // Focus on first element of the modal - firstName
+    if (firstElementOfModal) firstElementOfModal.focus();
+}   
 
-// Traversing Guide
-// https://zellwk.com/blog/dom-traversals/
+// ENTER MODAL TO ENABLE WINDOW CLICK CLOSE
+window.addEventListener("click", windowOnClick);
+function windowOnClick(e) {
+    if (e.target === modalSearch) {
+        toggleModal(modalSearch);
+    }
+    else if (e.target === modalQuote) {
+        toggleModal(modalQuote);
+    }
+    else if (e.target === modalImages) {
+        toggleModal(modalImages);
+    }
+    else if (e.target === modalImagePreview) {
+        toggleModal(modalImagePreview);
+    }
+}
+
+function processTabKey(e) {
+    // handle TAB key
+    if (e.keyCode === KEY.TAB) {
+        if (document.activeElement === lastElementOfModal) {
+            e.preventDefault();
+            firstElementOfModal.focus();
+        }
+    }
+}
+
+// handle ESCAPE key to close the modal
+document.addEventListener('keydown', (e)=>{
+    if (e.keyCode === KEY.ESCAPE) modalClose(document.querySelector(".show-modal"));
+})
+    
+
+function modalClose(modal) {
+    modal.classList.toggle("show-modal");
+    document.body.classList.remove('body-overflow')
+    focusedElementBeforeModal.focus();
+}
+//#endregion
 
 
 
@@ -120,90 +163,44 @@ const waitSpinner = document.querySelector('#wait-spinner')
 const messagebox = document.querySelector('#messagebox')
 // console.log(waitSpinner);
 
-// ********************************************************************
-// Search Modal & Modal Common Functions
-// ********************************************************************
-//#region 
-let KEY = {
-    ESCAPE: 27,
-    TAB: 9
-}
+//#region Search Modal 
 //SEARCH MODALS VARIABLES
 let btnSearch, modalSearch;
 //MODALS COMMON VARIABLES
 let btnClose, focusedElementBeforeModal, firstElementOfModal, lastElementOfModal;
 
-
 if (document.querySelector('#modal-search') && document.querySelector('#btnSearch') && document.querySelector('.close-button')) {
     modalSearch = document.querySelector('#modal-search');
 
     btnSearch = document.querySelector('#btnSearch');
-    btnSearch.addEventListener('click', function () {
-        toggleModal(modalSearch);
-    });
+    btnSearch.addEventListener('click', function () { toggleModal(modalSearch); });
 
-    btnClose = document.querySelector('.close-button');
-    btnClose.addEventListener("click", function () {
-        modalClose(modalSearch);
-    });
-}
-
-
-//MODALS COMMON FUNCTIONS
-function toggleModal(modal) {
-    focusedElementBeforeModal = document.activeElement;
-
-    modal.classList.toggle("show-modal");
-
-    modal.addEventListener('keydown', processEscapeTabKeys);
-
-    // Find all focusable modal elements
-    let focusableElements = modal.querySelectorAll('input:not([disabled]), button:not([disabled])');
-
-    firstElementOfModal = focusableElements[0];
-    lastElementOfModal = focusableElements[focusableElements.length - 1];
-
-    // Focus on first element of the modal - firstName
-    if (firstElementOfModal) {
-        firstElementOfModal.focus();
-    }
-}
-
-// ENTER MODAL TO ENABLE WINDOW CLICK CLOSE
-window.addEventListener("click", windowOnClick);
-function windowOnClick(event) {
-    if (event.target === modalSearch) {
-        toggleModal(modalSearch);
-    }
-    else if (event.target === modalQuote) {
-        toggleModal(modalQuote);
-    }
-    else if (event.target === modalImages) {
-        toggleModal(modalImages);
-    }
-}
-
-function processEscapeTabKeys(event) {
-    // handle TAB key
-    if (event.keyCode === KEY.TAB) {
-        if (document.activeElement === lastElementOfModal) {
-            event.preventDefault();
-            firstElementOfModal.focus();
-        }
-    }
-    // handle ESCAPE key to close the modal
-    if (event.keyCode === KEY.ESCAPE) {
-        modalClose(document.querySelector(".show-modal"));
-    }
-}
-
-function modalClose(modal) {
-    modal.classList.toggle("show-modal");
-    focusedElementBeforeModal.focus();
+    btnClose = modalSearch.querySelector('.close-button');
+    btnClose.addEventListener("click", function () { modalClose(modalSearch); });
 }
 //#endregion
 
+//#region Image Preview
 
+const modalImagePreview = document.querySelector('#modal-image-preview')
+if (modalImagePreview) {
+    const btnImagePreview = document.querySelectorAll('.show-image-preview')
+   
+    for (let i = 0; i < btnImagePreview.length; i++) {
+        btnImagePreview[i].addEventListener('click', (e)=>{
+            toggleModal(modalImagePreview);
+
+            const imagePreview =  modalImagePreview.querySelector('#imgPreview')
+            
+            imagePreview.src = `/images/assets/${btnImagePreview[i].dataset.identifier}`
+        });
+    }
+
+    modalImagePreview.querySelector('.close-button').addEventListener("click", function () {
+        modalClose(modalImagePreview);
+    });
+}
+//#endregion
 
 // ********************************************************************
 // ASK QUOTE Modal
@@ -468,36 +465,14 @@ if (btnLoadMore) {
 //#endregion
 
 
-//#region Sorting
-const frmCollection = document.querySelector('#frmCollection')
-const sorting = document.querySelector('#sorting')
-if (sorting) {
-    sorting.onchange = function (e) {
-
-        if (frmCollection && frmCollection.collection.value) {
-            return window.location.href = `${document.location.pathname}?sort=${e.target.value}&collection=${frmCollection.collection.value}`;
-        }
-        return window.location.href = `${document.location.pathname}?sort=${e.target.value}`;
-    }
-}
- 
-//#endregion
-
-// ********************************************************************
-// SELECT IMAGES Modal & Load More images button in modal
-// ********************************************************************
-//#region 
+//#region SELECT IMAGES Modal & Load More images button in modal
 let btnImagesModel, btnLoadMoreImages, modalImages;
 // let inquiredProductImage, inquiredProductName, inquiredProductConstructionType, inquiredProductUsage
 btnImagesModel = document.querySelector("#btn-model-images");
-if (btnImagesModel) {
-    btnImagesModel.addEventListener('click', GetImagesModal);
-}
+if (btnImagesModel) btnImagesModel.addEventListener('click', GetImagesModal);
 
 btnLoadMoreImages = document.querySelector("#load-more-images");
-if (btnLoadMoreImages) {
-    btnLoadMoreImages.addEventListener('click', GetImagesModal);
-}
+if (btnLoadMoreImages) btnLoadMoreImages.addEventListener('click', GetImagesModal);
 
 let imageShowcase = document.querySelector("#image-showcase");
 
@@ -567,8 +542,7 @@ function GetImagesModal(e) {
 }
 
 if (document.querySelector('#modal-images .close-button')) {
-    btnClose = document.querySelector('#modal-images .close-button');
-    btnClose.addEventListener("click", function () {
+    document.querySelector('#modal-images .close-button').addEventListener("click", function (e) {
         modalClose(modalImages);
     });
 }
@@ -659,6 +633,21 @@ if (selectedImages) {
 
 //#endregion
 
+//#region Sorting
+const frmCollection = document.querySelector('#frmCollection')
+const sorting = document.querySelector('#sorting')
+if (sorting) {
+    sorting.onchange = function (e) {
+
+        if (frmCollection && frmCollection.collection.value) {
+            return window.location.href = `${document.location.pathname}?sort=${e.target.value}&collection=${frmCollection.collection.value}`;
+        }
+        return window.location.href = `${document.location.pathname}?sort=${e.target.value}`;
+    }
+}
+ 
+//#endregion
+
 //#region Products Page Reset filter Button
 const btnReset = document.querySelector('.btnReset')
 if (btnReset) {
@@ -668,3 +657,4 @@ if (btnReset) {
     })
 }
 //#endregion
+

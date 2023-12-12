@@ -351,6 +351,10 @@ body {
   font-family: "Roboto", Arial, Helvetica, sans-serif;
 }
 
+.body-overflow {
+  overflow: hidden;
+}
+
 h1 {
   font-size: 3.6rem;
 }
@@ -862,6 +866,21 @@ tr:nth-child(even) {
 
 .display-none {
   display: none;
+}
+
+#modal-image-preview .modal-content {
+  width: 100%;
+  height: 100vh;
+  max-height: 1080px;
+  border-radius: 0rem;
+  padding: 0;
+}
+#modal-image-preview .modal-content .image-wrapper {
+  display: flex;
+  justify-content: center;
+}
+#modal-image-preview .modal-content .image-wrapper img {
+  max-height: 100%;
 }
 
 .topbar {
@@ -1870,7 +1889,7 @@ tr:nth-child(even) {
 
 /* *********************************************************
 
-                    Cookie Policy PAGE
+                    FAQ PAGE
 
 ********************************************************* */
 .faqs h1 {
@@ -2433,6 +2452,30 @@ tr:nth-child(even) {
 }
 .search .product-page-collection__grid__card {
   justify-self: start;
+}
+
+/* *********************************************************
+                    Image Gallery Page
+********************************************************* */
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: auto;
+  margin-right: auto;
+}
+.gallery .image-wrapper {
+  margin-bottom: 2rem;
+  margin-right: 2rem;
+}
+.gallery .image-wrapper button {
+  border: 0;
+  background: none;
+  cursor: pointer;
+  margin: 0;
+}
+.gallery .image-wrapper .action-wrapper {
+  margin-top: 1rem;
+  text-align: center;
 }
 
 @media (min-width: 576px) {

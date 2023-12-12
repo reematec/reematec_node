@@ -121,6 +121,7 @@ module.exports.updateCategory_post = async (req, res) => {
 
         res.redirect('/home/category')
     } catch (error) {
+        req.flash('errors', [{ message: 'category not found.' }])
         console.log(JSON.stringify(error, null, 4));
         // res.send(error)
     }
@@ -369,16 +370,36 @@ module.exports.updateImage_get = async (req, res) => {
 module.exports.updateImage_post = async (req, res) => {
     const { identifier } = req.params
     const { altText, title, description, caption } = req.body
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        req.flash('image', { altText, title, description, caption })
+
+        req.flash('errors', errors.array())
+        return res.redirect('/home/images')
+    }
+
+
     const image = await Image.findOne({ where: { identifier } });
 
-    if (altText) image.altText = altText
-    if (title) image.title = title
-    if (description) image.description = description
-    if (caption) image.caption = caption
+    try {
 
-    await image.save();
+        if (altText) image.altText = altText
+        if (title) image.title = title
+        if (description) image.description = description
+        if (caption) image.caption = caption
 
-    res.redirect('/home/images')
+        await image.save();
+        req.flash('success', [{ message: 'Image updated successfully.' }])
+        
+
+        
+    } catch (error) {
+        req.flash('errors', [{ message: 'Error occurred.' }])
+        console.log(error);
+    }
+    return res.redirect('/home/images')
+    
 }
 module.exports.imagesAjax = async (req, res) => {
     const getPagination = (page, size) => {
@@ -591,6 +612,14 @@ module.exports.addProduct_get = async (req, res) => {
 module.exports.addProduct_post = async (req, res) => {
     const { name, slug, showcased, recommended, usage, year, price, pagetitle, shortDescription, LongDescription, specifications, features, care, category, subCategory, image, size, tag } = req.body
 
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        req.flash('addProduct', { name, slug, showcased, recommended, usage, year, price, pagetitle, shortDescription, LongDescription, specifications, features, care, category, subCategory, image, size, tag })
+
+        req.flash('errors', errors.array())
+        return res.redirect('/home/add-product')
+    }
+
     if (!name || !slug) res.redirect('/home/add-product') 
 
     const t = await sequelize.transaction();
@@ -705,11 +734,21 @@ module.exports.updateProduct_get = async (req, res) => {
 }
 module.exports.updateProduct_post = async (req, res) => {
     const slugParam = req.params.slug;
+    const { name, slug, showcased, recommended, usage, year, price, pagetitle, shortDescription, LongDescription, specifications, features, care, category, subCategory, image, size, tag } = req.body
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        req.flash('product', { name, slug, showcased, recommended, usage, year, price, pagetitle, shortDescription, LongDescription, specifications, features, care, category, subCategory, image, size, tag })
+
+        req.flash('errors', errors.array())
+        return res.redirect('/home/update-product')
+    }
+
     const product = await Product.findOne({
         where: { slug: slugParam }
     })
 
-    const { name, slug, showcased, recommended, usage, year, price, pagetitle, shortDescription, LongDescription, specifications, features, care, category, subCategory, image, size, tag } = req.body
+    
 
     const t = await sequelize.transaction();
 
@@ -1104,6 +1143,14 @@ module.exports.signup_get = (req, res) => {
 module.exports.signup_post = async (req, res) => {
     const { first_name, last_name, email, password1, password2 } = req.body;
     let role = 'Visitor'
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        req.flash('signup', { first_name, last_name, email })
+
+        req.flash('errors', errors.array())
+        return res.redirect('/signup')
+    }
 
     const users = await User.findAndCountAll();
     if (users.count === 0) role = 'Admin' 
