@@ -24,7 +24,16 @@
                 <td><%= subCategories[i].name %></td>
                 <td><%= subCategories[i].category.name %></td>
                 <td><%= subCategories[i].slug %></td>
-                <td><%= subCategories[i].active ? '✓' : '❌' %></td>
+
+                <td>
+                    <% if (user && user.role === "Admin") { %>
+                        <form action="/home/subcategory-status/<%= subCategories[i].slug %>" method="post">
+                            <input  type="hidden" name="slug" value="<%= subCategories[i].slug %>">
+                            <input type="hidden" name="_csrfToken" value="<%= csrfToken %>">
+                            <button class="btn btn-link " type="submit"> <%= subCategories[i].active ? '✓' : '❌' %></button>
+                        </form> 
+                    <% } %>
+                </td>
                 
                 <td>
                     <a class="btn btn-link link-blue" href="/home/update-subcategory/<%= subCategories[i].slug %>">Edit</a> |

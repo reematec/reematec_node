@@ -17,3 +17,15 @@ python manage.py runserver 192.168.10.14:3000
 
 // Complete functions with their parameter signature.
 "javascript.suggest.completeFunctionCalls": true,
+
+------------------------------
+
+const response = await fetch(`/images/assets/${btnImagePreview[i].dataset.identifier}`);
+const imageUrl = URL.createObjectURL(await response.blob());
+
+imageWrapper.textContent = '';
+const imageElement = document.createElement("img");
+imageElement.classList.add('image-responsive')
+imageElement.id = 'imgPreview'
+imageElement.src = imageUrl;
+imageWrapper.appendChild(imageElement);

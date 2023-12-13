@@ -74,6 +74,9 @@ router.post('/home/update-category',requireAuth, isAccountActive, editValidator,
 
 router.get('/home/delete-category/:slug',requireAuth, isAccountActive, slugValidator, authController.deleteCategory_get);
 router.post('/home/delete-category',requireAuth, isAccountActive, authController.deleteCategory_post);
+
+router.post('/home/category-status/:slug', requireAuth, isAccountActive, slugValidator, authController.categoryStatus_post);
+
 //#endregion
 
 //#region Subcategory
@@ -84,6 +87,8 @@ router.get('/home/update-subcategory/:slug', requireAuth, isAccountActive, slugV
 router.post('/home/update-subcategory/:slug',requireAuth, isAccountActive,  slugValidator, editSubValidator, authController.updateSubcategory_post);
 router.get('/home/delete-subcategory/:slug',requireAuth, isAccountActive,  slugValidator, authController.deleteSubcategory_get);
 router.post('/home/delete-subcategory/:slug', requireAuth, isAccountActive, slugValidator, authController.deleteSubcategory_post);
+
+router.post('/home/subcategory-status/:slug', requireAuth, isAccountActive, slugValidator, authController.subcategoryStatus_post);
 //#endregion
 
 //#region Image
@@ -125,6 +130,8 @@ router.get('/home/update-product/:slug', requireAuth, isAccountActive, slugValid
 router.post('/home/update-product/:slug', requireAuth, isAccountActive, editProductVal, authController.updateProduct_post);
 router.get('/home/delete-product/:slug', requireAuth, isAccountActive, slugValidator, authController.deleteProduct_get);
 router.post('/home/delete-product/:slug', requireAuth, isAccountActive, slugValidator, authController.deleteProduct_post);
+router.post('/home/product-showcase/:slug', requireAuth, isAccountActive, slugValidator, authController.showcase_post);
+router.post('/home/product-recommendation/:slug', requireAuth, isAccountActive, slugValidator, authController.recommendation_post);
 router.post('/home/product-status/:slug', requireAuth, isAccountActive, slugValidator, authController.changeStatus_post);
 //#endregion
 

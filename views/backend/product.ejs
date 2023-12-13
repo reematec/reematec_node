@@ -14,7 +14,7 @@
 			<th>Showcased</th>
 			<th>Recommended</th>
 			<th>Active</th>
-			<th></th>
+			
 			<th>Price</th>
 			<th>Usage</th>
 			<th>Category</th>
@@ -30,15 +30,34 @@
 			<td><img src="/images/assets/100/<%= products[p].images[0] ? products[p].images[0].src : '' %>" alt=""> </td>
 			<td><%= products[p].name %> </td>
 			<td><%= products[p].slug %></td>
-			<td><%= products[p].showcased ? '✓' : '❌' %></td>
-			<td><%= products[p].recommended ? '✓' : '❌' %></td>
-			<td><%= products[p].active ? '✓' : '❌' %></td>
+			
+			<td>
+				<% if (user && user.role === "Admin") { %>
+					<form action="/home/product-showcase/<%= products[p].slug %>" method="post">
+						<input  type="hidden" name="slug" value="<%= products[p].slug %>">
+						<input type="hidden" name="_csrfToken" value="<%= csrfToken %>">
+						<button class="btn btn-link " type="submit"> <%= products[p].showcased ? 'True' : 'False' %></button>
+					</form> 
+				<% } %>
+			</td>
+			
+			<td>
+				<% if (user && user.role === "Admin") { %>
+					<form action="/home/product-recommendation/<%= products[p].slug %>" method="post">
+						<input  type="hidden" name="slug" value="<%= products[p].slug %>">
+						<input type="hidden" name="_csrfToken" value="<%= csrfToken %>">
+						<button class="btn btn-link " type="submit"> <%= products[p].recommended ? 'Unrecommend' : 'Recommend' %></button>
+					</form> 
+				<% } %>
+			</td>
+
+
 			<td>
 				<% if (user && user.role === "Admin") { %>
 					<form action="/home/product-status/<%= products[p].slug %>" method="post">
 						<input  type="hidden" name="slug" value="<%= products[p].slug %>">
 						<input type="hidden" name="_csrfToken" value="<%= csrfToken %>">
-						<button class="btn btn-link" type="submit"> <%= products[p].active ? 'Take Offline' : 'Bring Online' %></button>
+						<button class="btn btn-link " type="submit"> <%= products[p].active ? 'Take Offline' : 'Bring Online' %></button>
 					</form> 
 				<% } %>
 			</td>

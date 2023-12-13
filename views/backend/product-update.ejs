@@ -20,17 +20,7 @@
                     <label class="label caption" for="txtSlug">slug: </label>
                     <input class="textbox field" type="text" name="slug" id="txtSlug" <% if (product.slug) { %> value="<%= product.slug %>" <% } %> >
                 </div>
-
-                <div class="form-control">
-                    <label class="label caption" for="chkShowcased">Showcased: </label>
-                    <div><input class="field" type="checkbox" name="showcased" id="chkShowcased" <% if (product.showcased) { %> <%= 'checked' %> <% } %>></div>
-                </div>
-
-                <div class="form-control">
-                    <label class="label caption" for="chkrecommended">recommended: </label>
-                    <div><input class="field" type="checkbox" name="recommended" id="chkrecommended" <% if (product.recommended) { %> <%= 'checked' %> <% } %> ></div>
-                </div>
-
+                
                 <div class="form-control">
                     <label class="label caption" for="txtUsage">Usage: </label>
                     <input class="textbox field" type="text" name="usage" id="txtUsage" value="<%- product && product.usage ? product.usage : '' %>" >

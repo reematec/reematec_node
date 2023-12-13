@@ -22,16 +22,6 @@
                 </div>
 
                 <div class="form-control">
-                    <label class="label caption" for="chkShowcased">Showcased: </label>
-                    <div><input class="field" type="checkbox" name="showcased" id="chkShowcased" <%- message.addProduct && message.addProduct[0].showcased ? 'checked' : '' %>></div>
-                </div>
-
-                <div class="form-control">
-                    <label class="label caption" for="chkrecommended">recommended: </label>
-                    <div><input class="field" type="checkbox" name="recommended" id="chkrecommended" <%- message.addProduct && message.addProduct[0].recommended ? 'checked' : '' %>></div>
-                </div>
-
-                <div class="form-control">
                     <label class="label caption" for="txtUsage">Usage: </label>
                     <input class="textbox field" type="text" name="usage" id="txtUsage" value="<%- message.addProduct ? message.addProduct[0].usage : '' %>">
                 </div>

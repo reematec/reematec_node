@@ -21,7 +21,18 @@
 			<td><%= i.name %> </td>
 			<td><%= i.slug %> </td>
 			<td><%= i.showSubMenu ? '✓' : '❌' %></td>
-			<td><%= i.active ? '✓' : '❌' %></td>
+			
+			<td>
+				<% if (user && user.role === "Admin") { %>
+					<form action="/home/category-status/<%= i.slug %>" method="post">
+						<input  type="hidden" name="slug" value="<%= i.slug %>">
+						<input type="hidden" name="_csrfToken" value="<%= csrfToken %>">
+						<button class="btn btn-link " type="submit"> <%= i.active ? '✓' : '❌' %></button>
+					</form> 
+				<% } %>
+			</td>
+			
+
 			<td>
 			<a class="btn btn-link link-blue" href="/home/update-category/<%= i.slug %>">Edit</a> |
 			<a class="btn btn-link link-red" href="/home/delete-category/<%= i.slug %>">Delete</a>

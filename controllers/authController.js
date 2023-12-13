@@ -158,6 +158,21 @@ module.exports.deleteCategory_post = async (req, res) => {
     }
     res.redirect('/home/category')
 }
+
+module.exports.categoryStatus_post = async (req, res) => {
+    const { slug } = req.body;
+
+    try {
+        const category = await Category.findOne({ where: { slug } })
+        category.active = !category.active
+        await category.save();
+        req.flash('info', [{ message: 'Category status updated successfully.' }])
+    } catch (error) {
+        req.flash('errors', [{ message: 'Category status failed to update.' }])
+        console.log(error);
+    }
+    res.redirect(req.headers.referer);
+}
 //#endregion
 
 //#region SubCategory
@@ -295,6 +310,20 @@ module.exports.deleteSubcategory_post = async (req, res) => {
     await subcategory.destroy();
     req.flash('success', [{ message: 'Subcategory deleted successfully.' }])
     res.redirect('/home/subcategory')
+}
+module.exports.subcategoryStatus_post = async (req, res) => {
+    const { slug } = req.body;
+
+    try {
+        const subcategory = await SubCategory.findOne({ where: { slug } })
+        subcategory.active = !subcategory.active
+        await subcategory.save();
+        req.flash('info', [{ message: 'SubCategory status updated successfully.' }])
+    } catch (error) {
+        req.flash('errors', [{ message: 'SubCategory status failed to update.' }])
+        console.log(error);
+    }
+    res.redirect(req.headers.referer);
 }
 module.exports.getSubcatgories = async (req, res) => {
     const id = req.params.id
@@ -597,7 +626,7 @@ module.exports.deleteSize_post = async (req, res) => {
 
 //#region Product
 module.exports.productPosting = async (req, res) => {
-
+    
     const products = await Product.findAll({
         include: [{ model: Category }, { model: SubCategory }, { model: Image }]
     })
@@ -610,11 +639,11 @@ module.exports.addProduct_get = async (req, res) => {
     res.render('backend/product-add', { layout: 'layouts/app.ejs', sizes, tags, categories })
 }
 module.exports.addProduct_post = async (req, res) => {
-    const { name, slug, showcased, recommended, usage, year, price, pagetitle, shortDescription, LongDescription, specifications, features, care, category, subCategory, image, size, tag } = req.body
+    const { name, slug, usage, year, price, pagetitle, shortDescription, LongDescription, specifications, features, care, category, subCategory, image, size, tag } = req.body
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        req.flash('addProduct', { name, slug, showcased, recommended, usage, year, price, pagetitle, shortDescription, LongDescription, specifications, features, care, category, subCategory, image, size, tag })
+        req.flash('addProduct', { name, slug, usage, year, price, pagetitle, shortDescription, LongDescription, specifications, features, care, category, subCategory, image, size, tag })
 
         req.flash('errors', errors.array())
         return res.redirect('/home/add-product')
@@ -734,11 +763,11 @@ module.exports.updateProduct_get = async (req, res) => {
 }
 module.exports.updateProduct_post = async (req, res) => {
     const slugParam = req.params.slug;
-    const { name, slug, showcased, recommended, usage, year, price, pagetitle, shortDescription, LongDescription, specifications, features, care, category, subCategory, image, size, tag } = req.body
+    const { name, slug, usage, year, price, pagetitle, shortDescription, LongDescription, specifications, features, care, category, subCategory, image, size, tag } = req.body
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        req.flash('product', { name, slug, showcased, recommended, usage, year, price, pagetitle, shortDescription, LongDescription, specifications, features, care, category, subCategory, image, size, tag })
+        req.flash('product', { name, slug, usage, year, price, pagetitle, shortDescription, LongDescription, specifications, features, care, category, subCategory, image, size, tag })
 
         req.flash('errors', errors.array())
         return res.redirect('/home/update-product')
@@ -828,11 +857,36 @@ module.exports.deleteProduct_post = async (req, res) => {
     req.flash('info', 'Product deleted successfully')
     res.redirect('/home/product');
 }
-
-module.exports.changeStatus_post = async (req, res) => {
+module.exports.showcase_post = async (req, res) => {
     const { slug } = req.body;
 
-    console.log(req.body);
+    try {
+        const product = await Product.findOne({ where: { slug } })
+        product.showcased = !product.showcased
+        await product.save();
+        req.flash('info', [{ message: 'Showcase status updated successfully.' }])
+    } catch (error) {
+        req.flash('errors', [{ message: 'Showcase status failed to update.' }])
+        console.log(error);
+    }
+    res.redirect(req.headers.referer);
+}
+module.exports.recommendation_post = async (req, res) => {
+    const { slug } = req.body;
+
+    try {
+        const product = await Product.findOne({ where: { slug } })
+        product.recommended = !product.recommended
+        await product.save();
+        req.flash('info', [{ message: 'Product status updated successfully.' }])
+    } catch (error) {
+        req.flash('errors', [{ message: 'Product status failed to update.' }])
+        console.log(error);
+    }
+    res.redirect(req.headers.referer);
+}
+module.exports.changeStatus_post = async (req, res) => {
+    const { slug } = req.body;
 
     try {
         const product = await Product.findOne({ where: { slug } })
@@ -843,7 +897,7 @@ module.exports.changeStatus_post = async (req, res) => {
         req.flash('errors', [{ message: 'Product status failed to update.' }])
         console.log(error);
     }
-    res.redirect('/home/product');
+    res.redirect(req.headers.referer);
 }
 //#endregion
 

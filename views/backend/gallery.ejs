@@ -14,9 +14,8 @@
                 <% for (let i in images) {%>
     
                     <div class="image-wrapper">
-                        <button class="show-image-preview" data-identifier="<%= images[i].src %>">
-                            <img class="image-responsive" src="/images/assets/100/<%= images[i].src %>"/>
-                        </button>
+                        
+                        <img show-image-preview data-identifier="<%= images[i].src %>" class="image-responsive" src="/images/assets/100/<%= images[i].src %>"/>
     
                         <div class="action-wrapper">
                             <a class="btn btn-link link-blue" href="/home/update-image/<%= images[i].identifier %>">Edit</a> | 

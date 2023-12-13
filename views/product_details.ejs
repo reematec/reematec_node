@@ -13,12 +13,12 @@
 
         <ul class="more-views">
             <% product.images.forEach(image => { %>
-                <li><img class="image-responsive" src="/images/assets/100/<%= image.src %>" alt=""></li>
+                <li><img smallThumbnail class="image-responsive" src="/images/assets/100/<%= image.src %>" alt=""></li>
             <% }) %>
         </ul>
 
         <div class="product-views">
-            <img id="current-image" class="image-responsive" src="/images/assets/<%= product.images[0].src %>" alt="">
+            <img show-image-preview data-identifier="<%= product.images[0].src %>" id="current-image" class="image-responsive" src="/images/assets/<%= product.images[0].src %>" alt="">
         </div>
 
     </div>
@@ -81,6 +81,7 @@
 
 </article>
 
+<%- include('./components/_modalImagePreview') %>
 <%- include('./components/_recommended') %>
 
 <%- include('./components/_footer') %>

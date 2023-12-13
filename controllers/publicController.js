@@ -349,7 +349,7 @@ module.exports.quotes = async (req, res) => {
         where: { email: req.session.guestUser },
         include: [{ model: Product, include: [{ model: Image }] }],
     })
-    res.render('quotes', { layout: 'layouts/main.ejs', rfqs, categories })
+    res.render('quotes', { layout: 'layouts/app.ejs', rfqs, categories })
 }
 module.exports.search = async (req, res) => {
     const categories = await getActiveCatAndSubCategories()

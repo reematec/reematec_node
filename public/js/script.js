@@ -49,7 +49,12 @@ function processTabKey(e) {
 
 // handle ESCAPE key to close the modal
 document.addEventListener('keydown', (e)=>{
-    if (e.keyCode === KEY.ESCAPE) modalClose(document.querySelector(".show-modal"));
+    const modal = document.querySelector(".show-modal")
+    if (e.keyCode === KEY.ESCAPE) {
+        if (modal) {
+            modalClose(modal);
+        }
+    }
 })
     
 
@@ -59,8 +64,6 @@ function modalClose(modal) {
     focusedElementBeforeModal.focus();
 }
 //#endregion
-
-
 
 //#region Product Posting Sub Category Population
 let subcategorySelection = document.querySelector('select#subCategory');
@@ -161,7 +164,7 @@ if (contactSlider) {
 
 const waitSpinner = document.querySelector('#wait-spinner')
 const messagebox = document.querySelector('#messagebox')
-// console.log(waitSpinner);
+
 
 //#region Search Modal 
 //SEARCH MODALS VARIABLES
@@ -184,17 +187,30 @@ if (document.querySelector('#modal-search') && document.querySelector('#btnSearc
 
 const modalImagePreview = document.querySelector('#modal-image-preview')
 if (modalImagePreview) {
-    const btnImagePreview = document.querySelectorAll('.show-image-preview')
+    const btnImagePreview = document.querySelectorAll('[show-image-preview]')
    
     for (let i = 0; i < btnImagePreview.length; i++) {
         btnImagePreview[i].addEventListener('click', (e)=>{
             toggleModal(modalImagePreview);
 
-            const imagePreview =  modalImagePreview.querySelector('#imgPreview')
+            const previewWrapper =  modalImagePreview.querySelector('.preview-wrapper')
+            previewWrapper.textContent = '';
             
-            imagePreview.src = `/images/assets/${btnImagePreview[i].dataset.identifier}`
+            const span = document.createElement('span')
+            span.classList.add('loader')
+            previewWrapper.append(span)
+            previewWrapper.textContent = '';
+
+
+            
+            const imageElement = document.createElement("img");
+            imageElement.classList.add('image-responsive')
+            imageElement.id = 'imgPreview'
+            imageElement.src = `/images/assets/${btnImagePreview[i].dataset.identifier}`;
+            previewWrapper.append(imageElement)
         });
     }
+            
 
     modalImagePreview.querySelector('.close-button').addEventListener("click", function () {
         modalClose(modalImagePreview);
@@ -202,10 +218,24 @@ if (modalImagePreview) {
 }
 //#endregion
 
-// ********************************************************************
-// ASK QUOTE Modal
-// ********************************************************************
-//#region 
+//#region SHOW LARGE THUMBNAIL product details page
+const smallThumbnails = document.querySelectorAll('[smallThumbnail]')
+if (smallThumbnails.length > 0) {
+    for (let i = 0; i < smallThumbnails.length; i++) {
+        smallThumbnails[i].addEventListener('click', (e)=>{
+            // console.log(e.target.src);
+            const currentImage = document.querySelector('#current-image')
+            if (currentImage) {
+                currentImage.src = e.target.src.replace('/100', '')
+                currentImage.dataset.identifier = e.target.src.substring(e.target.src.lastIndexOf('/')+1) 
+            }
+        })
+        
+    }
+}
+//#endregion
+
+//#region ASK QUOTE Modal
 let quoteWrapper, modalQuote;
 let inquiredProductImage, inquiredProductName
 
@@ -355,11 +385,7 @@ if (modalQuote) {
 }
 //#endregion
 
-
-// ********************************************************************
-// Products Page Load More button
-// ********************************************************************
-//#region 
+//#region Products Page Load More button
 
 const url = window.location
 
@@ -463,7 +489,6 @@ if (btnLoadMore) {
 
 
 //#endregion
-
 
 //#region SELECT IMAGES Modal & Load More images button in modal
 let btnImagesModel, btnLoadMoreImages, modalImages;
