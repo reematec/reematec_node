@@ -43,7 +43,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon app",
-    "scss": "sass --watch ./scss:./public/css",
+    "scss": "sass --watch ./scss:./public/css --style compressed",
     "watch": "nodemon --ext js,ejs --ignore public",
     "build": "webpack --watch"
   },

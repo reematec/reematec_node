@@ -9,6 +9,7 @@ const { addSubValidator, editSubValidator } = require('../validators/subcategory
 const { addTagValidator, editTagValidator } = require('../validators/tagValidators');
 const { addProductVal, editProductVal } = require('../validators/productValidators');
 const {singupValidator} = require('../validators/UserValidators');
+const { editImageDetails } = require('../validators/imageValidators');
 const router = Router();
 
 router.get('/dashboard', requireAuth, isAccountActive, authController.dashboard);
@@ -96,7 +97,7 @@ router.get('/home/images', authController.gallery_get);
 router.get('/home/images/add', authController.addImages_get);
 router.post('/home/images/add', authController.addImages_post);
 router.get('/home/update-image/:identifier', authController.updateImage_get);
-router.post('/home/update-image/:identifier', authController.updateImage_post);
+router.post('/home/update-image/:identifier', editImageDetails, authController.updateImage_post);
 router.get('/home/delete-image/:identifier', authController.deleteImage_get);
 router.post('/home/delete-image/:identifier', authController.deleteImage_post);
 //#endregion

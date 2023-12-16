@@ -28,18 +28,28 @@
                     <input class="textbox input-full" type="text" name="txtFullname" id="txtFullName" autofocus
                         required>
                 </div>
+                
                 <div class="form-control">
                     <label class="label" for="txtEmail">Email <span class="link-red">*</span></label>
                     <input class="textbox input-full" type="email" name="txtEmail" id="txtEmail" required>
                 </div>
+
+                <% const countries = ['Afghanistan','Albania','Algeria','Andorra','Angola','Antigua and Barbuda','Argentina','Armenia','Australia','Austria','Azerbaijan','Bahamas','Bahrain','Bangladesh','Barbados','Belarus','Belgium','Belize','Benin','Bhutan','Bolivia','Bosnia and Herzegovina','Botswana','Brazil','Brunei','Bulgaria','Burkina Faso','Burundi','Cabo Verde','Cambodia','Cameroon','Canada','Central African Republic','Chad','Chile','China','Colombia','Comoros','Congo, Democratic Republic of the','Congo, Republic of the','Costa Rica','Côte d’Ivoire','Croatia','Cuba','Cyprus','Czech Republic','Denmark','Djibouti','Dominica','Dominican Republic','East Timor (Timor-Leste)','Ecuador','Egypt','El Salvador','Equatorial Guinea','Eritrea','Estonia','Eswatini','Ethiopia','Fiji','Finland','France','Gabon','Gambia','Georgia','Germany','Ghana','Greece','Grenada','Guatemala','Guinea','Guinea-Bissau','Guyana','Haiti','Honduras','Hungary','Iceland','India','Indonesia','Iran','Iraq','Ireland','Israel','Italy','Jamaica','Japan','Jordan','Kazakhstan','Kenya','Kiribati','Korea, North','Korea, South','Kosovo','Kuwait','Kyrgyzstan','Laos','Latvia','Lebanon','Lesotho','Liberia','Libya','Liechtenstein','Lithuania','Luxembourg','Madagascar','Malawi','Malaysia','Maldives','Mali','Malta','Marshall Islands','Mauritania','Mauritius','Mexico','Micronesia, Federated States of','Moldova','Monaco','Mongolia','Montenegro','Morocco','Mozambique','Myanmar (Burma)','Namibia','Nauru','Nepal','Netherlands','New Zealand','Nicaragua','Niger','Nigeria','North Macedonia','Norway','Oman','Pakistan','Palau','Panama','Papua New Guinea','Paraguay','Peru','Philippines','Poland','Portugal','Qatar','Romania','Russia','Rwanda','Saint Kitts and Nevis','Saint Lucia','Saint Vincent and the Grenadines','Samoa','San Marino','Sao Tome and Principe','Saudi Arabia','Senegal','Serbia','Seychelles','Sierra Leone','Singapore','Slovakia','Slovenia','Solomon Islands','Somalia','South Africa','Spain','Sri Lanka','Sudan','Sudan, South','Suriname','Sweden','Switzerland','Syria','Taiwan','Tajikistan','Tanzania','Thailand','Togo','Tonga','Trinidad and Tobago','Tunisia','Turkey','Turkmenistan','Tuvalu','Uganda','Ukraine','United Arab Emirates','United Kingdom','United States','Uruguay','Uzbekistan','Vanuatu','Vatican City','Venezuela','Vietnam','Yemen','Zambia','Zimbabwe'] %>
                 <div class="form-control">
-                    <label class="label" for="txtCountry">Country <span class="link-red">*</span></label>
-                    <input class="textbox input-full" type="text" name="txtCountry" id="txtCountry" required>
+                    <label class="label" for="dplCountry">Country <span class="link-red">*</span></label>
+                    <select class="select input-full" name="txtCountry" id="dplCountry" required >
+                        <option value="">Please select a country</option>
+                        <% for( let i = 0; i < countries.length; i++ ) { %>
+                            <option value="<%= countries[i] %>"><%= countries[i] %></option>
+                        <% } %>
+                    </select>
                 </div>
+
                 <div class="form-control">
                     <label class="label" for="txtQuantity">Quantity <span class="link-red">*</span></label>
                     <input class="textbox input-full" type="number" name="txtQuantity" id="txtQuantity" required>
                 </div>
+                
 
                 <div class="sidebyside">
                     <input class="btn btn-full btn-solid-black" close-button type="button" value="Close">

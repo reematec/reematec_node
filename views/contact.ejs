@@ -33,11 +33,12 @@
                     <label class="label" for="dplCountry">Country <span class="link-red">*</span></label>
                     <select class="select input-full" name="country" id="dplCountry" required >
                         <option value="">Please select a country</option>
-                        <option value="UK">UK</option>
-                        <option value="USA">USA</option>
+                        <% for( let i = 0; i < countries.length; i++ ) { %>
+                            <option value="<%= countries[i] %>"><%= countries[i] %></option>
+                        <% } %>
                     </select>
                     <span class="msg-error"></span>
-                </div>                
+                </div>
                 
                 <div class="form-control">
                     <label class="label" for="txtMessage">Message <span class="link-red">*</span></label>

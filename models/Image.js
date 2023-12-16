@@ -20,6 +20,14 @@ const Image = sequelize.define('image', {
         type: Sequelize.DataTypes.STRING,
         allowNull: false,
     },
+    name: {
+        type: Sequelize.DataTypes.STRING,
+        allowNull: false,
+    },
+    ext: {
+        type: Sequelize.DataTypes.STRING,
+        allowNull: false,
+    },
     altText:{
         type: Sequelize.DataTypes.STRING,
     },
@@ -40,6 +48,17 @@ const Image = sequelize.define('image', {
 //     const salt = await bcrypt.genSalt();
 //  	user.password = await bcrypt.hash(user.password, salt)    
 // });
+Image.beforeCreate(async (image, options) => {
+    
+ 	image.name = image.src.substring(0, image.src.indexOf('.'))
+ 	image.ext = image.src.substring(image.src.indexOf('.')+1)
+});
+
+Image.beforeUpdate(async (image, options) => {
+    
+ 	image.name = image.src.substring(0, image.src.indexOf('.'))
+ 	image.ext = image.src.substring(image.src.indexOf('.')+1)
+});
 
 // User.afterSave(async function (user, options){
 //     console.log('new user was created & saved', user)
@@ -47,7 +66,7 @@ const Image = sequelize.define('image', {
 
 Image.sync(
     // { force: true }
-    // { alter: true }
+    { alter: true }
 )
 
 

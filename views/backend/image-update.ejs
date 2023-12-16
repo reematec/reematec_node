@@ -7,13 +7,19 @@
             <p>Update - Image</p>
         </div>
         <div class="card-body">
-            <img height="100" src="/images/assets/<%= image.src %>"  alt="">
-            <form method="POST" enctype="multipart/form-data">
+            <img height="100" src="/images/assets/100/<%= image.src %>"  alt="">
+            <form action="/home/update-image/<%= image.identifier %>" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="identifier" value="<%= image.identifier %>">
                 <input type="hidden" name="_csrfToken" value="<%= csrfToken %>">
                 
                 <div class="form-control">
+                    <label class="label caption" for="src">Name: </label>
+                    <input class="textbox field" type="text" name="src" id="src" value="<%= image.src.substring(0, image.src.indexOf('.')) %>" autofocus required>
+                </div>
+
+                <div class="form-control">
                     <label class="label caption" for="txtAlt">Alternate Text: </label>
-                    <input class="textbox field" type="text" name="altText" id="txtAlt" value="<%= image.altText %>" autofocus required>
+                    <input class="textbox field" type="text" name="altText" id="txtAlt" value="<%= image.altText %>">
                 </div>
 
                 <div class="form-control">

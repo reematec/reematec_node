@@ -397,22 +397,55 @@ module.exports.updateImage_get = async (req, res) => {
     res.render('backend/image-update', { layout: 'layouts/app.ejs', image })
 }
 module.exports.updateImage_post = async (req, res) => {
-    const { identifier } = req.params
-    const { altText, title, description, caption } = req.body
+    // const { identifier } = req.params
+    const { identifier, src, altText, title, description, caption } = req.body
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        req.flash('image', { altText, title, description, caption })
+        req.flash('image', { src, altText, title, description, caption })
 
         req.flash('errors', errors.array())
         return res.redirect('/home/images')
     }
-
-
     const image = await Image.findOne({ where: { identifier } });
 
+    // console.log(JSON.stringify(image, null, 4), '------------');
+    
     try {
 
+        const fileName = src + image.src.substring(image.src.indexOf('.'))
+        
+        fs.renameSync(`./public/images/assets/${image.src}`, `./public/images/assets/${fileName}`, function(err) {
+            if ( err ) {
+                console.log(err);
+                throw err
+            }
+            console.log('Large image renamed');
+        });
+        fs.renameSync(`./public/images/assets/500/${image.src}`, `./public/images/assets/500/${fileName}`, function(err) {
+            if ( err ) {
+                console.log(err);
+                throw err
+            }
+            console.log('Image with 500 renamed');
+        });
+        fs.renameSync(`./public/images/assets/300/${image.src}`, `./public/images/assets/300/${fileName}`, function(err) {
+            if ( err ) {
+                console.log(err);
+                throw err
+            }
+            console.log('Image with 300 renamed');
+        });
+        fs.renameSync(`./public/images/assets/100/${image.src}`, `./public/images/assets/100/${fileName}`, function(err) {
+            if ( err ) {
+                console.log(err);
+                throw err
+            }
+            console.log('Image with 100 renamed');
+        });
+
+
+        if (src) image.src = fileName
         if (altText) image.altText = altText
         if (title) image.title = title
         if (description) image.description = description
@@ -420,8 +453,6 @@ module.exports.updateImage_post = async (req, res) => {
 
         await image.save();
         req.flash('success', [{ message: 'Image updated successfully.' }])
-        
-
         
     } catch (error) {
         req.flash('errors', [{ message: 'Error occurred.' }])

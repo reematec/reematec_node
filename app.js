@@ -113,19 +113,12 @@ app.use('*', function(req, res){
 	res.render('404', {layout: 'layouts/main.ejs'})
 });
 
-
-
 HOST =  'localhost';
 HOST =  '192.168.10.27';
 const PORT = process.env.PORT;
 
-// var os = require('os');
-// var networkInterfaces = os.networkInterfaces();
-// console.log(networkInterfaces);
-
-
 app.listen(PORT, HOST, () =>{
-	console.info(`server is listening to port http://${HOST}:${PORT}`)
+	console.info(`server is listening to http://${HOST}:${PORT}`)
 })
 
 
