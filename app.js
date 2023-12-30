@@ -113,7 +113,7 @@ app.use('*', function(req, res){
 	res.render('404', {layout: 'layouts/main.ejs'})
 });
 
-HOST =  'localhost';
+// HOST =  'localhost';
 HOST =  '192.168.10.27';
 const PORT = process.env.PORT;
 

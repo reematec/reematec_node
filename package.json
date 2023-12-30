@@ -4,6 +4,7 @@
   "description": "Reema Technologies website for OEM manufacturing",
   "main": "app.js",
   "dependencies": {
+    "axios": "^1.6.2",
     "bcrypt": "^5.0.1",
     "canvas": "^2.10.2",
     "colors": "^1.4.0",
@@ -38,7 +39,9 @@
     "livereload": "^0.9.3",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.15",
-    "sass": "^1.49.7"
+    "sass": "^1.49.7",
+    "webpack": "^5.89.0",
+    "webpack-cli": "^5.1.4"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

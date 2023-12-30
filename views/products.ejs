@@ -1,5 +1,5 @@
 <div class="breadcrumb container">
-    <a class="breadcrumb__link btn" href="#">Home</a>
+    <a class="breadcrumb__link btn" href="/">Home</a>
     <span class="breadcrumb__separator">/</span>
     <span class="breadcurmb__page">
         <%= title %>
@@ -16,7 +16,11 @@
                     <li id="<%= c.slug %>">
                         <label class="sidebar__list__header" for="<%= c.name %>">
                             <p><%= c.name %></p>
-                            <span><i class="fas fa-caret-down"></i></span>
+                            <span>
+                                <svg width="15" height="10" viewBox="0 0 15 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M7.59086 9.65204L14.6519 2.59204L12.5299 0.470038L7.59086 5.41004L2.65186 0.470039L0.529854 2.59204L7.59086 9.65204Z" fill="black"/>
+                                </svg>
+                            </span>
                         </label>
                         
                         <input type="checkbox" id="<%= c.name %>">
@@ -102,7 +106,11 @@
                 <div quoteWrapper class="product-page-collection__grid__card">
                     <a class="btn card__wrapper" href="/product/<%= products.rows[p].slug %>">
                         <span productIdentifier class="display-none"><%= products.rows[p].identifier %></span>
-                        <img productImage class="image-responsive" src="/images/assets/300/<%= products.rows[p].images[0].src %>" alt="">
+                        <picture>
+                            <source media="(max-width: 961px)" srcset="/images/assets/300/<%= products[p].images[0].src %>">
+                            <source media="(min-width: 962px)" srcset="/images/assets/500/<%= products[p].images[0].src %>">
+                            <img loading="lazy" productImage class="image-responsive" src="/images/assets/300/<%= products.rows[p].images[0].src %>" alt="<%= products.rows[p].images[0].altText %>">
+                        </picture>
 
                         <div class="card__caption">
                             <div class="card__caption__basic">
@@ -135,9 +143,6 @@
                 <% if ((parseInt(products.currentPage)-1) > 0  ) { %>
                     <li><a href="<%= currentUrl %>?page=<%= parseInt(products.currentPage)-1 %><%=collection ? `&collection=${collection}` : '' %><%=sort ? `&sort=${sort}` : '' %>"><<</a></li>
                 <% } %>
-                 
-                
-                
                 
                 <% if (products.totalPages > 1) { %>
                     <% for( let i = 1; i < products.totalPages+1; i++ ) { %>

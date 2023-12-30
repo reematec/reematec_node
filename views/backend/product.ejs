@@ -23,61 +23,78 @@
 		</tr>
 
 
-		<% for (let p = 0; p < products.length; p++) {%>
-		
-		<tr>
-			
-			<td><img src="/images/assets/100/<%= products[p].images[0] ? products[p].images[0].src : '' %>" alt=""> </td>
-			<td><%= products[p].name %> </td>
-			<td><%= products[p].slug %></td>
-			
-			<td>
-				<% if (user && user.role === "Admin") { %>
-					<form action="/home/product-showcase/<%= products[p].slug %>" method="post">
-						<input  type="hidden" name="slug" value="<%= products[p].slug %>">
-						<input type="hidden" name="_csrfToken" value="<%= csrfToken %>">
-						<button class="btn btn-link " type="submit"> <%= products[p].showcased ? 'True' : 'False' %></button>
-					</form> 
-				<% } %>
-			</td>
-			
-			<td>
-				<% if (user && user.role === "Admin") { %>
-					<form action="/home/product-recommendation/<%= products[p].slug %>" method="post">
-						<input  type="hidden" name="slug" value="<%= products[p].slug %>">
-						<input type="hidden" name="_csrfToken" value="<%= csrfToken %>">
-						<button class="btn btn-link " type="submit"> <%= products[p].recommended ? 'Unrecommend' : 'Recommend' %></button>
-					</form> 
-				<% } %>
-			</td>
+		<% for (let p = 0; p < products.rows.length; p++) {%>		
+			<tr>				
+				<td><img src="/images/assets/100/<%= products.rows[p].images[0] ? products.rows[p].images[0].src : '' %>" alt=""> </td>
+				<td><%= products.rows[p].name %> </td>
+				<td><%= products.rows[p].slug %></td>
+				
+				<td>
+					<% if (user && user.role === "Admin") { %>
+						<form action="/home/product-showcase/<%= products.rows[p].slug %>" method="post">
+							<input  type="hidden" name="slug" value="<%= products.rows[p].slug %>">
+							<input type="hidden" name="_csrfToken" value="<%= csrfToken %>">
+							<button class="btn btn-link " type="submit"> <%= products.rows[p].showcased ? 'True' : 'False' %></button>
+						</form> 
+					<% } %>
+				</td>
+				
+				<td>
+					<% if (user && user.role === "Admin") { %>
+						<form action="/home/product-recommendation/<%= products.rows[p].slug %>" method="post">
+							<input  type="hidden" name="slug" value="<%= products.rows[p].slug %>">
+							<input type="hidden" name="_csrfToken" value="<%= csrfToken %>">
+							<button class="btn btn-link " type="submit"> <%= products.rows[p].recommended ? 'Unrecommend' : 'Recommend' %></button>
+						</form> 
+					<% } %>
+				</td>
 
 
-			<td>
-				<% if (user && user.role === "Admin") { %>
-					<form action="/home/product-status/<%= products[p].slug %>" method="post">
-						<input  type="hidden" name="slug" value="<%= products[p].slug %>">
-						<input type="hidden" name="_csrfToken" value="<%= csrfToken %>">
-						<button class="btn btn-link " type="submit"> <%= products[p].active ? 'Take Offline' : 'Bring Online' %></button>
-					</form> 
-				<% } %>
-			</td>
-			
-			<td><%= products[p].price %></td>
-			<td><%= products[p].usage %></td>
-			<td><%= products[p].categoryId ? products[p].category.name : '' %></td>
-			<td><%= products[p].subCategoryId ? products[p].subCategory.name : '' %></td>
-			
-			
-			
-			
-			<td>
-				<a class="btn btn-link link-blue" href="/home/view-product/<%= products[p].slug %>">View</a> |
-				<a class="btn btn-link link-blue" href="/home/update-product/<%= products[p].slug %>">Edit</a> |
-				<a class="btn btn-link link-red" href="/home/delete-product/<%= products[p].slug %>">Delete</a>
-			</td>
-			
-		</tr>
-		
+				<td>
+					<% if (user && user.role === "Admin") { %>
+						<form action="/home/product-status/<%= products.rows[p].slug %>" method="post">
+							<input  type="hidden" name="slug" value="<%= products.rows[p].slug %>">
+							<input type="hidden" name="_csrfToken" value="<%= csrfToken %>">
+							<button class="btn btn-link " type="submit"> <%= products.rows[p].active ? 'Take Offline' : 'Bring Online' %></button>
+						</form> 
+					<% } %>
+				</td>
+				
+				<td><%= products.rows[p].price %></td>
+				<td><%= products.rows[p].usage %></td>
+				<td><%= products.rows[p].categoryId ? products.rows[p].category.name : '' %></td>
+				<td><%= products.rows[p].subCategoryId ? products.rows[p].subCategory.name : '' %></td>
+				
+				<td>
+					<a class="btn btn-link link-blue" href="/home/view-product/<%= products.rows[p].slug %>">View</a> |
+					<a class="btn btn-link link-blue" href="/home/update-product/<%= products.rows[p].slug %>">Edit</a> |
+					<a class="btn btn-link link-red" href="/home/delete-product/<%= products.rows[p].slug %>">Delete</a>
+				</td>
+			</tr>
 		<% } %> 
+			
 	</table>
+		
+	<div class="pagination_wrapper">
+		<ul>
+			<% if ((parseInt(products.currentPage)-1) > 0  ) { %>
+				<li><a href="<%= currentUrl %>?page=<%= parseInt(products.currentPage)-1 %>"><<</a></li>
+			<% } %>
+			
+			<% if (products.totalPages > 1) { %>
+				<% for( let i = 1; i < products.totalPages+1; i++ ) { %>
+					<% if (products.currentPage == i) { %>
+						<li> <span class="active"><%= i %></span></li>
+					<% } else { %>
+						<li><a href="<%= currentUrl %>?page=<%= i %>"><%= i %></a></li>
+					<% } %>
+				<% } %>
+			<% } %> 
+
+			<% if (parseInt(products.totalPages) > (parseInt(products.currentPage))   ) { %>
+				<li><a href="<%= currentUrl %>?page=<%= parseInt(products.currentPage)+1 %>">>></a></li>
+			<% } %>
+		</ul>
+	</div>
+
 </section>

@@ -12,6 +12,7 @@
 		<th>Category Name</th>
 		<th>Slug</th>
 		<th>Show Submenu</th>
+		<th>Show on Homepage</th>
 		<th>Active</th>
 		<th>Action</th>
 		</tr>
@@ -22,6 +23,15 @@
 			<td><%= i.slug %> </td>
 			<td><%= i.showSubMenu ? '✓' : '❌' %></td>
 			
+			<td>
+				<% if (user && user.role === "Admin") { %>
+					<form action="/home/category-display/<%= i.slug %>" method="post">
+						<input  type="hidden" name="slug" value="<%= i.slug %>">
+						<input type="hidden" name="_csrfToken" value="<%= csrfToken %>">
+						<button class="btn btn-link " type="submit"> <%= i.showOnHomepage ? '✓' : '❌' %></button>
+					</form> 
+				<% } %>
+			</td>
 			<td>
 				<% if (user && user.role === "Admin") { %>
 					<form action="/home/category-status/<%= i.slug %>" method="post">

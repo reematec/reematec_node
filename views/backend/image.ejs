@@ -1,4 +1,4 @@
-<section class="container dashboard-page">
+<section class="container imageUpload-page">
     <div class="card">
         <div  class="card-header">
             <p>Add - image</p>
@@ -7,19 +7,17 @@
             
         <form action="/home/images/add" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="_csrfToken" value="<%= csrfToken %>">
-            <input type="file" name="images" id="" multiple>
-            <!-- <input type="file" name="singleImage" id="" > -->
-            <input type="submit" name="Submit" value="Submit">
-        </form> 
-
-
-        <div class="form-control">
-            <a  class="btn btn-normal btn-gray" href="/home/images">Cancel</a>
+            <input type="file" name="images" id="upload-image" multiple>
             
-        </div>
+            <div id="image-preview-wrapper">
 
-                
-
+            </div>
+            
+            <div class="form-control">
+                <input class="btn btn-normal btn-blue" type="submit" name="Submit" value="Upload">
+                <a  class="btn btn-normal btn-gray" href="/home/images">Back</a>
+            </div>
+        </form>
 
         </div>
     </div>

@@ -5,7 +5,7 @@ const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 const { QueryTypes } = require('sequelize');
 const sequelize = require('../utils/sequelizeCN');
-const { body, validationResult } = require('express-validator');
+
 const nodemailer = require('nodemailer');
 
 const Category = require('../models/Category');
@@ -15,14 +15,25 @@ const Product = require('../models/Product');
 const Size = require("../models/Size");
 const Blog = require('../models/Blog');
 const RFQ = require('../models/RFQ');
-const url = require('url').urlToHttpOptions
+const axios = require('axios')
 
 
 
 
 module.exports.home = async (req, res) => {
     const categories = await getActiveCatAndSubCategories()
-    res.render('home', { layout: 'layouts/main.ejs', categories })
+    
+    const categorySections = await Category.findAll({where: {active: true, showOnHomepage: true}})
+
+    const products = await Product.findAll({
+        include: [{ model: Category , where: { showOnHomepage: true }}, { model: SubCategory }, { model: Image }],
+        order: [['id', 'ASC']],
+        where: { active: true, showcased: true }
+    })
+
+    console.log(JSON.stringify(products, null, 4));
+
+    res.render('home', { layout: 'layouts/main.ejs', products, categorySections, categories })
 }
 module.exports.about = async (req, res) => {
     const categories = await getActiveCatAndSubCategories()
@@ -36,32 +47,11 @@ module.exports.contact = async (req, res) => {
 // https://medium.com/@sergeisizov/using-recaptcha-v3-with-node-js-6a4b7bc67209
 module.exports.contact_post = async (req, res) => {
 
-    if (!req.body.captcha) res.json({ 'message': 'Captcha token is undefined', success: false })
-
-    const verifyUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${'6LefTBApAAAAAA-rYEGQaEeY2FZPqxhkqUQFVAlx'}&response=${req.body.captcha}`
-    const response = await fetch(verifyUrl, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        //   body: JSON.stringify(data),
-    });
-
-    const result = await response.json();
-    // console.log(result);
-
-    if (!result.success || result.score < 0.4) return res.json({ 'message': "Email could not be sent.", success: false })
+    captchaVerification(req)
 
     const { name, email, country, message } = req.body
 
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        req.flash('contact', { name, email, country, message })
-
-        req.flash('errors', errors.array())
-        return res.redirect('/contact')
-    }
-
+    
     let transport = nodemailer.createTransport({
         host: "sandbox.smtp.mailtrap.io",
         port: 2525,
@@ -93,36 +83,11 @@ module.exports.contact_post = async (req, res) => {
     // res.render('contact', {layout: 'layouts/main.ejs'})
 }
 module.exports.rfq_post = async (req, res) => {
-    // console.log(req.body);
 
-    if (!req.body.captcha) res.json({ 'message': 'Captcha token is undefined', success: false })
-
-    const verifyUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${'6LefTBApAAAAAA-rYEGQaEeY2FZPqxhkqUQFVAlx'}&response=${req.body.captcha}`
-    const response = await fetch(verifyUrl, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-    });
-
-    const result = await response.json();
-
-    if (!result.success || result.score < 0.4) return res.json({ 'message': "Email could not be sent.", success: false })
+    captchaVerification(req)
 
     const { fullname, email, country, quantity, identifier } = req.body
-    console.log(req.body);
-
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        req.flash('rfq', { fullname, email, country, quantity, identifier })
-
-        // req.flash('errors', errors.array())
-        res.json({ errors: errors.array() })
-        return res.redirect('back')
-    }
-
-
-
+    
     let transport = nodemailer.createTransport({
         host: "sandbox.smtp.mailtrap.io",
         port: 2525,
@@ -204,7 +169,7 @@ module.exports.products_page = async (req, res) => {
         offset,
         include: [{ model: Category }, { model: SubCategory }, { model: Image }],
         order: [orderSTR(query)],
-        where: { active: 1 }
+        where: { active: true }
     }).then(data => {
         const response = getPagingData(data, page, limit);
         res.json(response);
@@ -466,6 +431,7 @@ async function getRandomProducts() {
 
 async function getActiveCatAndSubCategories(params) {
     const activeCategories = await Category.findAll({
+        include: [{model: SubCategory, as:'subCategories'}],
         where: {
             [Op.or]: [
                 { '$category.active$': true, },
@@ -474,11 +440,6 @@ async function getActiveCatAndSubCategories(params) {
                 { '$subCategories.active$': { [Op.not]: false} },
             ],
         }, 
-        include: [
-            {
-                model: SubCategory, as:'subCategories',
-            },
-        ],
         // logging: console.log
     })
     return activeCategories
@@ -505,3 +466,17 @@ async function filterCollection() {
     return filterCollection;
 }
 
+async function captchaVerification(req) {
+    if (!req.body.captcha) res.json({ 'message': 'Captcha token is undefined', success: false })
+
+    const verifyUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${'6LefTBApAAAAAA-rYEGQaEeY2FZPqxhkqUQFVAlx'}&response=${req.body.captcha}`
+    let response
+    
+    try {
+        response = await axios.get(verifyUrl)
+        if (!response.data.success || response.data.score < 0.4) return res.json({ 'message': "Email could not be sent.", success: false })    
+    } catch (error) {
+        console.log(error);
+        return res.json({ 'message': "Email could not be sent, an error occoured.", success: false })    
+    }
+}

@@ -2,8 +2,7 @@
 let KEY = { ESCAPE: 27, TAB: 9}
 function toggleModal(modal) {
     document.body.classList.add('body-overflow')
-    console.log();
-    // window.style.overflow = "none";
+    
     focusedElementBeforeModal = document.activeElement;
     
     modal.classList.toggle("show-modal");
@@ -20,20 +19,20 @@ function toggleModal(modal) {
     if (firstElementOfModal) firstElementOfModal.focus();
 }   
 
-// ENTER MODAL TO ENABLE WINDOW CLICK CLOSE
+// ENTER MODAL element TO ENABLE WINDOW CLICK CLOSE
 window.addEventListener("click", windowOnClick);
 function windowOnClick(e) {
     if (e.target === modalSearch) {
-        toggleModal(modalSearch);
+        modalClose(modalSearch);
     }
     else if (e.target === modalQuote) {
-        toggleModal(modalQuote);
+        modalClose(modalQuote);
     }
     else if (e.target === modalImages) {
-        toggleModal(modalImages);
+        modalClose(modalImages);
     }
     else if (e.target === modalImagePreview) {
-        toggleModal(modalImagePreview);
+        modalClose(modalImagePreview);
     }
 }
 
@@ -183,7 +182,7 @@ if (document.querySelector('#modal-search') && document.querySelector('#btnSearc
 }
 //#endregion
 
-//#region Image Preview
+//#region Image Preview modal
 
 const modalImagePreview = document.querySelector('#modal-image-preview')
 if (modalImagePreview) {
@@ -226,7 +225,7 @@ if (smallThumbnails.length > 0) {
             // console.log(e.target.src);
             const currentImage = document.querySelector('#current-image')
             if (currentImage) {
-                currentImage.src = e.target.src.replace('/100', '')
+                currentImage.src = e.target.src.replace('/100', '/500')
                 currentImage.dataset.identifier = e.target.src.substring(e.target.src.lastIndexOf('/')+1) 
             }
         })
@@ -532,7 +531,6 @@ function GetImagesModal(e) {
                     const image = document.createElement('img');
                     image.classList.add('product-image')
                     image.src = `/images/assets/100/${img.src}`;
-                    // image.width = 100
                     image.setAttribute('id', img.id)
                     imageShowcase.appendChild(image);
 
@@ -658,7 +656,7 @@ if (selectedImages) {
 
 //#endregion
 
-//#region Sorting
+//#region Product Sorting on PRODUCTS page
 const frmCollection = document.querySelector('#frmCollection')
 const sorting = document.querySelector('#sorting')
 if (sorting) {
@@ -683,3 +681,30 @@ if (btnReset) {
 }
 //#endregion
 
+//#region Preview of images being Uploaded
+const imagePreviewWrapper = document.querySelector('#image-preview-wrapper')
+const uploadImages = document.querySelector('#upload-image')
+if (imagePreviewWrapper) {
+    
+    uploadImages.addEventListener('change', showPreview)
+
+    function showPreview(e){
+        if(e.target.files.length > 0){
+
+            for (let i = 0; i < e.target.files.length; i++) {
+                
+                const src = URL.createObjectURL(e.target.files[i]);
+                
+                const imagePlaceholder =  document.createElement('img')
+                imagePlaceholder.src = src;
+                imagePlaceholder.width = 100
+
+                imagePreviewWrapper.appendChild(imagePlaceholder)
+                
+            }
+
+        }
+      }
+}
+
+//#endregion

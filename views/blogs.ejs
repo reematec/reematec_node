@@ -3,12 +3,10 @@
     
     <div class="blogs">
 
-        
-
         <% blogs.forEach(i => { %>
             <% if (i.active) { %>
                 <a href="/blog/<%= i.slug %>" class="blog-card">
-                    <img class="blog-image image-responsive" src="/images/assets/<%= i.image %>" alt="<%= i.image %>"> 
+                    <img class="blog-image image-responsive" src="/images/assets/<%= i.image %>" alt="<%= i.altText %>"> 
                     
                     <div class="blog-caption">
                         <h2 class="blog-title"><%= i.name %></h2>

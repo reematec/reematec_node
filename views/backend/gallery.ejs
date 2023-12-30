@@ -11,24 +11,43 @@
             <h1><a href="/home/images/add">Add Images</a></h1>
 
             <div class="gallery">
-                <% for (let i in images) {%>
+                <% for (let i in images.rows) {%>
     
                     <div class="image-wrapper">
-                        
-                        <img show-image-preview data-identifier="<%= images[i].src %>" class="image-responsive" src="/images/assets/100/<%= images[i].src %>"/>
+                        <img show-image-preview data-identifier="<%= images.rows[i].src %>" class="image-responsive" src="/images/assets/100/<%= images.rows[i].src %>"/>
     
                         <div class="action-wrapper">
-                            <a class="btn btn-link link-blue" href="/home/update-image/<%= images[i].identifier %>">Edit</a> | 
-                            <a class="btn btn-link link-red" href="/home/delete-image/<%= images[i].identifier %>">Delete</a></td>
+                            <a class="btn btn-link link-blue" href="/home/update-image/<%= images.rows[i].identifier %>">Edit</a> | 
+                            <a class="btn btn-link link-red" href="/home/delete-image/<%= images.rows[i].identifier %>">Delete</a></td>
                         </div>
                     </div>
                 <% } %>
             </div>
-
-                
-
-
         </div>
+
+        <div class="pagination_wrapper">
+            <ul>
+                <% if ((parseInt(images.currentPage)-1) > 0  ) { %>
+                    <li><a href="<%= currentUrl %>?page=<%= parseInt(images.currentPage)-1 %>"><<</a></li>
+                <% } %>
+                
+                <% if (images.totalPages > 1) { %>
+                    <% for( let i = 1; i < images.totalPages+1; i++ ) { %>
+                        <% if (images.currentPage == i) { %>
+                            <li> <span class="active"><%= i %></span></li>
+                        <% } else { %>
+                            <li><a href="<%= currentUrl %>?page=<%= i %>"><%= i %></a></li>
+                        <% } %>
+                    <% } %>
+                <% } %> 
+    
+                <% if (parseInt(images.totalPages) > (parseInt(images.currentPage))   ) { %>
+                    <li><a href="<%= currentUrl %>?page=<%= parseInt(images.currentPage)+1 %>">>></a></li>
+                <% } %>
+            </ul>
+        </div>
+
+
     </div>
 
 </section>

@@ -77,6 +77,7 @@ router.get('/home/delete-category/:slug',requireAuth, isAccountActive, slugValid
 router.post('/home/delete-category',requireAuth, isAccountActive, authController.deleteCategory_post);
 
 router.post('/home/category-status/:slug', requireAuth, isAccountActive, slugValidator, authController.categoryStatus_post);
+router.post('/home/category-display/:slug', requireAuth, isAccountActive, slugValidator, authController.categoryDisplay_post);
 
 //#endregion
 

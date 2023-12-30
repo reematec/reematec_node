@@ -8,8 +8,9 @@
         </div>
         <div class="card-body">
 
-            <form method="POST">
+            <form  method="POST">
                 <input type="hidden" name="_csrfToken" value="<%= csrfToken %>">
+                <input type="hidden" name="identifier" value="<%= product.identifier %>">
                 
                 <div class="form-control">
                     <label class="label caption" for="txtName">Name: </label>
@@ -166,7 +167,9 @@
             </form>
         </div>
     </div>
+    
 </section>
+<%- include('../components/_modalImage') %>
 
 <script>
     const form = document.querySelector('form');

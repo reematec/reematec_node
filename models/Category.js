@@ -42,6 +42,10 @@ const Category = sequelize.define('category', {
         type: Sequelize.DataTypes.BOOLEAN,
         allowNull: true,        
     },
+    showOnHomepage:{
+        type: Sequelize.DataTypes.BOOLEAN,
+        allowNull: true,        
+    },
 })
 
 // User.beforeCreate(async (user, options) => {

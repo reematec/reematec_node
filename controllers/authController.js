@@ -23,7 +23,6 @@ const nodemailer = require('nodemailer');
 const { encrypt, decrypt } = require('../utils/encrypter')
 const bcrypt = require('bcrypt')
 const crypto = require('crypto');
-const Tokens = require('csrf')
 
 Date.prototype.addHours = function (h) {
     this.setTime(this.getTime() + (h * 60 * 60 * 1000));
@@ -43,11 +42,11 @@ module.exports.addCategory_get = (req, res) => {
     res.render('backend/category-add', { layout: 'layouts/app.ejs' })
 }
 module.exports.addCategory_post = async (req, res) => {
-    const { name, slug, pagetitle, description, active, showSubMenu } = req.body
+    const { name, slug, pagetitle, description,  showSubMenu } = req.body
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        req.flash('category', { name, slug, pagetitle, description, active, showSubMenu })
+        req.flash('category', { name, slug, pagetitle, description,  showSubMenu })
 
         req.flash('errors', errors.array())
         return res.redirect('/home/add-category')
@@ -59,7 +58,6 @@ module.exports.addCategory_post = async (req, res) => {
         slug: slug,
         pagetitle: pagetitle,
         description: description,
-        active: active,
         showSubMenu: showSubMenu,
     };
 
@@ -92,12 +90,12 @@ module.exports.updateCategory_get = async (req, res) => {
     res.render('backend/category-update', { layout: 'layouts/app.ejs', category })
 }
 module.exports.updateCategory_post = async (req, res) => {
-    const { identifier, name, slug, pagetitle, description, active, showSubMenu } = req.body
+    const { identifier, name, slug, pagetitle, description, showSubMenu } = req.body
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         
-        req.flash('category', { identifier, name, slug, pagetitle, description, active, showSubMenu })
+        req.flash('category', { identifier, name, slug, pagetitle, description, showSubMenu })
         
         req.flash('errors', errors.errors)
         return res.redirect(`/home/update-category/${slug}`)
@@ -113,8 +111,7 @@ module.exports.updateCategory_post = async (req, res) => {
         category.name = name;
         category.slug = slug;
         category.pagetitle = pagetitle;
-        category.description = description;
-        category.active = active ? true : false;
+        category.description = description;        
         category.showSubMenu = showSubMenu ? true : false;
 
         await category.save();
@@ -158,7 +155,6 @@ module.exports.deleteCategory_post = async (req, res) => {
     }
     res.redirect('/home/category')
 }
-
 module.exports.categoryStatus_post = async (req, res) => {
     const { slug } = req.body;
 
@@ -169,6 +165,20 @@ module.exports.categoryStatus_post = async (req, res) => {
         req.flash('info', [{ message: 'Category status updated successfully.' }])
     } catch (error) {
         req.flash('errors', [{ message: 'Category status failed to update.' }])
+        console.log(error);
+    }
+    res.redirect(req.headers.referer);
+}
+module.exports.categoryDisplay_post = async (req, res) => {
+    const { slug } = req.body;
+
+    try {
+        const category = await Category.findOne({ where: { slug } })
+        category.showOnHomepage = !category.showOnHomepage
+        await category.save();
+        req.flash('info', [{ message: `Category "${category.name}" status updated successfully.` }])
+    } catch (error) {
+        req.flash('errors', [{ message: `Category status failed to update.` }])
         console.log(error);
     }
     res.redirect(req.headers.referer);
@@ -335,8 +345,23 @@ module.exports.getSubcatgories = async (req, res) => {
 
 //#region Gallery
 module.exports.gallery_get = async (req, res) => {
-    const images = await Image.findAll()
-    res.render('backend/gallery', { layout: 'layouts/app.ejs', images })
+    let {page} = req.query
+    const limit = 25;
+    page -= 1
+    const offset = page ? page * limit : 0;
+
+    const images = await Image.findAndCountAll({
+        distinct: true,
+        limit,
+        offset,
+        order: [['id', 'DESC']],
+    })   
+
+    page += 1
+    images.currentPage = page ? page : 1;
+    images.totalPages = Math.ceil(images.count / limit);
+
+    res.render('backend/gallery', { layout: 'layouts/app.ejs', images, currentUrl: pathname(req) })
 }
 module.exports.addImages_get = async (req, res) => {
     res.render('backend/image', { layout: 'layouts/app.ejs' })
@@ -478,9 +503,11 @@ module.exports.imagesAjax = async (req, res) => {
     const { page } = req.query;
     const { limit, offset } = getPagination(page);
 
-    console.log(page, limit, offset);
-
-    Image.findAndCountAll({ limit, offset }).then(data => {
+    Image.findAndCountAll({ 
+        limit, 
+        offset,
+        order: [['id', 'DESC']],
+    }).then(data => {
         const response = getPagingData(data, page, limit);
         res.json(response);
     }).catch((err) => {
@@ -657,11 +684,25 @@ module.exports.deleteSize_post = async (req, res) => {
 
 //#region Product
 module.exports.productPosting = async (req, res) => {
-    
-    const products = await Product.findAll({
-        include: [{ model: Category }, { model: SubCategory }, { model: Image }]
-    })
-    res.render('backend/product', { layout: 'layouts/app.ejs', products })
+
+    let {page} = req.query
+    const limit = 25;
+    page -= 1
+    const offset = page ? page * limit : 0;
+
+    const products = await Product.findAndCountAll({
+        distinct: true,
+        limit,
+        offset,
+        include: [{ model: Category}, { model: SubCategory }, { model: Image }],
+        order: [['id', 'DESC']],
+    })   
+
+    page += 1
+    products.currentPage = page ? page : 1;
+    products.totalPages = Math.ceil(products.count / limit);
+
+    res.render('backend/product', { layout: 'layouts/app.ejs', products, currentUrl: pathname(req) })
 }
 module.exports.addProduct_get = async (req, res) => {
     const sizes = await Size.findAll()
@@ -689,8 +730,8 @@ module.exports.addProduct_post = async (req, res) => {
             identifier: randomstring.generate(),
             name: name,
             slug: slug,
-            showcased: showcased ? true : false,
-            recommended: recommended ? true : false,
+            // showcased: showcased ? true : false,
+            // recommended: recommended ? true : false,
             usage: usage,
             year: year,
             price: price,
@@ -709,23 +750,23 @@ module.exports.addProduct_post = async (req, res) => {
         const sizeKey = []
         const tagKey = []
 
-            console.log(image && image.length > 0);
-            if (image && image.length > 0) {
-                const images = await Image.findAll({ raw: true, attributes: ['id'], where: { id: image } })
-                Object.keys(images).forEach((key) => imageKey.push(images[key].id))
-            }
 
-            console.log(size && size.length > 0);
-            if (size && size.length > 0) {
-                const sizes = await Size.findAll({ attributes: ['id'], where: { identifier: size } })
-                Object.keys(sizes).forEach((key) =>  sizeKey.push(sizes[key].id))
-            }
+        if (image && image.length > 0) {
+            const images = await Image.findAll({ raw: true, attributes: ['id'], where: { id: image } })
+            Object.keys(images).forEach((key) => imageKey.push(images[key].id))
+        }
 
-            console.log(tag && tag.length > 0);
-            if (tag && tag.length > 0) {
-                const tags = await Tag.findAll({ attributes: ['id'], where: { identifier: tag } })
-                Object.keys(tags).forEach((key) => tagKey.push(tags[key].id))
-            }
+
+        if (size && size.length > 0) {
+            const sizes = await Size.findAll({ attributes: ['id'], where: { identifier: size } })
+            Object.keys(sizes).forEach((key) => sizeKey.push(sizes[key].id))
+        }
+
+
+        if (tag && tag.length > 0) {
+            const tags = await Tag.findAll({ attributes: ['id'], where: { identifier: tag } })
+            Object.keys(tags).forEach((key) => tagKey.push(tags[key].id))
+        }
         //#endregion
 
         await product.addImage(imageKey, { transaction: t });
@@ -733,7 +774,7 @@ module.exports.addProduct_post = async (req, res) => {
         await product.addTag(tagKey, { transaction: t });
         await t.commit();
 
-        console.log(JSON.stringify(product, null, 4));
+        // console.log(JSON.stringify(product, null, 4));
 
         req.flash('info', [{ message: 'Product saved successfully.' }])
         res.redirect('/home/product')
@@ -794,19 +835,22 @@ module.exports.updateProduct_get = async (req, res) => {
 }
 module.exports.updateProduct_post = async (req, res) => {
     const slugParam = req.params.slug;
+
+    console.log(req.body);
+
+
     const { name, slug, usage, year, price, pagetitle, shortDescription, LongDescription, specifications, features, care, category, subCategory, image, size, tag } = req.body
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         req.flash('product', { name, slug, usage, year, price, pagetitle, shortDescription, LongDescription, specifications, features, care, category, subCategory, image, size, tag })
 
+        console.log(errors.array());
         req.flash('errors', errors.array())
-        return res.redirect('/home/update-product')
+        res.redirect(`/home/update-product/${product.slug}`)
     }
 
-    const product = await Product.findOne({
-        where: { slug: slugParam }
-    })
+    const product = await Product.findOne({where: { slug: slugParam }})
 
     
 
@@ -816,8 +860,8 @@ module.exports.updateProduct_post = async (req, res) => {
 
         product.name = name;
         product.slug = slug;
-        product.showcased = showcased ? true : false;
-        product.recommended = recommended ? true : false;
+        // product.showcased = showcased ? true : false;
+        // product.recommended = recommended ? true : false;
         product.usage = usage;
         product.year = year;
         product.price = price;
@@ -827,32 +871,33 @@ module.exports.updateProduct_post = async (req, res) => {
         product.specifications = specifications;
         product.features = features;
         product.care = care;
-        product.categoryId = category;
-        product.subCategoryId = subCategory;
+        product.categoryId = category == 0 ? null : category;
+        product.subCategoryId = subCategory == 0 ? null : subCategory;
 
         // 
 
         //#region Foreign Keys Array
-        const images = await Image.findAll({ raw: true, attributes: ['id'], where: { id: image } })
         const imageKey = []
-        Object.keys(images).forEach((key) => {
-            imageKey.push(images[key].id)
-        })
-
-        const sizes = await Size.findAll({ attributes: ['id'], where: { id: size } })
         const sizeKey = []
-        Object.keys(sizes).forEach((key) => {
-            sizeKey.push(sizes[key].id)
-        })
-
-        const tags = await Tag.findAll({ attributes: ['id'], where: { id: tag } })
         const tagKey = []
-        Object.keys(tags).forEach((key) => {
-            tagKey.push(tags[key].id)
-        })
+
+        if (image && image.length > 0) {
+            const images = await Image.findAll({ raw: true, attributes: ['id'], where: { id: image } })
+            Object.keys(images).forEach((key) => { imageKey.push(images[key].id) })
+        }
+
+        if (size && size.length > 0) {
+            const sizes = await Size.findAll({ attributes: ['id'], where: { id: size } })
+            Object.keys(sizes).forEach((key) => sizeKey.push(sizes[key].id))
+        }
+
+        if (tag && tag.length > 0) {
+            const tags = await Tag.findAll({ attributes: ['id'], where: { id: tag } })
+            Object.keys(tags).forEach((key) => tagKey.push(tags[key].id))
+        }
         //#endregion
 
-        // console.log(imageKey, sizeKey, tagKey);
+        
 
         await product.setImages([], { transaction: t })
         await product.setSizes([], { transaction: t })
@@ -865,13 +910,20 @@ module.exports.updateProduct_post = async (req, res) => {
         await product.save({ transaction: t })
         await t.commit();
 
-        req.flash('info', 'Product saved successfully')
-        res.redirect(`/home/view-product/${product.slug}`)
-    } catch (error) {
-        console.log(error);
-        req.flash('error', 'error occurred')
+        req.flash('info', [{ message: 'Product updated successfully.' }])
+        res.redirect('/home/product');        
+    } catch (err) {
+        req.flash('product', { name, slug,  usage, year, price, pagetitle, shortDescription, LongDescription, specifications, features, care, category, subCategory })
+
+        console.log(err);
+        if (err.errors) {
+            req.flash('errors', err.errors)
+        }else{
+            req.flash('errors', [{ message: 'some error occured.' }])
+        }
+
         await t.rollback();
-        res.redirect('/home/update-product')
+        res.redirect(`/home/update-product/${product.slug}`)
     }
 
 }
@@ -1483,3 +1535,12 @@ function validationResultwithoutFields(req, res, redirect,) {
     }
 }
 
+
+
+const pathname = (req)=>{
+    let pathname = ''
+    if (req.url.includes('?')) {
+        pathname = req.url.substring(0, req.url.indexOf("?"))
+    }
+    return pathname
+}
