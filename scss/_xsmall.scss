@@ -200,9 +200,8 @@
     text-align: center;
 
     &__welcome {
-        font-family: 'Charm';
-        color: #fff;
-        font-size: 4rem;
+        font-style: italic;
+        font-size: 3rem;
         margin-top: 0rem;
         margin-bottom: 1rem;
     }
@@ -323,7 +322,7 @@
                             & p {
                                 font-size: 1.3rem;
                                 line-height: 1.3rem;
-                                color: $gray-color-font;
+                                color: #333;
                                 margin: 0 0 2rem 0;
                             }
                         }
@@ -460,6 +459,9 @@
 
             li {
                 margin-bottom: .5rem;
+            }
+            .mb-4{
+                margin-bottom: 3rem;
             }
         }
     }
@@ -768,7 +770,7 @@
                         color: #727272;
                     }
 
-                    h4, p {
+                    p {
                         font-size: 1.3rem;
                         line-height: 1.3rem;
                         margin: 0;                        
@@ -1801,11 +1803,27 @@
                     }
 
                     .attribute {
-                        position: relative;
+                        margin-top: 2rem;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: end;
+
+                        &__mod{
+                            color: #727272;
+                        }
+
+                        p {
+                            font-size: 1.3rem;
+                            line-height: 1.3rem;
+                            margin: 0;                        
+                            font-weight: 300;
+                        }                    
+    
+                        p{
+                            display: inline-block;
+                        }
+
                         & button {
-                            // position: absolute;
-                            // bottom: 0;
-                            // right: 0;
                             background: $dark-color;
                             color: white;
                             padding: 1rem 1.2rem;
@@ -1813,17 +1831,17 @@
                             border: none;
                             outline: none;
                             border-radius: .3rem;
-
+    
                             transition: .3s all;
                             font-weight: 300;
                             font-size: 1.2rem;
-                            letter-spacing: 1px;
+                            // letter-spacing: 1px;
 
                         }
 
                         & button:hover {
                             background: $yellow-color;
-                            font-weight: 500;
+                            // font-weight: 500;
                             color: black;
                         }
                     }
@@ -1833,7 +1851,7 @@
         }
 
         .card:hover {
-            border-top: 5px solid $dark-color;
+            border-top: 5px solid #222;
             box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
         }
 

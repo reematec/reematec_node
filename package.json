@@ -44,7 +44,6 @@
     "webpack-cli": "^5.1.4"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon app",
     "scss": "sass --watch ./scss:./public/css --style compressed",
     "watch": "nodemon --ext js,ejs --ignore public",

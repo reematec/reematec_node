@@ -30,9 +30,7 @@ module.exports.home = async (req, res) => {
         order: [['id', 'ASC']],
         where: { active: true, showcased: true }
     })
-
-    console.log(JSON.stringify(products, null, 4));
-
+    
     res.render('home', { layout: 'layouts/main.ejs', products, categorySections, categories })
 }
 module.exports.about = async (req, res) => {

@@ -107,9 +107,9 @@
                     <a class="btn card__wrapper" href="/product/<%= products.rows[p].slug %>">
                         <span productIdentifier class="display-none"><%= products.rows[p].identifier %></span>
                         <picture>
-                            <source media="(max-width: 961px)" srcset="/images/assets/300/<%= products[p].images[0].src %>">
-                            <source media="(min-width: 962px)" srcset="/images/assets/500/<%= products[p].images[0].src %>">
-                            <img loading="lazy" productImage class="image-responsive" src="/images/assets/300/<%= products.rows[p].images[0].src %>" alt="<%= products.rows[p].images[0].altText %>">
+                            <source media="(max-width: 961px)" srcset="/images/assets/300/<%= products.rows[p].images[0].src %>">
+                            <source media="(min-width: 962px)" srcset="/images/assets/500/<%= products.rows[p].images[0].src %>">
+                            <img width="500" height="500" loading="lazy" productImage class="image-responsive" src="/images/assets/300/<%= products.rows[p].images[0].src %>" alt="<%= products.rows[p].images[0].altText %>">
                         </picture>
 
                         <div class="card__caption">
@@ -123,7 +123,7 @@
 
                             <div class="card__caption__attribute">
                                 <div class="card__caption__attribute__mod">
-                                    <h4 class="">&nbsp;</h4>
+                                    <p class="">&nbsp;</p>
                                     <p class="">
                                         <span class="">&nbsp;</span>
                                     </p>

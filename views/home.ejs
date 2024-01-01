@@ -2,7 +2,10 @@
     <div class="container full-max-width">
         <div class="hero__image hero__content">
             <a href="/products">
-                <img class="image-responsive" width="800" height="844" src="/images/arean-star-small.jpg" alt="Arena Star soccer ball">
+                <picture>
+                    <source media="(min-width: 962px)" srcset="/images/arean-star-small.jpg">
+                    <img height="799"  productImage class="image-responsive" src="/images/arean-star-smallx.jpg" alt="Arena Star Soccer ball">
+                </picture>
             </a>
         </div>
         <div class="hero__text hero__content">
@@ -34,22 +37,22 @@
             <section class="features">
                 <div class="container-full">
                     <div class="features__section">
-                        <img loading="lazy" src="/images/customization.svg" alt="customized design for clients" >
+                        <img loading="lazy" width="100" height="100" src="/images/customization.svg" alt="customized design for clients" >
                         <h3>Custom Design Development</h3>
                         <p>We develop customs designs according to client instructions and inspiration</p>
                     </div>
                     <div class="features__section">
-                        <img loading="lazy" src="/images/payments.svg" alt="different payment options for orders">
+                        <img loading="lazy" width="100" height="100" src="/images/payments.svg" alt="different payment options for orders">
                         <h3>Easy Sample Payment</h3>
                         <p>For sample's and trial order clients can use instant payments like PayPal</p>
                     </div>
                     <div class="features__section">
-                        <img loading="lazy" src="/images/moq.svg" alt="Flexible MOQ to faciliate clients">
+                        <img loading="lazy" width="100" height="100" src="/images/moq.svg" alt="Flexible MOQ to faciliate clients">
                         <h3>Flexible MOQ</h3>
                         <p>Our trial order quantities are very flexible so every body could order to check and test the quality</p>
                     </div>
                     <div class="features__section">
-                        <img loading="lazy" src="/images/shipping.svg" alt="different shipping options like courier, air and sea cargo">
+                        <img loading="lazy" width="100" height="100" src="/images/shipping.svg" alt="different shipping options like courier, air and sea cargo">
                         <h3>Mutliple Shipping Options</h3>
                         <p>Multiple shipping options are available for different size of shipments</p>
                     </div>
@@ -85,9 +88,6 @@
                 
 
                 <% for( let p = 0; p < products.length; p++ ) { %>
-
-                    
-
                     <% if (products[p].category.id === categorySections[i].id) { %>
                      
                         <div quoteWrapper class="product-collection__flex__card quote-wrapper">
@@ -96,7 +96,7 @@
                                 <picture>
                                     <source media="(max-width: 961px)" srcset="/images/assets/300/<%= products[p].images[0].src %>">
                                     <source media="(min-width: 962px)" srcset="/images/assets/500/<%= products[p].images[0].src %>">
-                                    <img loading="lazy" productImage class="image-responsive" src="/images/assets/300/<%= products[p].images[0].src %>" alt="">
+                                    <img width="500" height="500" loading="lazy" productImage class="image-responsive" src="/images/assets/300/<%= products[p].images[0].src %>" alt="">
                                 </picture>
                                 <div class="card__caption">
                                     
@@ -110,7 +110,7 @@
             
                                     <div class="card__caption__attribute">
                                         <div class="card__caption__attribute__sizing">
-                                            <h4 class="">&nbsp;</h4>
+                                            <p class="">&nbsp;</p>
                                             <p class="">
                                                 <span class="">&nbsp;</span>                               
                                             </p>

@@ -6,13 +6,18 @@
             
             <% randomProducts.forEach(product => { %>
              
-                <div class="card quote-wrapper">
+                <div quoteWrapper class="card quote-wrapper">
                     <a class="btn card__wrapper" href="/product/<%= product.slug %>">
-                        <img class="image-responsive product-image" src="/images/assets/300/<%= product.images[0].src %>" alt="">
+                        <span productIdentifier class="display-none"><%= product.identifier %></span>
+                        <picture>
+                            <source media="(max-width: 961px)" srcset="/images/assets/300/<%= product.images[0].src %>">
+                            <source media="(min-width: 962px)" srcset="/images/assets/500/<%= product.images[0].src %>">                            
+                            <img width="500" height="500" loading="lazy" productImage class="image-responsive" src="/images/assets/300/<%= product.images[0].src %>" alt="<%= product.images[0].altText %>">
+                        </picture>
                         <div class="caption">
                             
                             <div class="basic">
-                                <p class="name"><%= product.name %></p>
+                                <p class="name card__caption__basic__name"><%= product.name %></p>
                                 <div class="info">
                                     <p class="construction-type" ><%= product.categoryId ? product.category.name : '' %></p>
                                     <p class="usage"><%= product.usage %></p>
@@ -20,8 +25,14 @@
                             </div>
     
                             <div class="attribute">
+                                <div class="card__caption__attribute__mod">
+                                    <p class="">&nbsp;</p>
+                                    <p class="">
+                                        <span class="">&nbsp;</span>
+                                    </p>
+                                </div>
                                 
-                                <button class="quote-button">GET QUOTE</button>
+                                <button quoteButton class="quote-button">Get Quote</button>
                             </div> 
     
                         </div>
@@ -29,71 +40,10 @@
                 </div>
 
             <% }) %>
-
-            
-            <!-- <div class="card quote-wrapper">
-                <a class="btn card__wrapper" href="#">
-                    <img class="image-responsive product-image" src="/images/Arena Star.jpeg" alt="">
-                    <div class="caption">
-                        
-                        <div class="basic">
-                            <p class="name">Aston</p>
-                            <div class="info">
-                                <p class="construction-type">Thermo Bonded</p>
-                                <p class="usage">Match</p>
-                            </div>
-
-                        </div>
-                        
-                        <div class="attribute">
-                            <button class="quote-button">GET QUOTE</button>
-                        </div>
-                        
-                    </div>
-                </a>
-            </div>
-
-            <div class="card quote-wrapper">
-                <a class="btn card__wrapper" href="#">
-                    <img class="image-responsive product-image" src="/images/Arena Star.jpeg" alt="">
-                    <div class="caption">
-                        
-                        <div class="basic">
-                            <p class="name">Long Life</p>
-                            <div class="info">
-                                <p class="construction-type">Hand Stitched</p>
-                                <p  class="usage">Training</p>
-                            </div>
-                        </div>
-
-                        <div class="attribute">
-                            <button class="quote-button">GET QUOTE</button>
-                        </div>
-                    </div>
-                </a>
-            </div>
-
-            <div class="card quote-wrapper">
-                <a class="btn card__wrapper" href="#">
-                    <img class="image-responsive product-image" src="/images/Arena Star.jpeg" alt="">
-                    <div class="caption">
-                        <div class="basic">
-                            <p class="name">Phantom</p>
-                            <div class="info">
-                                <p class="construction-type">Hand Stitched</p>
-                                <p class="usage">Match</p>
-                            </div>
-                        </div>
-
-                        <div class="attribute">
-                            
-                            <button class="quote-button">GET QUOTE</button>
-                        </div>
-
-                    </div> 
-                </a>
-            </div> -->
-            
         </div>
+
+            
+            
+        
     </div>
 </section>

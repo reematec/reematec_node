@@ -269,7 +269,7 @@ function GetQuoteModal(e) {
     
     if (e.target.hasAttribute('quoteButton')) {
         e.preventDefault();
-        
+
         if (modalQuote) {
             
             toggleModal(modalQuote);

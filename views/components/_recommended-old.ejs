@@ -1,0 +1,99 @@
+<section class="recommended-collection">
+    <div class="container-full">
+        <h2 class="title">RECOMMENDED PRODUCTS</h2>
+        
+        <div class="flex">
+            
+            <% randomProducts.forEach(product => { %>
+             
+                <div class="card quote-wrapper">
+                    <a class="btn card__wrapper" href="/product/<%= product.slug %>">
+                        <img class="image-responsive product-image" src="/images/assets/300/<%= product.images[0].src %>" alt="">
+                        <div class="caption">
+                            
+                            <div class="basic">
+                                <p class="name"><%= product.name %></p>
+                                <div class="info">
+                                    <p class="construction-type" ><%= product.categoryId ? product.category.name : '' %></p>
+                                    <p class="usage"><%= product.usage %></p>
+                                </div>
+                            </div>
+    
+                            <div class="attribute">
+                                
+                                <button class="quote-button">GET QUOTE</button>
+                            </div> 
+    
+                        </div>
+                    </a>
+                </div>
+
+            <% }) %>
+
+            
+            <!-- <div class="card quote-wrapper">
+                <a class="btn card__wrapper" href="#">
+                    <img class="image-responsive product-image" src="/images/Arena Star.jpeg" alt="">
+                    <div class="caption">
+                        
+                        <div class="basic">
+                            <p class="name">Aston</p>
+                            <div class="info">
+                                <p class="construction-type">Thermo Bonded</p>
+                                <p class="usage">Match</p>
+                            </div>
+
+                        </div>
+                        
+                        <div class="attribute">
+                            <button class="quote-button">GET QUOTE</button>
+                        </div>
+                        
+                    </div>
+                </a>
+            </div>
+
+            <div class="card quote-wrapper">
+                <a class="btn card__wrapper" href="#">
+                    <img class="image-responsive product-image" src="/images/Arena Star.jpeg" alt="">
+                    <div class="caption">
+                        
+                        <div class="basic">
+                            <p class="name">Long Life</p>
+                            <div class="info">
+                                <p class="construction-type">Hand Stitched</p>
+                                <p  class="usage">Training</p>
+                            </div>
+                        </div>
+
+                        <div class="attribute">
+                            <button class="quote-button">GET QUOTE</button>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="card quote-wrapper">
+                <a class="btn card__wrapper" href="#">
+                    <img class="image-responsive product-image" src="/images/Arena Star.jpeg" alt="">
+                    <div class="caption">
+                        <div class="basic">
+                            <p class="name">Phantom</p>
+                            <div class="info">
+                                <p class="construction-type">Hand Stitched</p>
+                                <p class="usage">Match</p>
+                            </div>
+                        </div>
+
+                        <div class="attribute">
+                            
+                            <button class="quote-button">GET QUOTE</button>
+                        </div>
+
+                    </div> 
+                </a>
+            </div> -->
+            
+        </div>
+    </div>
+</section>

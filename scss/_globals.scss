@@ -205,6 +205,7 @@ p {
     @include mx-auto;
 }
 
+
 .btn {
     text-decoration: none;
     display: inline-block;
@@ -291,8 +292,8 @@ p {
 //     background: $orange-color;    
 // }
 .btn-solid-primary {
-    border: 1px solid $orange-color;
-    background: $orange-color;
+    border: 1px solid black;
+    background: black;
     color: #fff;
     border-radius: .1rem;
 }
@@ -302,9 +303,9 @@ p {
     transition: .3s all;
     // border-radius: .3rem;
     // background: lighten($orange-color, 10%);
-    background: lighten(#000, 10%);
+    background: lighten(#000, 20%);
     // background: transparent;
-    border: 1px solid lighten(#000, 10%);
+    border: 1px solid lighten(#000, 20%);
     // color: $orange-color;
 }
 
