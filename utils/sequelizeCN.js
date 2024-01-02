@@ -28,3 +28,5 @@ sequelize.authenticate().then(() => {
 	);
 
 module.exports = sequelize
+
+// ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
