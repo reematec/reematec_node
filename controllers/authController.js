@@ -3,7 +3,6 @@ const passport = require('passport')
 const randomstring = require("randomstring");
 const fs = require('fs')
 const { body, validationResult } = require('express-validator');
-const { colors } = require('colors')
 const path = require('path')
 
 const Category = require('../models/Category');

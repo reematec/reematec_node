@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
 const path = require('path');
-const colors = require('colors')
+
 
 const sequelize = new Sequelize(
 	'reema_node', 'root', 'Bismillah&786', 

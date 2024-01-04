@@ -9,7 +9,7 @@ const flash = require('connect-flash');
 const fileUpload = require('express-fileupload');
 const passport = require('passport')
 const localStrategy = require('passport-local').Strategy;
-const morgan = require('morgan')
+
 const expressLayouts = require('express-ejs-layouts');
 const { getCSRF, verifyCSRF } = require('./middleware/csrfMiddleware');
 
@@ -26,27 +26,6 @@ process.on('unhandledRejection', (reason, p) => {
 });
 
 const app = express();
-
-if (process.env.NODE_ENV === "development") {
-	const livereload = require("livereload");
-	const connectLivereload = require("connect-livereload");
-
-	const liveReloadServer = livereload.createServer();
-	liveReloadServer.watch(path.join(__dirname, "public"));
-
-	liveReloadServer.server.once("connection", () => {
-		setTimeout(() => {
-			liveReloadServer.refresh("/");
-		}, 100);
-	});
-
-	// https://www.npmjs.com/package/connect-livereload
-	// app.use(require('connect-livereload')({
-	//   port: 35729
-	// }));
-	app.use(connectLivereload());
-	app.use(morgan('dev'))
-}
 
 app.use(fileUpload({
 	limits: { fileSize: 50 * 1024 * 1024 },
