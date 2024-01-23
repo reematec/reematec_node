@@ -3,9 +3,9 @@ const path = require('path');
 
 
 const sequelize = new Sequelize(
-	'reema_node', 'amir', 'testing@123', 
+	'reema_node', 'amir', 'testing@123',
 	{
-	host: 'localhost',
+	host: '127.0.0.1',
 	dialect: 'mysql',
 	logging: false,
 	// operatorsAliases: false,

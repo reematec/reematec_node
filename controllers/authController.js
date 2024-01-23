@@ -384,18 +384,23 @@ module.exports.addImages_post = async (req, res) => {
         await FileType.fromFile(image.tempFilePath)
 
         myPromise.push(new Promise((resolve, reject) => {
-            const name = `${Date.now()}${path.parse(image.name).ext}`
-            const imagePath = `./public/images/assets/${name}`
+            const imageName = `${Date.now()}${path.parse(image.name).ext}`
+            const imagePath = `./public/images/assets/${imageName}`
 
             image.mv(imagePath, (err) => {
                 if (err) {
                     reject(err);
                 } else {
-                    imageResize(imagePath, name, 100) // Product detail page Icon
-                    imageResize(imagePath, name, 300) // Product card thumb
-                    imageResize(imagePath, name, 500) // Product detail page large image
-                    resolve(name)
-                    const img = { identifier: randomstring.generate(), src: name, }
+                    imageResize(imagePath, imageName, 100) // Product detail page Icon
+                    imageResize(imagePath, imageName, 300) // Product card thumb
+                    imageResize(imagePath, imageName, 500) // Product detail page large image
+                    resolve(imageName)
+                    const img = {
+			identifier: randomstring.generate(),
+			src: imageName,
+			name: imageName.substring(0, imageName.indexOf('.')),
+	                ext: imageName.substring(imageName.indexOf('.')+1)
+		}
                     imageObjects.push(img)
                 }
             })

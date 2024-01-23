@@ -430,15 +430,15 @@ async function getRandomProducts() {
 async function getActiveCatAndSubCategories(params) {
     const activeCategories = await Category.findAll({
         include: [{model: SubCategory, as:'subCategories'}],
-        where: {
-            [Op.or]: [
-                { '$category.active$': true, },
-            ],
-            [Op.and]: [
-                { '$subCategories.active$': { [Op.not]: false} },
-            ],
-        }, 
-        // logging: console.log
+       // where: {
+       //     [Op.or]: [
+       //         { '$category.active$': true, },
+       //     ],
+       //     [Op.and]: [
+       //         { '$subCategories.active$': { [Op.not]: false} },
+       //     ],
+       // }, 
+        logging: console.log
     })
     return activeCategories
 }
@@ -457,7 +457,7 @@ async function filterCollection() {
         attributes: ['year'],
         // include: [{ model: Category}, { model: SubCategory }, { model: Image }],
         // order: [orderSTR(sort)],
-        where: {active: 1},
+        where: {active: true},
         group: 'year'
     })
 
