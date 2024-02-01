@@ -1,0 +1,22 @@
+<section class="container dashboard-page">
+    <div class="card">                
+
+        <div class="card-header">
+            <p>Delete Page Meta - Confirmation</p>
+        </div>
+
+        <div class="card-body">
+            <p>Are you sure you want to delete <strong>"<%= meta.page %>"</strong>?</p>
+            <p>This action is permanent.</p>
+
+            <form action="" method="POST">
+                <input type="hidden" name="_csrfToken" value="<%= csrfToken %>">
+                <input type="hidden" name="identifier" value="<%= meta.identifier %>">
+                <div>
+                    <a class="btn btn-normal btn-gray" href="/home/meta">Cancel</a>
+                    <input class="btn btn-normal btn-red" type="submit" value="Delete">
+                </div>
+            </form>
+        </div>
+    </div>
+</section>

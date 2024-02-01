@@ -5,6 +5,7 @@ const fs = require('fs')
 const { body, validationResult } = require('express-validator');
 const path = require('path')
 
+
 const Category = require('../models/Category');
 const SubCategory = require('../models/SubCategory');
 const Product = require('../models/Product');
@@ -12,6 +13,7 @@ const Tag = require('../models/Tag');
 const Size = require('../models/Size');
 const Image = require('../models/Image');
 const Blog = require('../models/Blog');
+const Meta = require('../models/Meta');
 const User = require('../models/User');
 const sequelize = require('../utils/sequelizeCN');
 const { createCanvas, loadImage } = require('canvas')
@@ -1156,6 +1158,144 @@ module.exports.deleteBlog_post = async (req, res) => {
 }
 //#endregion
 
+//#region Description
+module.exports.meta = async (req, res) => {
+    const meta = await Meta.findAll()
+    res.render('backend/meta', { layout: 'layouts/app.ejs', meta })
+}
+module.exports.viewMeta_get = async (req, res) => {
+    const identifier = req.params.identifier;
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        req.flash('meta', { identifier })
+
+        req.flash('errors', errors.array())
+        return res.redirect('/home/meta')
+    }
+
+    const meta = await Meta.findOne({ where: { identifier } })
+    if (!meta) {
+        req.flash('errors', [{ message: 'Meta info not found.' }])
+        return res.redirect('/home/meta')
+    }
+
+    res.render('backend/meta-view', { layout: 'layouts/app.ejs', meta })
+}
+module.exports.addMeta_get = async (req, res) => {
+    res.render('backend/meta-add', { layout: 'layouts/app.ejs' })
+}
+module.exports.addMeta_post = async (req, res) => {    
+    const { page, title, description } = req.body
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        req.flash('meta', { page, description })
+
+        req.flash('errors', errors.array())
+        return res.redirect('/home/add-meta')
+    }
+    
+    const desc = {
+        identifier: randomstring.generate(),
+        page: page,
+        title: title,
+        description: description,
+    }
+
+    try {
+        await Meta.create(desc)
+        req.flash('success', [{ message: `Meta <strong>"${page}"</strong> created successfully.` }])
+        res.redirect(`/home/view-meta/${desc.identifier}`)
+    } catch (err) {
+        console.log(err.errors);
+    }
+
+}
+module.exports.updateMeta_get = async (req, res) => {
+    const identifier = req.params.identifier
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        req.flash('meta', { identifier })
+
+        req.flash('errors', errors.array())
+        return res.redirect('/home/meta')
+    }
+
+    const meta = await Meta.findOne({ where: { identifier } });
+    if (!meta) {
+        req.flash('errors', [{ message: 'Meta not found.' }])
+        return res.redirect('/home/meta')
+    }
+
+    res.render('backend/meta-update', { layout: 'layouts/app.ejs', meta })
+}
+module.exports.updateMeta_post = async (req, res) => {
+    const { identifier, page, title, description } = req.body
+    
+    
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        req.flash('meta', { identifier, page, description })
+
+        req.flash('errors', errors.array())
+        return res.redirect(`/home/update-meta/${identifier}`)
+    }
+    
+    try {
+        const meta = await Meta.findOne({ where: { identifier } });
+        if (!meta) {
+            req.flash('errors', [{ message: 'Meta not found.' }])
+            return res.redirect('/home/meta')
+        }
+        
+        meta.page = page;
+        meta.title = title;
+        meta.description = description;
+        
+        await meta.save();
+
+        req.flash('success', [{ message: `Meta <strong>"${meta.page}"</strong> Updated successfully.` }])
+        res.redirect(`/home/view-meta/${meta.identifier}`)
+    } catch (error) {
+        console.log(error);
+    }
+
+
+}
+module.exports.deleteMeta_get = async (req, res) => {
+    const identifier = req.params.identifier
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        req.flash('meta', { identifier })
+
+        req.flash('errors', errors.array())
+        return res.redirect('/home/meta')
+    }
+
+    const meta = await Meta.findOne({ where: { identifier } });
+    if (!meta) {
+        req.flash('errors', [{ message: 'meta not found.' }])
+        return res.redirect('/home/meta')
+    }
+    res.render('backend/meta-delete', { layout: 'layouts/app.ejs', meta })
+}
+module.exports.deleteMeta_post = async (req, res) => {
+    const { identifier } = req.body
+
+    const meta = await Meta.findOne({ where: { identifier } });
+    if (meta) {
+        req.flash('success', [{ message: `Meta "${meta.page}" deleted successfully.` }])
+        await meta.destroy()
+    } else {
+        req.flash('errors', [{ message: 'meta not found.' }])
+    }
+    res.redirect('/home/meta')
+}
+//#endregion
+
 //#region User
 module.exports.users = async (req, res) => {
     const users = await User.findAll({})
@@ -1277,8 +1417,9 @@ module.exports.deleteUser_post = async (req, res) => {
 }
 //#endregion
 
-module.exports.signup_get = (req, res) => {
-    res.render('signup', { layout: 'layouts/main.ejs'})
+module.exports.signup_get = async (req, res) => {
+    let meta = await Meta.findOne({where: {page: 'signup'}}) || {title: "No title - Reema", description: "No Description"}
+    res.render('signup', { layout: 'layouts/main.ejs', title: meta.title, description: meta.description})
 }
 
 module.exports.signup_post = async (req, res) => {
@@ -1323,8 +1464,9 @@ module.exports.signup_post = async (req, res) => {
     }
 }
 
-module.exports.login_get = (req, res) => {
-    res.render('login', { layout: 'layouts/main.ejs'})
+module.exports.login_get = async (req, res) => {
+    let meta = await Meta.findOne({where: {page: 'login'}}) || {title: "No title - Reema", description: "No Description"}
+    res.render('login', { layout: 'layouts/main.ejs', title: meta.title, description: meta.description,})
 }
 
 // this login_post is old code
@@ -1352,8 +1494,9 @@ module.exports.logout_get = (req, res) => {
     res.redirect('/')
 }
 
-module.exports.password_forgot_get = (req, res) => {
-    res.render('reset_password', { layout: 'layouts/main.ejs' })
+module.exports.password_forgot_get = async (req, res) => {
+    let meta = await Meta.findOne({where: {page: 'password-reset'}}) || {title: "No title - Reema", description: "No Description"}
+    res.render('reset_password', { layout: 'layouts/main.ejs', title: meta.title, description: meta.description })
 }
 
 module.exports.password_forgot_post = async (req, res) => {
@@ -1473,8 +1616,9 @@ module.exports.password_reset_confirm_post = async (req, res) => {
 
 }
 
-module.exports.password_forgot_done_get = (req, res) => {
-    res.render('password-reset-done', { layout: 'layouts/main.ejs' })
+module.exports.password_forgot_done_get = async (req, res) => {
+    let meta = await Meta.findOne({where: {page: 'password-reset'}})  || {title: "No title - Reema", description: "No Description"}
+    res.render('password-reset-done', { layout: 'layouts/main.ejs', title: meta.title, description: meta.description })
 }
 
 function imageResize(file, name, width) {

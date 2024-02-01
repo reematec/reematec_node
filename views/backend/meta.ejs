@@ -1,0 +1,36 @@
+<section class="container dashboard-page">
+
+	<%- include('../components/_flashMessages') %>
+
+		<h1>Meta Information</h1>
+
+
+		<a class="btn btn-standard btn-solid-primary" href="/home/add-meta">Add Meta Info</a>
+
+		<table>
+			<tr>
+
+
+				<th>Page</th>
+				<th>Title</th>
+				<th>Description</th>
+				<th>Action</th>
+			</tr>
+			<% meta.forEach(desc=> { %>
+
+				<tr>
+					<td><%= desc.page %></td>
+					<td><%= desc.title %></td>
+					<td><%= desc.description %></td>
+
+					<td>
+						<a class="btn btn-link link-blue" href="/home/view-meta/<%= desc.identifier %>">View</a> |
+						<a class="btn btn-link link-blue" href="/home/update-meta/<%= desc.identifier %>">Edit</a> |
+						<a class="btn btn-link link-red" href="/home/delete-meta/<%= desc.identifier %>">Delete</a>
+					</td>
+				</tr>
+
+			<% }) %>
+
+		</table>
+</section>

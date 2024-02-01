@@ -1,6 +1,6 @@
 const randomstring = require("randomstring");
 const fs = require("fs");
-
+const axios = require('axios')
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 const { QueryTypes } = require('sequelize');
@@ -8,6 +8,7 @@ const sequelize = require('../utils/sequelizeCN');
 
 const nodemailer = require('nodemailer');
 
+const Meta = require('../models/Meta');
 const Category = require('../models/Category');
 const SubCategory = require('../models/SubCategory');
 const Image = require('../models/Image');
@@ -15,12 +16,10 @@ const Product = require('../models/Product');
 const Size = require("../models/Size");
 const Blog = require('../models/Blog');
 const RFQ = require('../models/RFQ');
-const axios = require('axios')
-
-
-
 
 module.exports.home = async (req, res) => {
+    let meta = await Meta.findOne({where: {page: 'home'}}) || {title: "No title - Reema", description: "No Description"}
+    
     const categories = await getActiveCatAndSubCategories()
     
     const categorySections = await Category.findAll({where: {active: true, showOnHomepage: true}})
@@ -31,17 +30,25 @@ module.exports.home = async (req, res) => {
         where: { active: true, showcased: true }
     })
     
-    res.render('home', { layout: 'layouts/main.ejs', products, categorySections, categories })
+    res.render('home', { layout: 'layouts/main.ejs', title: meta.title, description: meta.description, products, categorySections, categories })
 }
+
 module.exports.about = async (req, res) => {
+    let meta = await Meta.findOne({where: {page: 'about'}}) || {title: "No title - Reema", description: "No Description"}
+    
     const categories = await getActiveCatAndSubCategories()
-    res.render('about', { layout: 'layouts/main.ejs', categories })
+
+    res.render('about', { layout: 'layouts/main.ejs', title: meta.title, description: meta.description, categories })
 }
+
 module.exports.contact = async (req, res) => {
+    let meta = await Meta.findOne({where: {page: 'contact'}}) || {title: "No title - Reema", description: "No Description"}
     const categories = await getActiveCatAndSubCategories()
-    const countries = ['Afghanistan','Albania','Algeria','Andorra','Angola','Antigua and Barbuda','Argentina','Armenia','Australia','Austria','Azerbaijan','Bahamas','Bahrain','Bangladesh','Barbados','Belarus','Belgium','Belize','Benin','Bhutan','Bolivia','Bosnia and Herzegovina','Botswana','Brazil','Brunei','Bulgaria','Burkina Faso','Burundi','Cabo Verde','Cambodia','Cameroon','Canada','Central African Republic','Chad','Chile','China','Colombia','Comoros','Congo, Democratic Republic of the','Congo, Republic of the','Costa Rica','Côte d’Ivoire','Croatia','Cuba','Cyprus','Czech Republic','Denmark','Djibouti','Dominica','Dominican Republic','East Timor (Timor-Leste)','Ecuador','Egypt','El Salvador','Equatorial Guinea','Eritrea','Estonia','Eswatini','Ethiopia','Fiji','Finland','France','Gabon','Gambia','Georgia','Germany','Ghana','Greece','Grenada','Guatemala','Guinea','Guinea-Bissau','Guyana','Haiti','Honduras','Hungary','Iceland','India','Indonesia','Iran','Iraq','Ireland','Israel','Italy','Jamaica','Japan','Jordan','Kazakhstan','Kenya','Kiribati','Korea, North','Korea, South','Kosovo','Kuwait','Kyrgyzstan','Laos','Latvia','Lebanon','Lesotho','Liberia','Libya','Liechtenstein','Lithuania','Luxembourg','Madagascar','Malawi','Malaysia','Maldives','Mali','Malta','Marshall Islands','Mauritania','Mauritius','Mexico','Micronesia, Federated States of','Moldova','Monaco','Mongolia','Montenegro','Morocco','Mozambique','Myanmar (Burma)','Namibia','Nauru','Nepal','Netherlands','New Zealand','Nicaragua','Niger','Nigeria','North Macedonia','Norway','Oman','Pakistan','Palau','Panama','Papua New Guinea','Paraguay','Peru','Philippines','Poland','Portugal','Qatar','Romania','Russia','Rwanda','Saint Kitts and Nevis','Saint Lucia','Saint Vincent and the Grenadines','Samoa','San Marino','Sao Tome and Principe','Saudi Arabia','Senegal','Serbia','Seychelles','Sierra Leone','Singapore','Slovakia','Slovenia','Solomon Islands','Somalia','South Africa','Spain','Sri Lanka','Sudan','Sudan, South','Suriname','Sweden','Switzerland','Syria','Taiwan','Tajikistan','Tanzania','Thailand','Togo','Tonga','Trinidad and Tobago','Tunisia','Turkey','Turkmenistan','Tuvalu','Uganda','Ukraine','United Arab Emirates','United Kingdom','United States','Uruguay','Uzbekistan','Vanuatu','Vatican City','Venezuela','Vietnam','Yemen','Zambia','Zimbabwe']    
-    res.render('contact', { layout: 'layouts/main.ejs', categories, countries })
+    const countries = ['Afghanistan','Albania','Algeria','Andorra','Angola','Antigua and Barbuda','Argentina','Armenia','Australia','Austria','Azerbaijan','Bahamas','Bahrain','Bangladesh','Barbados','Belarus','Belgium','Belize','Benin','Bhutan','Bolivia','Bosnia and Herzegovina','Botswana','Brazil','Brunei','Bulgaria','Burkina Faso','Burundi','Cabo Verde','Cambodia','Cameroon','Canada','Central African Republic','Chad','Chile','China','Colombia','Comoros','Congo, Democratic Republic of the','Congo, Republic of the','Costa Rica','Côte d’Ivoire','Croatia','Cuba','Cyprus','Czech Republic','Denmark','Djibouti','Dominica','Dominican Republic','East Timor (Timor-Leste)','Ecuador','Egypt','El Salvador','Equatorial Guinea','Eritrea','Estonia','Eswatini','Ethiopia','Fiji','Finland','France','Gabon','Gambia','Georgia','Germany','Ghana','Greece','Grenada','Guatemala','Guinea','Guinea-Bissau','Guyana','Haiti','Honduras','Hungary','Iceland','India','Indonesia','Iran','Iraq','Ireland','Israel','Italy','Jamaica','Japan','Jordan','Kazakhstan','Kenya','Kiribati','Korea, North','Korea, South','Kosovo','Kuwait','Kyrgyzstan','Laos','Latvia','Lebanon','Lesotho','Liberia','Libya','Liechtenstein','Lithuania','Luxembourg','Madagascar','Malawi','Malaysia','Maldives','Mali','Malta','Marshall Islands','Mauritania','Mauritius','Mexico','Micronesia, Federated States of','Moldova','Monaco','Mongolia','Montenegro','Morocco','Mozambique','Myanmar (Burma)','Namibia','Nauru','Nepal','Netherlands','New Zealand','Nicaragua','Niger','Nigeria','North Macedonia','Norway','Oman','Pakistan','Palau','Panama','Papua New Guinea','Paraguay','Peru','Philippines','Poland','Portugal','Qatar','Romania','Russia','Rwanda','Saint Kitts and Nevis','Saint Lucia','Saint Vincent and the Grenadines','Samoa','San Marino','Sao Tome and Principe','Saudi Arabia','Senegal','Serbia','Seychelles','Sierra Leone','Singapore','Slovakia','Slovenia','Solomon Islands','Somalia','South Africa','Spain','Sri Lanka','Sudan','Sudan, South','Suriname','Sweden','Switzerland','Syria','Taiwan','Tajikistan','Tanzania','Thailand','Togo','Tonga','Trinidad and Tobago','Tunisia','Turkey','Turkmenistan','Tuvalu','Uganda','Ukraine','United Arab Emirates','United Kingdom','United States','Uruguay','Uzbekistan','Vanuatu','Vatican City','Venezuela','Vietnam','Yemen','Zambia','Zimbabwe']
+
+    res.render('contact', { layout: 'layouts/main.ejs', title: meta.title, description: meta.description, categories, countries })
 }
+
 // https://medium.com/@sergeisizov/using-recaptcha-v3-with-node-js-6a4b7bc67209
 module.exports.contact_post = async (req, res) => {
 
@@ -80,6 +87,7 @@ module.exports.contact_post = async (req, res) => {
     });
     // res.render('contact', {layout: 'layouts/main.ejs'})
 }
+
 module.exports.rfq_post = async (req, res) => {
 
     captchaVerification(req)
@@ -128,6 +136,7 @@ module.exports.rfq_post = async (req, res) => {
     });
     // return res.json({'message': "Your RFQ has been sent successfully", success: true})
 }
+
 module.exports.products = async (req, res) => {
     // http://localhost:3000/products    
 
@@ -153,8 +162,10 @@ module.exports.products = async (req, res) => {
     products.totalPages = totalPages
     
     
-    res.render('products', { layout: 'layouts/main.ejs', categories, products, title: categories[0].name, randomProducts:random, sort: sort, currentUrl: pathname(req), collection, filterCollection: await filterCollection() })
+    res.render('products', { layout: 'layouts/main.ejs', title: categories[0].pagetitle, description: categories[0].description, categories, products, name: categories[0].name, randomProducts:random, sort: sort, currentUrl: pathname(req), collection, filterCollection: await filterCollection() })
 }
+
+// for Fetch Call
 module.exports.products_page = async (req, res) => {
     // Fetch http://localhost:3000/products/page
     const query = req.query
@@ -177,6 +188,7 @@ module.exports.products_page = async (req, res) => {
     });
     console.log(JSON.stringify(products, null, 4));
 }
+
 module.exports.categoryProducts = async (req, res) => {
     // http://localhost:3000/category/futsal-balls
     const { slug } = req.params
@@ -205,9 +217,10 @@ module.exports.categoryProducts = async (req, res) => {
 
     
 
-    res.render('products', { layout: 'layouts/main.ejs', categories, products, title: breadcrumb.name, randomProducts: random, sort: sort, currentUrl: pathname(req), collection, filterCollection: await filterCollection() })
+    res.render('products', { layout: 'layouts/main.ejs', title: breadcrumb.pagetitle, description: breadcrumb.description, categories, products, name: breadcrumb.name, randomProducts: random, sort: sort, currentUrl: pathname(req), collection, filterCollection: await filterCollection() })
 }
-// Against Fetch Call
+
+// for Fetch Call
 module.exports.categoryProducts_page = async (req, res) => {
 
     const { slug, page } = req.params
@@ -253,8 +266,9 @@ module.exports.subCategoryProducts = async (req, res) => {
     products.currentPage = currentPage
     products.totalPages = totalPages
     
-    res.render('products', { layout: 'layouts/main.ejs', categories, products, title: breadcrumb.category.name, randomProducts: random, sort: sort, currentUrl: pathname(req), collection, filterCollection: await filterCollection() })
+    res.render('products', { layout: 'layouts/main.ejs', title: breadcrumb.pagetitle, description: breadcrumb.description, categories, products, name: breadcrumb.category.name, randomProducts: random, sort: sort, currentUrl: pathname(req), collection, filterCollection: await filterCollection() })
 }
+// for Fetch Call
 module.exports.subCategoryProducts_page = async (req, res) => {
     const { slug, page } = req.params
     const { limit, offset } = getPagination(page);
@@ -271,6 +285,7 @@ module.exports.subCategoryProducts_page = async (req, res) => {
         );
     });
 }
+
 module.exports.product = async (req, res) => {
     const categories = await getActiveCatAndSubCategories()
     const slug = req.params.slug
@@ -284,24 +299,30 @@ module.exports.product = async (req, res) => {
 
     res.render('product_details', { layout: 'layouts/main.ejs', product, randomProducts, categories })
 }
+
 module.exports.blogs = async (req, res) => {
+    const meta = await Meta.findOne({where: {page: 'blogs'}}) || {title: "No title - Reema", description: "No Description"}
     const categories = await getActiveCatAndSubCategories()
     const blogs = await Blog.findAll({})
-    res.render('blogs', { layout: 'layouts/main.ejs', blogs, categories })
+    res.render('blogs', { layout: 'layouts/main.ejs', title: meta.title, description: meta.description, blogs, categories })
 }
+
 module.exports.blog = async (req, res) => {
     const slug = req.params.slug;
     const categories = await getActiveCatAndSubCategories()
 
     const blog = await Blog.findOne({ where: { slug: slug } })
-    res.render('blog', { layout: 'layouts/main.ejs', blog, categories })
+    res.render('blog', { layout: 'layouts/main.ejs', title: blog.title, description: '', blog, categories })
 }
+
 module.exports.faq = async (req, res) => {
+    const meta = await Meta.findOne({where: {page: 'faqs'}}) || {title: "No title - Reema", description: "No Description"}
     const categories = await getActiveCatAndSubCategories()
-    res.render('faq', { layout: 'layouts/main.ejs', categories })
+    res.render('faq', { layout: 'layouts/main.ejs', title: meta.title, description: meta.description, categories })
 }
+
 module.exports.quotes = async (req, res) => {
-    // console.log(req.session.guestUser);
+    const meta = await Meta.findOne({where: {page: 'quotes'}}) || {title: "No title - Reema", description: "No Description"}
     const categories = await getActiveCatAndSubCategories()
 
     if (req.session && !req.session.guestUser) {
@@ -312,9 +333,11 @@ module.exports.quotes = async (req, res) => {
         where: { email: req.session.guestUser },
         include: [{ model: Product, include: [{ model: Image }] }],
     })
-    res.render('quotes', { layout: 'layouts/app.ejs', rfqs, categories })
+    res.render('quotes', { layout: 'layouts/app.ejs', title: meta.title, description: meta.description, rfqs, categories })
 }
+
 module.exports.search = async (req, res) => {
+    const meta = await Meta.findOne({where: {page: 'search'}}) || {title: "No title - Reema", description: "No Description"}
     const categories = await getActiveCatAndSubCategories()
     let keyword
     if (req.query) keyword = req.query.search
@@ -356,20 +379,27 @@ module.exports.search = async (req, res) => {
 
     // const plainMessages = messages.map((message) => message.get({ plain: true }));
 
-    res.render('search', { layout: 'layouts/main.ejs', products, title: keyword, categories})
+    res.render('search', { layout: 'layouts/main.ejs', title: meta.title, description: meta.description, products, title: keyword, categories})
 }
+
 module.exports.terms = async (req, res) => {
+    const meta = await Meta.findOne({where: {page: 'terms'}}) || {title: "No title - Reema", description: "No Description"}
     const categories = await getActiveCatAndSubCategories()
-    res.render('terms-conditions', { layout: 'layouts/main.ejs', categories })
+    res.render('terms-conditions', { layout: 'layouts/main.ejs', title: meta.title, description: meta.description, categories })
 }
+
 module.exports.privacy = async (req, res) => {
+    const meta = await Meta.findOne({where: {page: 'privacy'}}) || {title: "No title - Reema", description: "No Description"}
     const categories = await getActiveCatAndSubCategories()
-    res.render('privacy', { layout: 'layouts/main.ejs', categories })
+    res.render('privacy', { layout: 'layouts/main.ejs', title: meta.title, description: meta.description, categories })
 }
+
 module.exports.cookie_policy = async (req, res) => {
+    const meta = await Meta.findOne({where: {page: 'cookie-policy'}}) || {title: "No title - Reema", description: "No Description"}
     const categories = await getActiveCatAndSubCategories()
-    res.render('cookie-policy', { layout: 'layouts/main.ejs', categories})
+    res.render('cookie-policy', { layout: 'layouts/main.ejs', title: meta.title, description: meta.description, categories})
 }
+
 module.exports.access_restricted = (req, res) => {
     res.render('access_restricted', { layout: 'layouts/main.ejs' })
 }
@@ -438,7 +468,7 @@ async function getActiveCatAndSubCategories(params) {
        //         { '$subCategories.active$': { [Op.not]: false} },
        //     ],
        // }, 
-        logging: console.log
+        // logging: console.log
     })
     return activeCategories
 }

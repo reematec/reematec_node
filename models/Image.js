@@ -66,7 +66,7 @@ Image.beforeUpdate(async (image, options) => {
 
 Image.sync(
     // { force: true }
-    { alter: true }
+    // { alter: true }
 )
 
 

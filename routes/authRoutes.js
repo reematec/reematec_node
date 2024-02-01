@@ -151,6 +151,20 @@ router.get('/home/delete-blog/:slug', requireAuth, isAccountActive, authControll
 router.post('/home/delete-blog/:slug', requireAuth, isAccountActive, authController.deleteBlog_post);
 //#endregion
 
+//#region Description
+router.get('/home/meta', requireAuth, isAccountActive, authController.meta)
+router.get('/home/view-meta/:identifier', requireAuth, isAccountActive, authController.viewMeta_get)
+
+router.get('/home/add-meta', requireAuth, isAccountActive, authController.addMeta_get);
+router.post('/home/add-meta', requireAuth, isAccountActive, authController.addMeta_post);
+
+router.get('/home/update-meta/:identifier', requireAuth, isAccountActive, authController.updateMeta_get);
+router.post('/home/update-meta', requireAuth, isAccountActive,  authController.updateMeta_post);
+
+router.get('/home/delete-meta/:identifier', requireAuth, isAccountActive, authController.deleteMeta_get);
+router.post('/home/delete-meta/:identifier', requireAuth, isAccountActive, authController.deleteMeta_post);
+//#endregion
+
 //#region User
 router.get('/home/users', requireAuth,isAccountActive, onlyAdmin, authController.users);
 router.get('/home/view-user/:identifier', requireAuth, isAccountActive,  onlyAdmin, authController.viewUser_get);

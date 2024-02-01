@@ -16,7 +16,7 @@ router.get('/faqs', publicController.faq);
 router.get('/quotes', publicController.quotes);
 router.get('/terms', publicController.terms);
 router.get('/privacy', publicController.privacy);
-router.get('/cookie', publicController.cookie_policy);
+router.get('/cookie-policy', publicController.cookie_policy);
 router.get('/restricted', publicController.access_restricted);
 router.get('/search', publicController.search);
 

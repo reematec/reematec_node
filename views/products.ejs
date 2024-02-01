@@ -2,7 +2,7 @@
     <a class="breadcrumb__link btn" href="/">Home</a>
     <span class="breadcrumb__separator">/</span>
     <span class="breadcurmb__page">
-        <%= title %>
+        <%= name %>
     </span>
 </div>
 
@@ -71,15 +71,8 @@
 
     <section class="products">
         <div class="products__description">
-
-            <h1>
-                <%= title %>
-            </h1>
-            <p>Reematec not only hand and machine Swen football but also produce Hybrid and Thermo Bonded footballs
-                using technology. We not only provide the products according to customer demand but also provide
-                excellent services to customers. We manufacture Such footballs in our factory, Whose design does not
-                only impress the customers, but they can also use for a long time.</p>
-
+            <h1><%= name %></h1>
+            
         </div>
         
         <div class="products__toolbar">
@@ -165,6 +158,12 @@
             <!-- <button class="btn btn-standard btn-solid-primary" id="btnLoadMore">Load More</button> -->
 
         <% } %>
+
+        <div class="products__description">
+            
+            <p>Reematec not only hand and machine Swen football but also produce Hybrid and Thermo Bonded footballs using technology. We not only provide the products according to customer demand but also provide excellent services to customers. We manufacture Such footballs in our factory, Whose design does not only impress the customers, but they can also use for a long time.</p>
+            
+        </div>
     </section>
 </article>
 

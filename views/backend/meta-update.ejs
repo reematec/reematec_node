@@ -1,0 +1,60 @@
+<section class="container dashboard-page">
+
+    <%- include('../components/_flashMessages') %>
+
+    <div class="card">
+        <div  class="card-header">
+            <p>Update - Meta Info</p>
+        </div>
+        <div class="card-body">
+            
+            <form encType="multipart/form-data"  action="/home/update-meta" method="post">
+
+                <input type="hidden" name="_csrfToken" value="<%= csrfToken %>">
+                <input type="hidden" name="identifier" value="<%= meta.identifier %>">
+
+                <div class="form-control">
+                    <label class="label caption" for="txtPage">Page: </label>
+                    
+                    <select class="textbox field" name="page" id="page">
+                        <option value="">Select a page</option>
+                        <option value="home" <%= 'home' === meta.page ? 'selected' : '' %> >Home</option>
+                        <option value="about" <%= 'about' === meta.page ? 'selected' : '' %> >About</option>
+                        <option value="contact" <%= 'contact' === meta.page ? 'selected' : '' %> >Contact</option>
+                        <option value="rfq" <%= 'rfq' === meta.page ? 'selected' : '' %> >RFQ</option>
+                        <option value="blogs" <%= 'blogs' === meta.page ? 'selected' : '' %> >Blogs</option>
+                        <option value="faqs" <%= 'faqs' === meta.page ? 'selected' : '' %> >FAQ's</option>
+                        <option value="quotes" <%= 'quotes' === meta.page ? 'selected' : '' %> >Quotes</option>
+                        <option value="terms" <%= 'terms' === meta.page ? 'selected' : '' %> >Terms</option>
+                        <option value="privacy" <%= 'privacy' === meta.page ? 'selected' : '' %> >Privacy Policy</option>
+                        <option value="cookie-policy" <%= 'cookie-policy' === meta.page ? 'selected' : '' %> >Cookie Policy</option>
+                        <option value="search" <%= 'search' === meta.page ? 'selected' : '' %> >Search</option>
+                        
+                    </select>
+                </div>
+                
+                <div class="form-control">
+                    <label class="label caption" for="txtTitle">Title: </label>
+                    <input  class="textbox field" type="text" name="title" id="txtTitle" value="<%- meta.title %>">
+                </div>
+
+                <div class="form-control">
+                    <label class="label caption" for="txtMeta">Description: </label>
+                    <input  class="textbox field" type="text" name="description" id="txtMeta" value="<%- meta.description %>">
+                </div>
+                
+                <div class="form-control">
+                    <div class="caption">&nbsp;</div>
+                    <div class="field">
+                        <input class="btn btn-normal btn-blue" type="submit" value="Update">
+                        <a class="btn btn-normal btn-gray" href="/home/meta">Cancel</a>
+                    </div>
+                </div>               
+                
+            </form>
+            
+        </div>
+    </div>
+</section>
+
+       

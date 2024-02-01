@@ -1,0 +1,27 @@
+<section class="container dashboard-page">
+
+    <%- include('../components/_flashMessages') %>
+
+    <div class="card">
+        <div class="card-header">
+            <p>Preview - Meta Info</p>
+        </div>
+        <div class="card-body">
+
+            <div class="form-control"><label class="label caption" for="txtName">Page: </label><%= meta.page %></div>
+
+            <div class="form-control"><label class="label caption" >Title: </label><%= meta.title %></div>
+
+            <div class="form-control"><label class="label caption" >Description: </label><%= meta.description %></div>
+            
+            <div class="form-control">
+                <div class="caption"></div>
+                <div class="field">
+                    <a class="btn btn-normal btn-gray" href="/home/meta">Back</a>
+                    <a class="btn btn-link link-blue" href="/home/update-meta/<%= meta.identifier %>">Edit</a>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</section>

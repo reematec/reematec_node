@@ -1,0 +1,57 @@
+<section class="container dashboard-page">
+
+    <%- include('../components/_flashMessages') %>
+    
+    
+    <div class="card">
+        <div  class="card-header">
+            <p>Add - Meta</p>
+        </div>
+        
+        <div class="card-body">            
+            
+            <form encType="multipart/form-data" method="POST">
+
+                <input type="hidden" name="_csrfToken" value="<%= csrfToken %>">
+                
+                <div class="form-control">
+                    <label class="label caption" for="txtPage">Page: </label>
+                    <select class="textbox field" name="page" id="page" autofocus>
+                        <option value="">Select a page</option>
+                        <option value="home">Home</option>
+                        <option value="about">About</option>
+                        <option value="contact">Contact</option>
+                        <option value="rfq">RFQ</option>
+                        <option value="blogs">Blogs</option>
+                        <option value="faqs">FAQ's</option>
+                        <option value="quotes">Quotes</option>
+                        <option value="terms">Terms</option>
+                        <option value="privacy">Privacy</option>
+                        <option value="cookie">Cookie</option>
+                        <option value="search">Search</option>
+                        
+                    </select>
+                </div>
+                
+                <div class="form-control">
+                    <label class="label caption" for="txtTitle">Title: </label>
+                    <input  class="textbox field" type="text" name="title" id="txtTitle" value="<%- message.meta ? message.meta[0].title : '' %>">
+                </div>
+
+                <div class="form-control">
+                    <label class="label caption" for="txtMeta">Description: </label>
+                    <input  class="textbox field" type="text" name="description" id="txtMeta" value="<%- message.meta ? message.meta[0].description : '' %>">
+                </div>
+
+                <div class="form-control">
+                    <div class="caption">&nbsp;</div>
+                    <div class="field">
+                        <a class="btn btn-normal btn-gray" href="/home/meta">Cancel</a>
+                        <input class="btn btn-normal btn-blue" type="submit" name="Submit" value="Submit">
+                    </div>
+                </div>               
+                
+            </form>
+        </div>
+    </div>
+</section>
