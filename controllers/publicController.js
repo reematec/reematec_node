@@ -400,8 +400,9 @@ module.exports.cookie_policy = async (req, res) => {
     res.render('cookie-policy', { layout: 'layouts/main.ejs', title: meta.title, description: meta.description, categories})
 }
 
-module.exports.access_restricted = (req, res) => {
-    res.render('access_restricted', { layout: 'layouts/main.ejs' })
+module.exports.access_restricted = async (req, res) => {
+    const meta = await Meta.findOne({where: {page: 'quotes'}}) || {title: "No title - Reema", description: "No Description"}
+    res.render('access_restricted', { layout: 'layouts/main.ejs', title: meta.title, description: meta.description })
 }
 
 
