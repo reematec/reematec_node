@@ -1437,12 +1437,11 @@ module.exports.signup_post = async (req, res) => {
     const users = await User.findAndCountAll();
     if (users.count === 0) role = 'Admin' 
     
-
-    if (password1 !== password2) {
-        req.flash('signup', { first_name, last_name, email })
-        req.flash('errors', [{ message: "Password is not correct" }])
-        return res.redirect('/signup');
-    }   
+    // if (password1 !== password2) {
+    //     req.flash('signup', { first_name, last_name, email })
+    //     req.flash('errors', [{ message: "Password is not correct" }])
+    //     return res.redirect('/signup');
+    // }   
 
     try {
         const user = await User.create({
@@ -1465,7 +1464,7 @@ module.exports.signup_post = async (req, res) => {
 }
 
 module.exports.login_get = async (req, res) => {
-    let meta = await Meta.findOne({where: {page: 'login'}}) || {title: "No title - Reema", description: "No Description"}
+    let meta = await Meta.findOne({where: {page: 'login'}}) || {title: "Reema - Login", description: "Login to view your profile."}
     res.render('login', { layout: 'layouts/main.ejs', title: meta.title, description: meta.description,})
 }
 
@@ -1541,7 +1540,7 @@ module.exports.password_forgot_post = async (req, res) => {
             }
         });
 
-        return res.render('reset_password_sent', { layout: 'layouts/main' })
+        return res.render('reset_password_sent', { layout: 'layouts/main', title: "Reema - Password reset link via email sent", description: "Password reset link sent" })
 
     } catch (error) {
         console.log('error: ', error);
@@ -1555,24 +1554,23 @@ module.exports.password_reset_form = async (req, res) => {
     try {
 
         const user = await User.findOne({ where: { id } });
-
-        if (!user) res.redirect('/signup');
+        if (!user) return res.redirect('/signup');
 
         if (user.expiresIn && user.expiresIn.getTime() > Date.now()) {
             if (user.token === token) {
 
-                res.render('reset_password_form', { layout: 'layouts/main', id: req.params.id })
+                res.render('reset_password_form', { layout: 'layouts/main', id: req.params.id, title: "Reema - Password reset verification link email", description: "Password reset verification link email" })
 
             } else {
                 req.flash('error', [{ message: "Invalid email verification link" }])
-                res.render('reset_password', { layout: 'layouts/main' })
+                res.render('reset_password', { layout: 'layouts/main', title: "Reema - Invalid verification link email", description: "Invalid verification link email" })
             }
 
         } else {
 
             await user.update({ token: null, expiresIn: null });
             req.flash('error', [{ message: "Verification token has expired" }])
-            res.render('reset_password', { layout: 'layouts/main' })
+            res.render('reset_password', { layout: 'layouts/main', title: "Reema - Verification token has expired", description: "Verification token has expired" })
         }
     } catch (error) {
         console.log('error: ', error);
@@ -1581,20 +1579,24 @@ module.exports.password_reset_form = async (req, res) => {
 
 module.exports.password_reset_confirm_post = async (req, res) => {
     const id = decrypt(req.params.id);
-    const password = req.body.new_password1;
-    const confirmPassword = req.body.new_password2;
+    const password = req.body.password1;
+    const confirmPassword = req.body.password2;
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
+        
         req.flash('errors', errors.array())
-        return res.redirect('/signup')
+        return res.redirect(`/password-reset/${req.params.id}/${req.params.token}`)
     }
 
     try {
 
         const user = await User.findOne({ where: { id } });
 
-        if (!user) res.redirect('/signup');
+        if (!user){
+            req.flash('info', [{ message: "Invalid user" }])
+            res.redirect('/signup');
+        } 
 
         if (user.token && password === confirmPassword) {
 
@@ -1608,7 +1610,7 @@ module.exports.password_reset_confirm_post = async (req, res) => {
 
         } else {
             req.flash('errors', [{ message: "Verification token has already been used." }])
-            res.render('/reset_password', { layout: 'layouts/main' })
+            res.render('/reset_password', { layout: 'layouts/main', title: "Reema - Verification token already used", description: "Verification token already used" })
         }
     } catch (error) {
         console.log('error: ', error);

@@ -10,7 +10,7 @@ const verifyCSRF = (req, res, next) => {
             
         if (!tokenVerification) {
             res.status(403);
-            return res.render('403', {layout: 'layouts/main.ejs'})
+            return res.render('403', {layout: 'layouts/main.ejs', title: "Reema - 403 error occoured", description: "validation error occoured"})
         }
     }
     return next()

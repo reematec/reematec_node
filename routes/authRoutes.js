@@ -8,7 +8,7 @@ const { addValidator, editValidator } = require('../validators/categoryValidator
 const { addSubValidator, editSubValidator } = require('../validators/subcategoryValidators');
 const { addTagValidator, editTagValidator } = require('../validators/tagValidators');
 const { addProductVal, editProductVal } = require('../validators/productValidators');
-const {singupValidator} = require('../validators/UserValidators');
+const {singupValidator, pwResetValidator} = require('../validators/UserValidators');
 const { editImageDetails } = require('../validators/imageValidators');
 const router = Router();
 
@@ -33,7 +33,7 @@ router.get('/password-reset', guestUser, authController.password_forgot_get);
 router.post('/password-reset', guestUser, authController.password_forgot_post);
 
 router.get('/password-reset/:id/:token', guestUser, authController.password_reset_form);
-router.post('/password-reset/:id/:token', guestUser, authController.password_reset_confirm_post);
+router.post('/password-reset/:id/:token', guestUser, pwResetValidator, authController.password_reset_confirm_post);
 router.get('/password-reset-done', guestUser, authController.password_forgot_done_get);
 
 // router.get('/user/verify/:id/:token', ensureGuest, authController.email_verification);
