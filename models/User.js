@@ -69,19 +69,16 @@ const User = sequelize.define('user', {
 User.beforeCreate(async (user, options) => {
     const salt = await bcrypt.genSalt();
  	user.password = await bcrypt.hash(user.password, salt);
-    
-    
-    
 });
 
 User.afterSave(async function (user, options){
     // console.log('new user was created & saved', user)
 });
 
-User.sync(
-    // { force: true }
-    // { alter: true }
-)
+// User.sync(
+//     // { force: true }
+//     // { alter: true }
+// )
 
 User.login = async function (email, password, done) {
 

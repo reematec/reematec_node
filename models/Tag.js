@@ -38,10 +38,10 @@ const Tag = sequelize.define('tag', {
 //     console.log('new user was created & saved', user)
 // });
 
-Tag.sync(
-    //  { force: true }
-    // { alter: true }
-)
+// Tag.sync(
+//     //  { force: true }
+//     // { alter: true }
+// )
 
 
 module.exports = Tag;

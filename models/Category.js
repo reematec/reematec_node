@@ -57,10 +57,10 @@ const Category = sequelize.define('category', {
 //     console.log('new user was created & saved', user)
 // });
 
-Category.sync(
-    //  { force: true }
-    // { alter: true }
-)
+// Category.sync(
+//     //  { force: true }
+//     // { alter: true }
+// )
 
 
 module.exports = Category;

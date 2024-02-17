@@ -64,10 +64,10 @@ Image.beforeUpdate(async (image, options) => {
 //     console.log('new user was created & saved', user)
 // });
 
-Image.sync(
-    // { force: true }
-    // { alter: true }
-)
+// Image.sync(
+//     // { force: true }
+//     // { alter: true }
+// )
 
 
 module.exports = Image;

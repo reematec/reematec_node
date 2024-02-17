@@ -44,10 +44,10 @@ const SubCategory = sequelize.define('subCategory', {
 Category.hasMany(SubCategory);
 SubCategory.belongsTo(Category);
 
-SubCategory.sync(
-    //  { force: true }
-    // { alter: true }
-)
+// SubCategory.sync(
+//     //  { force: true }
+//     // { alter: true }
+// )
 
 
 module.exports = SubCategory;

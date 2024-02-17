@@ -33,10 +33,10 @@ const Size = sequelize.define('size', {
 //     console.log('new user was created & saved', user)
 // });
 
-Size.sync(
-    // { force: true }
-    // { alter: true }
-)
+// Size.sync(
+//     // { force: true }
+//     // { alter: true }
+// )
 
 
 module.exports = Size;

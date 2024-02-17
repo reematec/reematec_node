@@ -54,10 +54,10 @@ const Blog = sequelize.define('blog', {
 //     console.log('new user was created & saved', user)
 // });
 
-Blog.sync(
-    //  { force: true }
-    // { alter: true }
-)
+// Blog.sync(
+//     //  { force: true }
+//     // { alter: true }
+// )
 
 
 module.exports = Blog;

@@ -28,10 +28,10 @@ const Meta = sequelize.define('meta', {
     },
 })
 
-Meta.sync(
-    // { force: true }
-    // { alter: true }
-)
+// Meta.sync(
+//     // { force: true }
+//     // { alter: true }
+// )
 
 
 module.exports = Meta;

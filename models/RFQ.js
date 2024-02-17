@@ -39,12 +39,12 @@ const RFQ = sequelize.define('RFQ', {
 Product.hasMany(RFQ);
 RFQ.belongsTo(Product);
 
-sequelize.sync();
+// sequelize.sync();
 
-RFQ.sync(
-    // { force: true }
-    // { alter: true }
-)
+// RFQ.sync(
+//     // { force: true }
+//     // { alter: true }
+// )
 
 
 
