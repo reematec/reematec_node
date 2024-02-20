@@ -87,7 +87,7 @@ module.exports = {
         // onDelete: "CASCADE",
         // onUpdate: "CASCADE",
         references: {
-          model: "subcategories",
+          model: "subCategories",
           key: "id",
         },
       },
