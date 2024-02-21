@@ -790,13 +790,13 @@ async function getRandomProducts() {
 
 async function getActiveCatAndSubCategories(params) {
   const activeCategories = await Category.findAll({
-    include: [{ model: SubCategory, as: "subCategories" }],
+    include: [{ model: SubCategory, as: "subcategories" }],
     // where: {
     //     [Op.or]: [
     //         { '$category.active$': true, },
     //     ],
     //     [Op.and]: [
-    //         { '$subCategories.active$': { [Op.not]: false} },
+    //         { '$subcategories.active$': { [Op.not]: false} },
     //     ],
     // },
     // logging: console.log

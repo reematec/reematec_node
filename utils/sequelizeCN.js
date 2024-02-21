@@ -4,7 +4,7 @@ const path = require("path");
 const sequelize = new Sequelize("reema_node", "amir", "testing@123", {
   host: "127.0.0.1",
   dialect: "mysql",
-  logging: true,
+  logging: false,
   // operatorsAliases: false,
 
   // dialect: 'sqlite',
