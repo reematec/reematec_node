@@ -78,7 +78,7 @@ const Product = sequelize.define("product", {
     type: Sequelize.DataTypes.INTEGER,
     allowNull: true,
   },
-  subCategoryId: {
+  subcategoryId: {
     type: Sequelize.DataTypes.INTEGER,
     allowNull: true,
   },
@@ -90,16 +90,16 @@ Product.belongsTo(Category);
 SubCategory.hasMany(Product);
 Product.belongsTo(SubCategory);
 
-Image.belongsToMany(Product, { through: "Product_Image" });
-Product.belongsToMany(Image, { through: "Product_Image" });
+Image.belongsToMany(Product, { through: "product_image" });
+Product.belongsToMany(Image, { through: "product_image" });
 
-Size.belongsToMany(Product, { through: "Product_Size" });
-Product.belongsToMany(Size, { through: "Product_Size" });
+Size.belongsToMany(Product, { through: "product_size" });
+Product.belongsToMany(Size, { through: "product_size" });
 
-Tag.belongsToMany(Product, { through: "Product_Tag" });
-Product.belongsToMany(Tag, { through: "Product_Tag" });
+Tag.belongsToMany(Product, { through: "product_tag" });
+Product.belongsToMany(Tag, { through: "product_tag" });
 
-// sequelize.sync();
+sequelize.sync();
 
 // Product.sync(
 //     // { force: true }

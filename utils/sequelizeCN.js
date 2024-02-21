@@ -4,7 +4,7 @@ const path = require("path");
 const sequelize = new Sequelize("reema_node", "amir", "testing@123", {
   host: "127.0.0.1",
   dialect: "mysql",
-  logging: false,
+  logging: true,
   // operatorsAliases: false,
 
   // dialect: 'sqlite',
@@ -24,7 +24,7 @@ sequelize
   })
   .catch((err) => console.error("Unable to connect to the database:", err));
 
-// sequelize.sync();
+sequelize.sync();
 
 module.exports = sequelize;
 

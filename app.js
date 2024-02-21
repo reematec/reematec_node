@@ -64,7 +64,7 @@ app.use(
     store: sessionStore,
   })
 );
-// sessionStore.sync();
+sessionStore.sync();
 
 // Passport Middleware
 app.use(passport.initialize());
