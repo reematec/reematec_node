@@ -391,11 +391,11 @@ module.exports.products = async (req, res) => {
 
   res.render("products", {
     layout: "layouts/main.ejs",
-    title: categories[0].pagetitle,
-    description: categories[0].description,
+    title: categories[0] ? categories[0].pagetitle : "Empty Page Title",
+    description: categories[0] ? categories[0].description : "Empty page description",
     categories,
     products,
-    name: categories[0].name,
+    name: categories[0] ? categories[0].name : "Undefined Name",
     randomProducts: random,
     sort: sort,
     currentUrl: pathname(req),
