@@ -4,6 +4,7 @@ const randomstring = require("randomstring");
 const fs = require("fs");
 const { body, validationResult } = require("express-validator");
 const path = require("path");
+const sharp = require("sharp");
 
 const Category = require("../models/Category");
 const SubCategory = require("../models/SubCategory");
@@ -357,9 +358,11 @@ module.exports.gallery_get = async (req, res) => {
 
   res.render("backend/gallery", { layout: "layouts/app.ejs", images, currentUrl: pathname(req) });
 };
+
 module.exports.addImages_get = async (req, res) => {
   res.render("backend/image", { layout: "layouts/app.ejs" });
 };
+
 module.exports.addImages_post = async (req, res) => {
   let uploadedData = [];
 
@@ -375,7 +378,7 @@ module.exports.addImages_post = async (req, res) => {
   for (let i = 0; i < uploadedData.length; i++) {
     const image = uploadedData[i];
 
-    await FileType.fromFile(image.tempFilePath);
+    const result = await FileType.fromFile(image.tempFilePath);
 
     myPromise.push(
       new Promise((resolve, reject) => {
@@ -1261,8 +1264,8 @@ module.exports.deleteMeta_post = async (req, res) => {
 
 //#region User
 module.exports.users = async (req, res) => {
-  const users = await User.findAll({});
-  res.render("backend/Users", { layout: "layouts/app.ejs", users });
+  const users = await User.findAll();
+  res.render("backend/users", { layout: "layouts/app.ejs", users });
 };
 module.exports.viewUser_get = async (req, res) => {
   // const slug = req.params.slug;
