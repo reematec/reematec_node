@@ -628,7 +628,7 @@ module.exports.quotes = async (req, res) => {
   const categories = await getActiveCatAndSubCategories();
 
   if (req.session && !req.session.guestUser) {
-    res.render("quotes", { layout: "layouts/main.ejs", title: meta.title, description: meta.description, rfqs: null, categories });
+    res.render("quotes", { layout: "layouts/app.ejs", title: meta.title, description: meta.description, rfqs: null, categories });
   }
 
   const rfqs = await RFQ.findAll({
@@ -636,7 +636,7 @@ module.exports.quotes = async (req, res) => {
     include: [{ model: Product, include: [{ model: Image }] }],
   });
 
-  res.render("quotes", { layout: "layouts/main.ejs", title: meta.title, description: meta.description, rfqs, categories });
+  res.render("quotes", { layout: "layouts/app.ejs", title: meta.title, description: meta.description, rfqs, categories });
 };
 
 module.exports.search = async (req, res) => {
