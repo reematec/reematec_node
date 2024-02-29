@@ -6,7 +6,6 @@
   "dependencies": {
     "axios": "^1.6.2",
     "bcrypt": "^5.0.1",
-    "canvas": "^2.10.2",
     "connect-flash": "^0.1.1",
     "connect-session-sequelize": "^7.1.2",
     "cookie-parser": "^1.4.6",
@@ -31,7 +30,6 @@
     "read-chunk": "^4.0.3",
     "sequelize": "^6.35.1",
     "sharp": "^0.32.6",
-    "sqlite3": "^5.1.2",
     "validator": "^13.7.0"
   },
   "devDependencies": {

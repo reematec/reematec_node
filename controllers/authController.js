@@ -16,13 +16,15 @@ const Blog = require("../models/Blog");
 const Meta = require("../models/Meta");
 const User = require("../models/User");
 const sequelize = require("../utils/sequelizeCN");
-const { createCanvas, loadImage } = require("canvas");
+// const { createCanvas, loadImage } = require("canvas");
 const FileType = require("file-type");
 
 const nodemailer = require("nodemailer");
 const { encrypt, decrypt } = require("../utils/encrypter");
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
+
+const imageDimensions = [100, 300, 500];
 
 Date.prototype.addHours = function (h) {
   this.setTime(this.getTime() + h * 60 * 60 * 1000);
@@ -67,7 +69,7 @@ module.exports.addCategory_post = async (req, res) => {
     delete req.session.category;
     res.redirect("/home/category");
   } catch (err) {
-    res.status(500).send(err.errors);
+    console.log(err.errors);
   }
 };
 module.exports.updateCategory_get = async (req, res) => {
@@ -356,7 +358,7 @@ module.exports.gallery_get = async (req, res) => {
   images.currentPage = page ? page : 1;
   images.totalPages = Math.ceil(images.count / limit);
 
-  res.render("backend/gallery", { layout: "layouts/app.ejs", images, currentUrl: pathname(req) });
+  res.render("backend/gallery", { layout: "layouts/app.ejs", images, currentUrl: pathname(req), title: "Reema", description: "Description" });
 };
 
 module.exports.addImages_get = async (req, res) => {
@@ -372,56 +374,55 @@ module.exports.addImages_post = async (req, res) => {
     uploadedData = req.files.images;
   }
 
-  const imageObjects = [];
-  const myPromise = [];
+  uploadedData.forEach((data) => {
+    const image = data;
 
-  for (let i = 0; i < uploadedData.length; i++) {
-    const image = uploadedData[i];
+    const file = path.parse(image.name);
+    const imageName = `${file.name}-${Date.now()}${file.ext}`;
+    const imagePath = `./public/images/assets/${imageName}`;
+    // console.log(imageName);
 
-    const result = await FileType.fromFile(image.tempFilePath);
+    // Moving original uploaded image to assets directory
+    image.mv(imagePath, async (err) => {
+      if (err) {
+        console.log("Image Move Error: " + err);
+      } else {
+        imageDimensions.forEach((dim) => {
+          const dir = `./public/images/assets/${dim}`;
+          if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
 
-    myPromise.push(
-      new Promise((resolve, reject) => {
-        const imageName = `${Date.now()}${path.parse(image.name).ext}`;
-        const imagePath = `./public/images/assets/${imageName}`;
-
-        image.mv(imagePath, (err) => {
-          if (err) {
-            reject(err);
-          } else {
-            imageResize(imagePath, imageName, 100); // Product detail page Icon
-            imageResize(imagePath, imageName, 300); // Product card thumb
-            imageResize(imagePath, imageName, 500); // Product detail page large image
-            resolve(imageName);
-            const img = {
-              identifier: randomstring.generate(),
-              src: imageName,
-              name: imageName.substring(0, imageName.indexOf(".")),
-              ext: imageName.substring(imageName.indexOf(".") + 1),
-            };
-            imageObjects.push(img);
-          }
+          // Creating thumbnails for uploaded image after moving it to assets directory.
+          sharp(imagePath, { failOnError: false })
+            .resize(dim)
+            .toFile(`${dir}/${imageName}`, (err, info) => {
+              err ? console.log(err) : "";
+            });
         });
-      })
-    );
-  }
 
-  Promise.all(myPromise)
-    .then((values) => {
-      try {
-        Image.bulkCreate(imageObjects)
-          .then((data) => {})
-          .catch((reason) => {
-            console.log(reason);
-          });
-      } catch (err) {
-        res.status(500).send(err.errors);
+        // console.log("Image moved successfully: " + imageName);
+
+        // Inserting image record to database after original image upload & moving and creating its thumbnails
+        const img = {
+          identifier: randomstring.generate(),
+          src: imageName,
+          name: imageName.substring(0, imageName.indexOf(".")),
+          ext: imageName.substring(imageName.indexOf(".") + 1),
+        };
+
+        try {
+          req.flash("success", [{ message: imageName + " uploaded successfully." }]);
+          await Image.create(img);
+        } catch (error) {
+          req.flash("errors", error);
+          console.log(console.log(error));
+        }
       }
-      res.redirect("/home/images");
-    })
-    .catch((reason) => {
-      console.log(reason);
     });
+  });
+
+  setTimeout(() => {
+    return res.redirect("/home/images");
+  }, 1000);
 };
 module.exports.updateImage_get = async (req, res) => {
   const { identifier } = req.params;
@@ -442,8 +443,6 @@ module.exports.updateImage_post = async (req, res) => {
   }
   const image = await Image.findOne({ where: { identifier } });
 
-  // console.log(JSON.stringify(image, null, 4), '------------');
-
   try {
     const fileName = src + image.src.substring(image.src.indexOf("."));
 
@@ -454,27 +453,32 @@ module.exports.updateImage_post = async (req, res) => {
       }
       console.log("Large image renamed");
     });
-    fs.renameSync(`./public/images/assets/500/${image.src}`, `./public/images/assets/500/${fileName}`, function (err) {
-      if (err) {
-        console.log(err);
-        throw err;
-      }
-      console.log("Image with 500 renamed");
+
+    imageDimensions.forEach((dim) => {
+      fs.renameSync(`./public/images/assets/${dim}/${image.src}`, `./public/images/assets/${dim}/${fileName}`, function (err) {
+        if (err) {
+          console.log(err);
+          throw err;
+        }
+        console.log(`${dim} Pixel Image renamed`);
+      });
     });
-    fs.renameSync(`./public/images/assets/300/${image.src}`, `./public/images/assets/300/${fileName}`, function (err) {
-      if (err) {
-        console.log(err);
-        throw err;
-      }
-      console.log("Image with 300 renamed");
-    });
-    fs.renameSync(`./public/images/assets/100/${image.src}`, `./public/images/assets/100/${fileName}`, function (err) {
-      if (err) {
-        console.log(err);
-        throw err;
-      }
-      console.log("Image with 100 renamed");
-    });
+
+    // fs.renameSync(`./public/images/assets/300/${image.src}`, `./public/images/assets/300/${fileName}`, function (err) {
+    //   if (err) {
+    //     console.log(err);
+    //     throw err;
+    //   }
+    //   console.log("300 Pixel Image renamed");
+    // });
+
+    // fs.renameSync(`./public/images/assets/100/${image.src}`, `./public/images/assets/100/${fileName}`, function (err) {
+    //   if (err) {
+    //     console.log(err);
+    //     throw err;
+    //   }
+    //   console.log("100 Pixel Image renamed");
+    // });
 
     if (src) image.src = fileName;
     if (altText) image.altText = altText;
@@ -488,6 +492,7 @@ module.exports.updateImage_post = async (req, res) => {
     req.flash("errors", [{ message: "Error occurred." }]);
     console.log(error);
   }
+
   return res.redirect("/home/images");
 };
 module.exports.imagesAjax = async (req, res) => {
@@ -528,14 +533,23 @@ module.exports.deleteImage_get = async (req, res) => {
 module.exports.deleteImage_post = async (req, res) => {
   const identifier = req.params.identifier;
   const image = await Image.findOne({ where: { identifier } });
-  await image.destroy();
 
-  fs.unlinkSync(`./public/images/assets/${image.src}`);
-  fs.unlinkSync(`./public/images/assets/100/${image.src}`);
-  fs.unlinkSync(`./public/images/assets/300/${image.src}`);
-  fs.unlinkSync(`./public/images/assets/500/${image.src}`);
+  try {
+    await image.destroy();
 
-  res.redirect("/home/images");
+    imageDimensions.forEach((dim) => {
+      fs.unlinkSync(`./public/images/assets/${dim}/${image.src}`);
+    });
+
+    fs.unlinkSync(`./public/images/assets/${image.src}`);
+
+    req.flash("success", [{ message: image.src + " deleted successfully." }]);
+    res.redirect("/home/images");
+  } catch (errors) {
+    console.log(errors.error);
+    req.flash("errors", [{ message: errors.error }]);
+    res.redirect("/home/images");
+  }
 };
 //#endregion
 

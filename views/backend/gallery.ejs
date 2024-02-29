@@ -14,7 +14,7 @@
                 <% for (let i in images.rows) {%>
     
                     <div class="image-wrapper">
-                        <img show-image-preview data-identifier="<%= images.rows[i].src %>" class="image-responsive" src="/images/assets/100/<%= images.rows[i].src %>"/>
+                        <img show-image-preview data-identifier="<%= images.rows[i].src %>" class="image-responsive" width="100" src="/images/assets/100/<%= images.rows[i].src %>"/>
     
                         <div class="action-wrapper">
                             <a class="btn btn-link link-blue" href="/home/update-image/<%= images.rows[i].identifier %>">Edit</a> | 
