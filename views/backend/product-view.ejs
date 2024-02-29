@@ -1,146 +1,122 @@
 <section class="container dashboard-page">
+  <%- include('../components/_flashMessages') %>
 
-    <%- include('../components/_flashMessages') %>
-
-    <div class="card">
-        <div class="card-header">
-            <p>Update - Product</p>
-        </div>
-        <div class="card-body">
-            <div class="form-control"><label class="label caption" for="txtName">Name: </label><%= product.name %></div>
-
-            <div class="form-control"><label class="label caption" for="txtSlug">slug: </label><%= product.slug %></div>
-
-            <div class="form-control"><label class="label caption" for="chkShowcased">Showcased: </label><% if (product.showcased) { %> <%= 'Yes' %> <% } %></div>
-
-            <div class="form-control"><label class="label caption" for="chkrecommended">recommended: </label><% if (product.recommended) { %> <%= 'Yes' %> <% } %></div>
-
-            <div class="form-control"><label class="label caption" for="chkactive">active: </label><% if (product.active) { %> <%= 'Yes' %> <% } %></div>
-
-            <div class="form-control"><label class="label caption" for="price">price: </label><%= product.price %></div>
-
-            <div class="form-control"><label class="label caption" for="pagetitle">pagetitle: </label><%= product.pagetitle %></div>
-            
-            <div class="form-control"><label class="label caption" for="shortDescription">short Description: </label><% if (product.shortDescription) { %> <%= product.shortDescription %> <% } %></div>
-
-            <div class="form-control"><label class="label caption" for="txtLongDescription">Long Description: </label><% if (product.LongDescription) { %> <%= product.LongDescription %> <% } %></div>
-
-            <div class="form-control"><label class="label caption" for="specifications">specifications: </label><% if (product.specifications) { %> <%= product.specifications %> <% } %></div>
-
-            <div class="form-control"><label class="label caption" for="features">features: </label><% if (product.features) { %> <%= product.features %> <% } %></div>
-
-            <div class="form-control"><label class="label caption" for="care">care: </label><% if (product.care) { %> <%= product.care %> <% } %></div>
-            
-            <div class="form-control">
-                <label class="label caption" for="sltCategory">Main Category: &nbsp;</label>
-                <% categories.forEach(category => { %>
-                    <span> <% if (category.id == product.categoryId) { %> <%= category.name %>  <% } %> </span>
-                <% }) %>
-            </div>
-
-            <div class="form-control">
-                <label class="label caption" for="sltSubCategory">Sub Category: &nbsp;</label>
-                <% subCategories.forEach(subCategory => { %>
-                    <span> <% if (subCategory.id === product.subCategoryId ) { %> <%= subCategory.name %>  <% } %> </span>
-                <% }) %>
-            </div>
-                        
-            <div class="form-control">
-                <label class="label caption" for="image_id">Images: </label>
-                <% product.images.forEach(image => { %>
-                    <img src="/images/assets/100/<%= image.src %>" width="100px" height="100px">
-                <% }) %>
-            </div>
-                
-
-            <div class="form-control">
-                <label class="label caption" for="size_id">Sizes: </label>
-                <div class="field">
-                    <% product.sizes.forEach(s => { %>
-                        <span><%= s.size %></span>|&nbsp;
-                    <% }) %>
-                </div>
-            </div>
-
-            <div class="form-control">
-                <label class="label caption" for="tag_id">Tags: </label>
-                <div class="field">
-                    <% product.tags.forEach(t => { %>
-                        <span><%= t.name %></span>|&nbsp;
-                    <% }) %>
-                </div>
-            </div>
-                        
-            <div class="form-control">
-                <div class="caption"></div>
-                <div class="field">
-                    <a class="btn btn-normal btn-gray" href="/home/product">Main</a>
-                    <a class="btn btn-link link-blue" href="/home/update-product/<%= product.slug %>">Edit</a>
-                </div>
-            </div>
-
-                
-        </div>
+  <div class="card">
+    <div class="card-header">
+      <p>Update - Product</p>
     </div>
+    <div class="card-body">
+      <div class="form-control"><label class="label caption" for="txtName">Name: </label><%= product.name %></div>
+
+      <div class="form-control"><label class="label caption" for="txtSlug">slug: </label><%= product.slug %></div>
+
+      <div class="form-control"><label class="label caption" for="chkShowcased">Showcased: </label><% if (product.showcased) { %> <%= 'Yes' %> <% } %></div>
+
+      <div class="form-control"><label class="label caption" for="chkrecommended">recommended: </label><% if (product.recommended) { %> <%= 'Yes' %> <% } %></div>
+
+      <div class="form-control"><label class="label caption" for="chkactive">active: </label><% if (product.active) { %> <%= 'Yes' %> <% } %></div>
+
+      <div class="form-control"><label class="label caption" for="price">price: </label><%= product.price %></div>
+
+      <div class="form-control"><label class="label caption" for="pagetitle">pagetitle: </label><%= product.pagetitle %></div>
+
+      <div class="form-control"><label class="label caption" for="shortDescription">short Description: </label><% if (product.shortDescription) { %> <%= product.shortDescription %> <% } %></div>
+
+      <div class="form-control"><label class="label caption" for="txtLongDescription">Long Description: </label><% if (product.LongDescription) { %> <%= product.LongDescription %> <% } %></div>
+
+      <div class="form-control"><label class="label caption" for="specifications">specifications: </label><% if (product.specifications) { %> <%= product.specifications %> <% } %></div>
+
+      <div class="form-control"><label class="label caption" for="features">features: </label><% if (product.features) { %> <%= product.features %> <% } %></div>
+
+      <div class="form-control"><label class="label caption" for="care">care: </label><% if (product.care) { %> <%= product.care %> <% } %></div>
+
+      <div class="form-control">
+        <label class="label caption" for="sltCategory">Main Category: &nbsp;</label>
+        <% categories.forEach(category => { %>
+        <span> <% if (category.id == product.categoryId) { %> <%= category.name %> <% } %> </span>
+        <% }) %>
+      </div>
+
+      <div class="form-control">
+        <label class="label caption" for="sltSubCategory">Sub Category: &nbsp;</label>
+        <% subcategories.forEach(subCategory => { %>
+        <span> <% if (subCategory.id === product.subCategoryId ) { %> <%= subCategory.name %> <% } %> </span>
+        <% }) %>
+      </div>
+
+      <div class="form-control">
+        <label class="label caption" for="image_id">Images: </label>
+        <% product.images.forEach(image => { %>
+        <img src="/images/assets/100/<%= image.src %>" width="100px" height="100px" />
+        <% }) %>
+      </div>
+
+      <div class="form-control">
+        <label class="label caption" for="size_id">Sizes: </label>
+        <div class="field">
+          <% product.sizes.forEach(s => { %>
+          <span><%= s.size %></span>|&nbsp; <% }) %>
+        </div>
+      </div>
+
+      <div class="form-control">
+        <label class="label caption" for="tag_id">Tags: </label>
+        <div class="field">
+          <% product.tags.forEach(t => { %>
+          <span><%= t.name %></span>|&nbsp; <% }) %>
+        </div>
+      </div>
+
+      <div class="form-control">
+        <div class="caption"></div>
+        <div class="field">
+          <a class="btn btn-normal btn-gray" href="/home/product">Main</a>
+          <a class="btn btn-link link-blue" href="/home/update-product/<%= product.slug %>">Edit</a>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
-                             
-                            
-                    
-
-
-                        
-                        
-
-
-
-
-            
 
 <script>
-    const form = document.querySelector('form');
-    const sltCategory = document.querySelector('#sltCategory');
-    const sltSubCategory = document.querySelector('#sltSubCategory');
+  const form = document.querySelector("form");
+  const sltCategory = document.querySelector("#sltCategory");
+  const sltSubCategory = document.querySelector("#sltSubCategory");
 
-    
-    sltCategory.addEventListener('change', async (e) => {
-        e.preventDefault();
-        
-        if (sltCategory.value === ''){
-            AddOption('No subcategory available')
-            return
-        } 
-               
-        
-        try {
-            const res = await fetch(`/home/update-product/getsubcategories/${sltCategory.value}`);
-            const data = await res.json();
+  sltCategory.addEventListener("change", async (e) => {
+    e.preventDefault();
 
+    if (sltCategory.value === "") {
+      AddOption("No subcategory available");
+      return;
+    }
 
-            if (!data.subcategories.length) {
-                AddOption('No subcategory available')
-                return
-            }
-            
-            sltSubCategory.innerHTML = '';
-            AddOption('Please select a subcategory')
-            data.subcategories.forEach(e => {
-                
-                const option = document.createElement("option");
-                option.text = e.name;
-                option.value = e.id
-                sltSubCategory.add(option);
+    try {
+      const res = await fetch(`/home/update-product/getsubcategories/${sltCategory.value}`);
+      const data = await res.json();
 
-            });
-        }
-        catch (err) {
-            console.log(err);
-        }
+      if (!data.subcategories.length) {
+        AddOption("No subcategory available");
+        return;
+      }
 
-        function AddOption(text) {
-            sltSubCategory.innerHTML = '';
-            const option = document.createElement("option");
-            option.text = text;
-            sltSubCategory.add(option);
-        }
-    });
+      sltSubCategory.innerHTML = "";
+      AddOption("Please select a subcategory");
+      data.subcategories.forEach((e) => {
+        const option = document.createElement("option");
+        option.text = e.name;
+        option.value = e.id;
+        sltSubCategory.add(option);
+      });
+    } catch (err) {
+      console.log(err);
+    }
+
+    function AddOption(text) {
+      sltSubCategory.innerHTML = "";
+      const option = document.createElement("option");
+      option.text = text;
+      sltSubCategory.add(option);
+    }
+  });
 </script>

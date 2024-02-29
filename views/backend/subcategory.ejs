@@ -1,48 +1,42 @@
 <section class="container dashboard-page">
+  <%- include('../components/_flashMessages') %>
 
-   
-    <%- include('../components/_flashMessages') %>
+  <h1>Sub Category Summary</h1>
 
+  <a class="btn btn-standard btn-solid-primary" href="/home/add-subcategory">Add Sub Category</a>
 
-    <h1>Sub Category Summary</h1>
+  <table>
+    <tr>
+      <th>Subcategory Name</th>
+      <th>Category Name</th>
+      <th>Slug</th>
+      <th>Active</th>
+      <th>Action</th>
+    </tr>
 
-    <a class="btn btn-standard btn-solid-primary" href="/home/add-subcategory">Add Sub Category</a>
-    
-    <table>
-        <tr>
-            <th>Subcategory Name</th>
-            <th>Category Name</th>
-            <th>Slug</th>                
-            <th>Active</th>
-            <th>Action</th>
-        </tr>
+    <% for( let i = 0; i < subcategories.length; i++ ) { %>
 
+    <tr>
+      <td><%= subcategories[i].name %></td>
+      <td><%= subcategories[i].category.name %></td>
+      <td><%= subcategories[i].slug %></td>
 
-        <% for( let i = 0; i < subCategories.length; i++ ) { %>
-            
-            <tr>
-                <td><%= subCategories[i].name %></td>
-                <td><%= subCategories[i].category.name %></td>
-                <td><%= subCategories[i].slug %></td>
-
-                <td>
-                    <% if (user && user.role === "Admin") { %>
-                        <form action="/home/subcategory-status/<%= subCategories[i].slug %>" method="post">
-                            <input  type="hidden" name="slug" value="<%= subCategories[i].slug %>">
-                            <input type="hidden" name="_csrfToken" value="<%= csrfToken %>">
-                            <button class="btn btn-link " type="submit"> <%= subCategories[i].active ? '✓' : '❌' %></button>
-                        </form> 
-                    <% } %>
-                </td>
-                
-                <td>
-                    <a class="btn btn-link link-blue" href="/home/update-subcategory/<%= subCategories[i].slug %>">Edit</a> |
-                    <a class="btn btn-link link-red" href="/home/delete-subcategory/<%= subCategories[i].slug %>">Delete</a>
-                </td>
-            </tr>
-        
+      <td>
+        <% if (user && user.role === "Admin") { %>
+        <form action="/home/subcategory-status/<%= subcategories[i].slug %>" method="post">
+          <input type="hidden" name="slug" value="<%= subcategories[i].slug %>" />
+          <input type="hidden" name="_csrfToken" value="<%= csrfToken %>" />
+          <button class="btn btn-link" type="submit"><%= subcategories[i].active ? '✓' : '❌' %></button>
+        </form>
         <% } %>
+      </td>
 
+      <td>
+        <a class="btn btn-link link-blue" href="/home/update-subcategory/<%= subcategories[i].slug %>">Edit</a> |
+        <a class="btn btn-link link-red" href="/home/delete-subcategory/<%= subcategories[i].slug %>">Delete</a>
+      </td>
+    </tr>
 
-        </table>
+    <% } %>
+  </table>
 </section>

@@ -1,25 +1,21 @@
 <section class="container dashboard-page">
-    <div class="card">                
-
-        <div class="card-header">
-            <p>Delete Image - Confirmation</p>
-        </div>
-
-        <div class="card-body">
-            <p>Are you sure you want to delete? <strong>This action is permanent.</strong></p>
-            
-            <img height="50" src="/images/assets/<%= image.src %>"/>
-            <form action="/home/delete-image/<%= image.identifier %>" method="POST">
-                <input type="hidden" name="_csrfToken" value="<%= csrfToken %>">
-                
-                <div>
-                    <a class="btn btn-normal btn-gray" href="/home/images">Cancel</a>
-                    <input class="btn btn-normal btn-red" type="submit" name="btnDelete" value="Delete">
-                </div>
-            </form>
-
-
-        </div>
+  <div class="card">
+    <div class="card-header">
+      <p>Delete Image - Confirmation</p>
     </div>
-    
+
+    <div class="card-body">
+      <p>Are you sure you want to delete? <strong>This action is permanent.</strong></p>
+
+      <img height="50" src="/images/assets/100/<%= image.src %>" />
+      <form action="/home/delete-image/<%= image.identifier %>" method="POST">
+        <input type="hidden" name="_csrfToken" value="<%= csrfToken %>" />
+
+        <div>
+          <a class="btn btn-normal btn-gray" href="/home/images">Cancel</a>
+          <input class="btn btn-normal btn-red" type="submit" name="btnDelete" value="Delete" />
+        </div>
+      </form>
+    </div>
+  </div>
 </section>

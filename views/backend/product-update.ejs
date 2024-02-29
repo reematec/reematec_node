@@ -82,7 +82,7 @@
                 <div class="form-control">
                     <label class="label caption" for="sltSubCategory">Sub Category</label>
                     <select class="select field" name="subCategory" id="sltSubCategory">
-                        <% subCategories.forEach(subCategory => { %>
+                        <% subcategories.forEach(subCategory => { %>
                             <% if (subCategory.categoryId === product.categoryId) { %>
                                 <option <% if (subCategory.id === product.subCategoryId ) { %> <%= 'selected' %>  <% } %> 
                                     value="<%= subCategory.id %>"> <%= subCategory.name %> </option>

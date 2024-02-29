@@ -26,7 +26,7 @@
                         <input type="checkbox" id="<%= c.name %>">
                         
                         <ul class="sidebar__list__items__sub">
-                            <% c.subCategories.forEach(s=> { %>
+                            <% c.subcategories.forEach(s=> { %>
                                 <li>
                                     <a class="btn" href="/subcategory/<%= s.slug %>"><%= s.name %></a>
                                 </li>
@@ -161,7 +161,7 @@
 
         <div class="products__description">
             
-            <p>Reematec not only hand and machine Swen football but also produce Hybrid and Thermo Bonded footballs using technology. We not only provide the products according to customer demand but also provide excellent services to customers. We manufacture Such footballs in our factory, Whose design does not only impress the customers, but they can also use for a long time.</p>
+            <p><% description %></p>
             
         </div>
     </section>

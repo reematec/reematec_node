@@ -186,8 +186,8 @@ module.exports.categoryDisplay_post = async (req, res) => {
 
 //#region SubCategory
 module.exports.subcategory = async (req, res) => {
-  const subCategories = await SubCategory.findAll({ include: Category });
-  res.render("backend/subcategory", { layout: "layouts/app.ejs", subCategories });
+  const subcategories = await SubCategory.findAll({ include: Category });
+  res.render("backend/subcategory", { layout: "layouts/app.ejs", subcategories });
 };
 module.exports.addSubcategory_get = async (req, res) => {
   const categories = await Category.findAll();
@@ -334,9 +334,9 @@ module.exports.subcategoryStatus_post = async (req, res) => {
 };
 module.exports.getSubcatgories = async (req, res) => {
   const id = req.params.id;
-  const subCategories = await SubCategory.findAll({ where: { categoryId: id } });
+  const subcategories = await SubCategory.findAll({ where: { categoryId: id } });
 
-  res.json({ subcategories: subCategories });
+  res.json({ subcategories });
 };
 //#endregion
 
@@ -815,9 +815,9 @@ module.exports.viewProduct_get = async (req, res) => {
   const sizes = await Size.findAll();
   const tags = await Tag.findAll();
   const categories = await Category.findAll();
-  const subCategories = await SubCategory.findAll();
+  const subcategories = await SubCategory.findAll();
   const images = await Image.findAll();
-  res.render("backend/product-view", { layout: "layouts/app.ejs", sizes, tags, categories, subCategories, product, images });
+  res.render("backend/product-view", { layout: "layouts/app.ejs", sizes, tags, categories, subcategories, product, images });
 };
 module.exports.updateProduct_get = async (req, res) => {
   const slugParam = req.params.slug;
@@ -830,9 +830,9 @@ module.exports.updateProduct_get = async (req, res) => {
   const sizes = await Size.findAll();
   const tags = await Tag.findAll();
   const categories = await Category.findAll();
-  const subCategories = await SubCategory.findAll();
+  const subcategories = await SubCategory.findAll();
   const images = await Image.findAll();
-  res.render("backend/product-update", { layout: "layouts/app.ejs", sizes, tags, categories, subCategories, product, images });
+  res.render("backend/product-update", { layout: "layouts/app.ejs", sizes, tags, categories, subcategories, product, images });
 };
 module.exports.updateProduct_post = async (req, res) => {
   const slugParam = req.params.slug;
